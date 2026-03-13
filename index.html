@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsche Grammatik</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Apple iOS Style Typography & Utilities */
+        @supports (font: -apple-system-body) and (-webkit-appearance: none) {
+            body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #F2F2F7; /* iOS System Gray 6 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .ios-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%238E8E93' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+        
+        /* Hide scrollbar for clean iOS look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D1D1D6;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="text-[#1C1C1E] pb-12">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        
+        <!-- Navigation Bar (iOS Segmented Control) -->
+        <div class="flex justify-center mb-10">
+            <div class="bg-[#E5E5EA] p-1 rounded-lg inline-flex shadow-inner overflow-x-auto max-w-full">
+                <button id="nav-verben" class="px-6 sm:px-8 py-1.5 rounded-md text-sm font-semibold transition-all duration-200 bg-white shadow-sm text-black whitespace-nowrap">
+                    Verben
+                </button>
+                <button id="nav-pronomen" class="px-6 sm:px-8 py-1.5 rounded-md text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
+                    Pronomen
+                </button>
+                <button id="nav-artikel" class="px-6 sm:px-8 py-1.5 rounded-md text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
+                    Artikel
+                </button>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             PAGE 1: VERBEN
+        =========================================== -->
+        <div id="page-verben" class="block">
+            <div class="mb-8">
+                <h1 class="text-4xl font-extrabold tracking-tight mb-2">Verben</h1>
+                <p class="text-[#8E8E93] text-lg">Konjugation der häufigsten deutschen Verben</p>
+            </div>
+            
+            <!-- Filter Bar (iOS Style) -->
+            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                
+                <!-- Typ Filter (Tags) -->
+                <div id="filter-typ-tags" class="flex flex-wrap items-center gap-2">
+                    <span class="text-sm font-semibold text-[#8E8E93] mr-1">Typ:</span>
+                    <!-- Tags populated by JS -->
+                </div>
+                
+                <!-- Vokalwechsel Filter -->
+                <div class="relative ml-auto md:ml-0">
+                    <select id="filter-vokal" class="ios-select bg-[#E5E5EA] text-[#1C1C1E] text-sm font-medium py-1.5 pl-4 pr-10 rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-[#007AFF] transition-shadow cursor-pointer">
+                        <option value="all">Vokalwechsel: Alle</option>
+                        <!-- Options populated by JS -->
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Table Card -->
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse" id="verbs-table">
+                        <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
+                            <tr>
+                                <th class="px-5 py-4 font-semibold border-b border-gray-200">Verben</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200">ich</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200">du</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200">er/sie/es</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200">wir/sie/Sie</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200">ihr</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Typ</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Vokalwechsel</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-[15px] divide-y divide-gray-100">
+                            <!-- sein -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">sein</td>
+                                <td class="px-4 pt-4 pb-1">bin</td>
+                                <td class="px-4 pt-4 pb-1">bist</td>
+                                <td class="px-4 pt-4 pb-1">ist</td>
+                                <td class="px-4 pt-4 pb-1">sind</td>
+                                <td class="px-4 pt-4 pb-1">seid</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(ist gewesen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">war</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">warst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">war</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">waren</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wart</td>
+                            </tr>
+                            <!-- haben -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">haben</td>
+                                <td class="px-4 pt-4 pb-1">habe</td>
+                                <td class="px-4 pt-4 pb-1">hast</td>
+                                <td class="px-4 pt-4 pb-1">hat</td>
+                                <td class="px-4 pt-4 pb-1">haben</td>
+                                <td class="px-4 pt-4 pb-1">habt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gehabt)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">hatte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">hattest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">hatte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">hatten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">hattet</td>
+                            </tr>
+                            <!-- werden -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">werden</td>
+                                <td class="px-4 pt-4 pb-1">werde</td>
+                                <td class="px-4 pt-4 pb-1">wirst</td>
+                                <td class="px-4 pt-4 pb-1">wird</td>
+                                <td class="px-4 pt-4 pb-1">werden</td>
+                                <td class="px-4 pt-4 pb-1">werdet</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / i / u</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(ist geworden)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wurde</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wurdest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wurde</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wurden</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wurdet</td>
+                            </tr>
+                            <!-- können -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">können</td>
+                                <td class="px-4 pt-4 pb-1">kann</td>
+                                <td class="px-4 pt-4 pb-1">kannst</td>
+                                <td class="px-4 pt-4 pb-1">kann</td>
+                                <td class="px-4 pt-4 pb-1">können</td>
+                                <td class="px-4 pt-4 pb-1">könnt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gekonnt)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">konnte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">konntest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">konnte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">konnten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">konntet</td>
+                            </tr>
+                            <!-- müssen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">müssen</td>
+                                <td class="px-4 pt-4 pb-1">muss</td>
+                                <td class="px-4 pt-4 pb-1">musst</td>
+                                <td class="px-4 pt-4 pb-1">muss</td>
+                                <td class="px-4 pt-4 pb-1">müssen</td>
+                                <td class="px-4 pt-4 pb-1">müsst</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gemusst)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">musste</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">musstest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">musste</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">mussten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">musstet</td>
+                            </tr>
+                            <!-- wollen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">wollen</td>
+                                <td class="px-4 pt-4 pb-1">will</td>
+                                <td class="px-4 pt-4 pb-1">willst</td>
+                                <td class="px-4 pt-4 pb-1">will</td>
+                                <td class="px-4 pt-4 pb-1">wollen</td>
+                                <td class="px-4 pt-4 pb-1">wollt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gewollt)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wollte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wolltest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wollte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wollten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wolltet</td>
+                            </tr>
+                            <!-- dürfen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">dürfen</td>
+                                <td class="px-4 pt-4 pb-1">darf</td>
+                                <td class="px-4 pt-4 pb-1">darfst</td>
+                                <td class="px-4 pt-4 pb-1">darf</td>
+                                <td class="px-4 pt-4 pb-1">dürfen</td>
+                                <td class="px-4 pt-4 pb-1">dürft</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gedurft)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">durfte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">durftest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">durfte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">durften</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">durftet</td>
+                            </tr>
+                            <!-- sollen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">sollen</td>
+                                <td class="px-4 pt-4 pb-1">soll</td>
+                                <td class="px-4 pt-4 pb-1">sollst</td>
+                                <td class="px-4 pt-4 pb-1">soll</td>
+                                <td class="px-4 pt-4 pb-1">sollen</td>
+                                <td class="px-4 pt-4 pb-1">sollt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gesollt)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sollte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">solltest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sollte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sollten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">solltet</td>
+                            </tr>
+                            <!-- mögen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">mögen</td>
+                                <td class="px-4 pt-4 pb-1">mag</td>
+                                <td class="px-4 pt-4 pb-1">magst</td>
+                                <td class="px-4 pt-4 pb-1">mag</td>
+                                <td class="px-4 pt-4 pb-1">mögen</td>
+                                <td class="px-4 pt-4 pb-1">mögt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gemocht)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">mochte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">mochtest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">mochte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">mochten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">mochtet</td>
+                            </tr>
+                            <!-- machen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">machen</td>
+                                <td class="px-4 pt-4 pb-1">mache</td>
+                                <td class="px-4 pt-4 pb-1">machst</td>
+                                <td class="px-4 pt-4 pb-1">macht</td>
+                                <td class="px-4 pt-4 pb-1">machen</td>
+                                <td class="px-4 pt-4 pb-1">macht</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">schwach</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gemacht)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">machte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">machtest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">machte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">machten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">machtet</td>
+                            </tr>
+                            <!-- geben -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">geben</td>
+                                <td class="px-4 pt-4 pb-1">gebe</td>
+                                <td class="px-4 pt-4 pb-1">gibst</td>
+                                <td class="px-4 pt-4 pb-1">gibt</td>
+                                <td class="px-4 pt-4 pb-1">geben</td>
+                                <td class="px-4 pt-4 pb-1">gebt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / i / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gegeben)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">gab</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">gabst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">gab</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">gaben</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">gabt</td>
+                            </tr>
+                            <!-- nehmen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">nehmen</td>
+                                <td class="px-4 pt-4 pb-1">nehme</td>
+                                <td class="px-4 pt-4 pb-1">nimmst</td>
+                                <td class="px-4 pt-4 pb-1">nimmt</td>
+                                <td class="px-4 pt-4 pb-1">nehmen</td>
+                                <td class="px-4 pt-4 pb-1">nehmt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / i / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat genommen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">nahm</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">nahmst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">nahm</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">nahmen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">nahmt</td>
+                            </tr>
+                            <!-- gehen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">gehen</td>
+                                <td class="px-4 pt-4 pb-1">gehe</td>
+                                <td class="px-4 pt-4 pb-1">gehst</td>
+                                <td class="px-4 pt-4 pb-1">geht</td>
+                                <td class="px-4 pt-4 pb-1">gehen</td>
+                                <td class="px-4 pt-4 pb-1">geht</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(ist gegangen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">ging</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">gingst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">ging</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">gingen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">gingt</td>
+                            </tr>
+                            <!-- laufen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">laufen</td>
+                                <td class="px-4 pt-4 pb-1">laufe</td>
+                                <td class="px-4 pt-4 pb-1">läufst</td>
+                                <td class="px-4 pt-4 pb-1">läuft</td>
+                                <td class="px-4 pt-4 pb-1">laufen</td>
+                                <td class="px-4 pt-4 pb-1">lauft</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">au / äu / ie</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(ist gelaufen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lief</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">liefst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lief</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">liefen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lieft</td>
+                            </tr>
+                            <!-- sagen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">sagen</td>
+                                <td class="px-4 pt-4 pb-1">sage</td>
+                                <td class="px-4 pt-4 pb-1">sagst</td>
+                                <td class="px-4 pt-4 pb-1">sagt</td>
+                                <td class="px-4 pt-4 pb-1">sagen</td>
+                                <td class="px-4 pt-4 pb-1">sagt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">schwach</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gesagt)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sagte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sagtest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sagte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sagten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sagtet</td>
+                            </tr>
+                            <!-- sprechen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">sprechen</td>
+                                <td class="px-4 pt-4 pb-1">spreche</td>
+                                <td class="px-4 pt-4 pb-1">sprichst</td>
+                                <td class="px-4 pt-4 pb-1">spricht</td>
+                                <td class="px-4 pt-4 pb-1">sprechen</td>
+                                <td class="px-4 pt-4 pb-1">sprecht</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / i / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gesprochen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sprach</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sprachst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sprach</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sprachen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">spracht</td>
+                            </tr>
+                            <!-- schreiben -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">schreiben</td>
+                                <td class="px-4 pt-4 pb-1">schreibe</td>
+                                <td class="px-4 pt-4 pb-1">schreibst</td>
+                                <td class="px-4 pt-4 pb-1">schreibt</td>
+                                <td class="px-4 pt-4 pb-1">schreiben</td>
+                                <td class="px-4 pt-4 pb-1">schreibt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">ei / ei / ie</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat geschrieben)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schrieb</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schriebst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schrieb</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schrieben</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schriebt</td>
+                            </tr>
+                            <!-- wissen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">wissen</td>
+                                <td class="px-4 pt-4 pb-1">weiß</td>
+                                <td class="px-4 pt-4 pb-1">weißt</td>
+                                <td class="px-4 pt-4 pb-1">weiß</td>
+                                <td class="px-4 pt-4 pb-1">wissen</td>
+                                <td class="px-4 pt-4 pb-1">wisst</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gewusst)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wusste</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wusstest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wusste</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wussten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wusstet</td>
+                            </tr>
+                            <!-- weisen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">weisen</td>
+                                <td class="px-4 pt-4 pb-1">weise</td>
+                                <td class="px-4 pt-4 pb-1">weist</td>
+                                <td class="px-4 pt-4 pb-1">weist</td>
+                                <td class="px-4 pt-4 pb-1">weisen</td>
+                                <td class="px-4 pt-4 pb-1">weist</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">ei / ei / ie</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gewiesen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wies</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wiest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wies</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wiesen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">wiest</td>
+                            </tr>
+                            <!-- schlagen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">schlagen</td>
+                                <td class="px-4 pt-4 pb-1">schlage</td>
+                                <td class="px-4 pt-4 pb-1">schlägst</td>
+                                <td class="px-4 pt-4 pb-1">schlägt</td>
+                                <td class="px-4 pt-4 pb-1">schlagen</td>
+                                <td class="px-4 pt-4 pb-1">schlagt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">a / ä / u</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat geschlagen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schlug</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schlugst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schlug</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schlugen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">schlugt</td>
+                            </tr>
+                            <!-- bringen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">bringen</td>
+                                <td class="px-4 pt-4 pb-1">bringe</td>
+                                <td class="px-4 pt-4 pb-1">bringst</td>
+                                <td class="px-4 pt-4 pb-1">bringt</td>
+                                <td class="px-4 pt-4 pb-1">bringen</td>
+                                <td class="px-4 pt-4 pb-1">bringt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gebracht)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">brachte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">brachtest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">brachte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">brachten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">brachtet</td>
+                            </tr>
+                            <!-- essen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">essen</td>
+                                <td class="px-4 pt-4 pb-1">esse</td>
+                                <td class="px-4 pt-4 pb-1">isst</td>
+                                <td class="px-4 pt-4 pb-1">isst</td>
+                                <td class="px-4 pt-4 pb-1">essen</td>
+                                <td class="px-4 pt-4 pb-1">esst</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / i / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gegessen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">aß</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">aßt</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">aß</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">aßen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">aßt</td>
+                            </tr>
+                            <!-- sehen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">sehen</td>
+                                <td class="px-4 pt-4 pb-1">sehe</td>
+                                <td class="px-4 pt-4 pb-1">siehst</td>
+                                <td class="px-4 pt-4 pb-1">sieht</td>
+                                <td class="px-4 pt-4 pb-1">sehen</td>
+                                <td class="px-4 pt-4 pb-1">seht</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / ie / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gesehen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sah</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sahst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sah</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">sahen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">saht</td>
+                            </tr>
+                            <!-- ziehen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">ziehen</td>
+                                <td class="px-4 pt-4 pb-1">ziehe</td>
+                                <td class="px-4 pt-4 pb-1">ziehst</td>
+                                <td class="px-4 pt-4 pb-1">zieht</td>
+                                <td class="px-4 pt-4 pb-1">ziehen</td>
+                                <td class="px-4 pt-4 pb-1">zieht</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">ie / ie / o</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat/ist gezogen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">zog</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">zogst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">zog</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">zogen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">zogt</td>
+                            </tr>
+                            <!-- stehen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">stehen</td>
+                                <td class="px-4 pt-4 pb-1">stehe</td>
+                                <td class="px-4 pt-4 pb-1">stehst</td>
+                                <td class="px-4 pt-4 pb-1">steht</td>
+                                <td class="px-4 pt-4 pb-1">stehen</td>
+                                <td class="px-4 pt-4 pb-1">steht</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">unregelmäßig</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gestanden)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">stand</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">standest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">stand</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">standen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">standet</td>
+                            </tr>
+                            <!-- setzen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">setzen</td>
+                                <td class="px-4 pt-4 pb-1">setze</td>
+                                <td class="px-4 pt-4 pb-1">setzt</td>
+                                <td class="px-4 pt-4 pb-1">setzt</td>
+                                <td class="px-4 pt-4 pb-1">setzen</td>
+                                <td class="px-4 pt-4 pb-1">setzt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">schwach</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal">-</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gesetzt)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">setzte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">setztest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">setzte</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">setzten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">setztet</td>
+                            </tr>
+                            <!-- liegen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">liegen</td>
+                                <td class="px-4 pt-4 pb-1">liege</td>
+                                <td class="px-4 pt-4 pb-1">liegst</td>
+                                <td class="px-4 pt-4 pb-1">liegt</td>
+                                <td class="px-4 pt-4 pb-1">liegen</td>
+                                <td class="px-4 pt-4 pb-1">liegt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">ie / ie / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gelegen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lag</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lagst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lag</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lagen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lagt</td>
+                            </tr>
+                            <!-- lassen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">lassen</td>
+                                <td class="px-4 pt-4 pb-1">lasse</td>
+                                <td class="px-4 pt-4 pb-1">lässt</td>
+                                <td class="px-4 pt-4 pb-1">lässt</td>
+                                <td class="px-4 pt-4 pb-1">lassen</td>
+                                <td class="px-4 pt-4 pb-1">lasst</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">a / ä / ie</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gelassen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">ließ</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">ließest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">ließ</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">ließen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">ließt</td>
+                            </tr>
+                            <!-- befehlen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">befehlen</td>
+                                <td class="px-4 pt-4 pb-1">befehle</td>
+                                <td class="px-4 pt-4 pb-1">befiehlst</td>
+                                <td class="px-4 pt-4 pb-1">befiehlt</td>
+                                <td class="px-4 pt-4 pb-1">befehlen</td>
+                                <td class="px-4 pt-4 pb-1">befehlt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / ie / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat befohlen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">befahl</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">befahlst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">befahl</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">befahlen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">befahlt</td>
+                            </tr>
+                            <!-- bergen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">bergen</td>
+                                <td class="px-4 pt-4 pb-1">berge</td>
+                                <td class="px-4 pt-4 pb-1">birgst</td>
+                                <td class="px-4 pt-4 pb-1">birgt</td>
+                                <td class="px-4 pt-4 pb-1">bergen</td>
+                                <td class="px-4 pt-4 pb-1">bergt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / i / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat geborgen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">barg</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">bargst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">barg</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">bargen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">bargt</td>
+                            </tr>
+                            <!-- brechen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">brechen</td>
+                                <td class="px-4 pt-4 pb-1">breche</td>
+                                <td class="px-4 pt-4 pb-1">brichst</td>
+                                <td class="px-4 pt-4 pb-1">bricht</td>
+                                <td class="px-4 pt-4 pb-1">brechen</td>
+                                <td class="px-4 pt-4 pb-1">brecht</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / i / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat/ist gebrochen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">brach</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">brachst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">brach</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">brachen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">bracht</td>
+                            </tr>
+                            <!-- fallen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">fallen</td>
+                                <td class="px-4 pt-4 pb-1">falle</td>
+                                <td class="px-4 pt-4 pb-1">fällst</td>
+                                <td class="px-4 pt-4 pb-1">fällt</td>
+                                <td class="px-4 pt-4 pb-1">fallen</td>
+                                <td class="px-4 pt-4 pb-1">fallt</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">a / ä / ie</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(ist gefallen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">fiel</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">fielst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">fiel</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">fielen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">fielt</td>
+                            </tr>
+                            <!-- gelten -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">gelten</td>
+                                <td class="px-4 pt-4 pb-1">gelte</td>
+                                <td class="px-4 pt-4 pb-1">giltst</td>
+                                <td class="px-4 pt-4 pb-1">gilt</td>
+                                <td class="px-4 pt-4 pb-1">gelten</td>
+                                <td class="px-4 pt-4 pb-1">geltet</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / i / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gegolten)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">galt</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">galtest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">galt</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">galten</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">galtet</td>
+                            </tr>
+                            <!-- helfen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">helfen</td>
+                                <td class="px-4 pt-4 pb-1">helfe</td>
+                                <td class="px-4 pt-4 pb-1">hilfst</td>
+                                <td class="px-4 pt-4 pb-1">hilft</td>
+                                <td class="px-4 pt-4 pb-1">helfen</td>
+                                <td class="px-4 pt-4 pb-1">helft</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / i / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat geholfen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">half</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">halfst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">half</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">halfen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">halft</td>
+                            </tr>
+                            <!-- laden -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">laden</td>
+                                <td class="px-4 pt-4 pb-1">lade</td>
+                                <td class="px-4 pt-4 pb-1">lädst</td>
+                                <td class="px-4 pt-4 pb-1">lädt</td>
+                                <td class="px-4 pt-4 pb-1">laden</td>
+                                <td class="px-4 pt-4 pb-1">ladet</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">a / ä / u</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat geladen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lud</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">ludst</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lud</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">luden</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">ludet</td>
+                            </tr>
+                            <!-- lesen -->
+                            <tr class="verb-row-1 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pt-4 pb-1 font-semibold text-black">lesen</td>
+                                <td class="px-4 pt-4 pb-1">lese</td>
+                                <td class="px-4 pt-4 pb-1">liest</td>
+                                <td class="px-4 pt-4 pb-1">liest</td>
+                                <td class="px-4 pt-4 pb-1">lesen</td>
+                                <td class="px-4 pt-4 pb-1">lest</td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
+                                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">stark</span>
+                                </td>
+                                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 font-mono text-[#1C1C1E] verb-vokal">e / ie / a</td>
+                            </tr>
+                            <tr class="verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">(hat gelesen)</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">las</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lasest</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">las</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">lasen</td>
+                                <td class="px-4 pb-4 pt-1 text-[#8E8E93]">last</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ==========================================
+             PAGE 2: PRONOMEN
+        =========================================== -->
+        <div id="page-pronomen" class="hidden">
+            <div class="mb-8">
+                <h1 class="text-4xl font-extrabold tracking-tight mb-2">Pronomen</h1>
+                <p class="text-[#8E8E93] text-lg">Deklination der Personal- und Reflexivpronomen</p>
+            </div>
+            
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 mt-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
+                            <tr>
+                                <th class="px-5 py-4 font-semibold border-b border-gray-200">Pronomen (Nom)</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200">Possessiv (Nom. m/n)</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200">Dativ</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200">Akkusativ</th>
+                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Reflexiv (Dat / Akk)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-[15px] divide-y divide-gray-100">
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 py-4 font-semibold text-black">ich</td>
+                                <td class="px-4 py-4 text-gray-700">mein</td>
+                                <td class="px-4 py-4 text-gray-700">mir</td>
+                                <td class="px-4 py-4 text-gray-700">mich</td>
+                                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">mir / mich</td>
+                            </tr>
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 py-4 font-semibold text-black">du</td>
+                                <td class="px-4 py-4 text-gray-700">dein</td>
+                                <td class="px-4 py-4 text-gray-700">dir</td>
+                                <td class="px-4 py-4 text-gray-700">dich</td>
+                                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">dir / dich</td>
+                            </tr>
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 py-4 font-semibold text-black">er</td>
+                                <td class="px-4 py-4 text-gray-700">sein</td>
+                                <td class="px-4 py-4 text-gray-700">ihm</td>
+                                <td class="px-4 py-4 text-gray-700">ihn</td>
+                                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">sich</td>
+                            </tr>
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 py-4 font-semibold text-black">sie <span class="text-xs text-[#8E8E93] font-normal">(Sg.)</span></td>
+                                <td class="px-4 py-4 text-gray-700">ihr</td>
+                                <td class="px-4 py-4 text-gray-700">ihr</td>
+                                <td class="px-4 py-4 text-gray-700">sie</td>
+                                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">sich</td>
+                            </tr>
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 py-4 font-semibold text-black">es</td>
+                                <td class="px-4 py-4 text-gray-700">sein</td>
+                                <td class="px-4 py-4 text-gray-700">ihm</td>
+                                <td class="px-4 py-4 text-gray-700">es</td>
+                                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">sich</td>
+                            </tr>
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 py-4 font-semibold text-black">wir</td>
+                                <td class="px-4 py-4 text-gray-700">unser</td>
+                                <td class="px-4 py-4 text-gray-700">uns</td>
+                                <td class="px-4 py-4 text-gray-700">uns</td>
+                                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">uns</td>
+                            </tr>
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 py-4 font-semibold text-black">ihr</td>
+                                <td class="px-4 py-4 text-gray-700">euer</td>
+                                <td class="px-4 py-4 text-gray-700">euch</td>
+                                <td class="px-4 py-4 text-gray-700">euch</td>
+                                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">euch</td>
+                            </tr>
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-5 py-4 font-semibold text-black">sie <span class="text-xs text-[#8E8E93] font-normal">(Pl.)</span></td>
+                                <td class="px-4 py-4 text-gray-700">ihr</td>
+                                <td class="px-4 py-4 text-gray-700">ihnen</td>
+                                <td class="px-4 py-4 text-gray-700">sie</td>
+                                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">sich</td>
+                            </tr>
+                            <tr class="group hover:bg-gray-50/50 transition-colors bg-blue-50/30">
+                                <td class="px-5 py-4 font-semibold text-black">Sie <span class="text-xs text-[#8E8E93] font-normal">(formell)</span></td>
+                                <td class="px-4 py-4 text-gray-700">Ihr</td>
+                                <td class="px-4 py-4 text-gray-700">Ihnen</td>
+                                <td class="px-4 py-4 text-gray-700">Sie</td>
+                                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">sich</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             PAGE 3: ARTIKEL
+        =========================================== -->
+        <div id="page-artikel" class="hidden">
+            <div class="mb-8">
+                <h1 class="text-4xl font-extrabold tracking-tight mb-2">Artikel</h1>
+                <p class="text-[#8E8E93] text-lg">Deklination der bestimmten, unbestimmten und negativen Artikel</p>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-6">
+                <!-- Table 1: Bestimmter Artikel -->
+                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100">
+                        <h2 class="text-lg font-bold text-black">Bestimmter Artikel</h2>
+                    </div>
+                    <div class="overflow-x-auto flex-1">
+                        <table class="w-full text-left border-collapse h-full">
+                            <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-[15px] divide-y divide-gray-100">
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93]">Nom</td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">der <span class="text-[#007AFF]">-e</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">die <span class="text-[#007AFF]">-e</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">das <span class="text-[#007AFF]">-e</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">die <span class="text-[#FF3B30]">-en</span></td>
+                                </tr>
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93]">Gen</td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">des <span class="text-[#FF3B30]">-en</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">der <span class="text-[#FF3B30]">-en</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">des <span class="text-[#FF3B30]">-en</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">der <span class="text-[#FF3B30]">-en</span></td>
+                                </tr>
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93]">Dat</td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">dem <span class="text-[#FF3B30]">-en</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">der <span class="text-[#FF3B30]">-en</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">dem <span class="text-[#FF3B30]">-en</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">den <span class="text-[#FF3B30]">-en</span></td>
+                                </tr>
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93]">Akk</td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">den <span class="text-[#FF3B30]">-en</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">die <span class="text-[#007AFF]">-e</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">das <span class="text-[#007AFF]">-e</span></td>
+                                    <td class="px-4 py-4 text-center font-medium text-black">die <span class="text-[#FF3B30]">-en</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Table 2: Unbestimmter & Negativartikel (Inkl. unser/euer) -->
+                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col">
+                    <div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100">
+                        <h2 class="text-lg font-bold text-black">Unbestimmter & Negativartikel <span class="font-normal text-sm text-[#8E8E93] ml-1">(inkl. unser/euer)</span></h2>
+                    </div>
+                    <div class="overflow-x-auto flex-1">
+                        <table class="w-full text-left border-collapse h-full">
+                            <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-[15px] divide-y divide-gray-100">
+                                <!-- Nom -->
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93] align-middle">Nom</td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein <span class="text-[#FF9500]">-er</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser / euer</div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein<i class="italic">e</i> <span class="text-[#007AFF]">-e</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">e</i> / eur<i class="italic">e</i></div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein <span class="text-[#FF9500]">-es</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser / euer</div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-[#8E8E93]">(kein<i class="italic">e</i> <span class="text-[#FF3B30]">-en</span>)</div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">e</i> / eur<i class="italic">e</i></div>
+                                    </td>
+                                </tr>
+                                <!-- Gen -->
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93] align-middle">Gen</td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein<i class="italic">es</i> <span class="text-[#FF3B30]">-en</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">es</i> / eur<i class="italic">es</i></div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein<i class="italic">er</i> <span class="text-[#FF3B30]">-en</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">er</i> / eur<i class="italic">er</i></div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein<i class="italic">es</i> <span class="text-[#FF3B30]">-en</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">es</i> / eur<i class="italic">es</i></div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-[#8E8E93]">(kein<i class="italic">er</i> <span class="text-[#FF3B30]">-en</span>)</div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">er</i> / eur<i class="italic">er</i></div>
+                                    </td>
+                                </tr>
+                                <!-- Dat -->
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93] align-middle">Dat</td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein<i class="italic">em</i> <span class="text-[#FF3B30]">-en</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">em</i> / eur<i class="italic">em</i></div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein<i class="italic">er</i> <span class="text-[#FF3B30]">-en</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">er</i> / eur<i class="italic">er</i></div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein<i class="italic">em</i> <span class="text-[#FF3B30]">-en</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">em</i> / eur<i class="italic">em</i></div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-[#8E8E93]">(kein<i class="italic">en</i> <span class="text-[#FF3B30]">-en</span>)</div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">en</i> / eur<i class="italic">en</i></div>
+                                    </td>
+                                </tr>
+                                <!-- Akk -->
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93] align-middle">Akk</td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein<i class="italic">en</i> <span class="text-[#FF3B30]">-en</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">en</i> / eur<i class="italic">en</i></div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein<i class="italic">e</i> <span class="text-[#007AFF]">-e</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">e</i> / eur<i class="italic">e</i></div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-black">ein <span class="text-[#FF9500]">-es</span></div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser / euer</div>
+                                    </td>
+                                    <td class="px-4 py-4 text-center align-middle">
+                                        <div class="font-medium text-[#8E8E93]">(kein<i class="italic">e</i> <span class="text-[#FF3B30]">-en</span>)</div>
+                                        <div class="text-[11px] font-medium text-[#8E8E93] mt-0.5">unser<i class="italic">e</i> / eur<i class="italic">e</i></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Table 3: Nullartikel -->
+                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col xl:col-span-2">
+                    <div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100">
+                        <h2 class="text-lg font-bold text-black">Nullartikel (Adjektivdeklination ohne Artikel)</h2>
+                    </div>
+                    <div class="overflow-x-auto flex-1">
+                        <table class="w-full text-left border-collapse h-full">
+                            <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th>
+                                    <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-[15px] divide-y divide-gray-100">
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93]">Nom</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-er</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-e</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-es</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-e</td>
+                                </tr>
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93]">Gen</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-en</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-er</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-en</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-er</td>
+                                </tr>
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93]">Dat</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-em</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-er</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-em</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-en</td>
+                                </tr>
+                                <tr class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-5 py-4 font-semibold text-[#8E8E93]">Akk</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-en</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-e</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-es</td>
+                                    <td class="px-4 py-4 text-center font-bold text-black">-e</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Navigation Logic ---
+            const btnVerben = document.getElementById('nav-verben');
+            const btnPronomen = document.getElementById('nav-pronomen');
+            const btnArtikel = document.getElementById('nav-artikel');
+            const pageVerben = document.getElementById('page-verben');
+            const pagePronomen = document.getElementById('page-pronomen');
+            const pageArtikel = document.getElementById('page-artikel');
+
+            function switchPage(page) {
+                const pages = [
+                    { id: 'verben', btn: btnVerben, el: pageVerben },
+                    { id: 'pronomen', btn: btnPronomen, el: pagePronomen },
+                    { id: 'artikel', btn: btnArtikel, el: pageArtikel }
+                ];
+
+                pages.forEach(p => {
+                    if (p.id === page) {
+                        p.el.classList.remove('hidden');
+                        p.btn.classList.add('bg-white', 'shadow-sm', 'text-black');
+                        p.btn.classList.remove('text-[#8E8E93]');
+                    } else {
+                        p.el.classList.add('hidden');
+                        p.btn.classList.remove('bg-white', 'shadow-sm', 'text-black');
+                        p.btn.classList.add('text-[#8E8E93]');
+                    }
+                });
+            }
+
+            btnVerben.addEventListener('click', () => switchPage('verben'));
+            btnPronomen.addEventListener('click', () => switchPage('pronomen'));
+            btnArtikel.addEventListener('click', () => switchPage('artikel'));
+
+            // --- Verben Filter Logic ---
+            const tbody = document.querySelector('#verbs-table tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            const verbGroups = [];
+            const types = new Set();
+            const vokals = new Set();
+
+            for (let i = 0; i < rows.length; i += 2) {
+                const firstRow = rows[i];
+                const secondRow = rows[i+1];
+                
+                const typEl = firstRow.querySelector('.verb-typ');
+                const vokalEl = firstRow.querySelector('.verb-vokal');
+                
+                if(typEl && vokalEl) {
+                    const typ = typEl.innerText.trim();
+                    const vokal = vokalEl.innerText.trim();
+                    
+                    verbGroups.push({ firstRow, secondRow, typ, vokal });
+                    types.add(typ);
+                    vokals.add(vokal);
+                }
+            }
+
+            const filterTypTags = document.getElementById('filter-typ-tags');
+            const filterVokal = document.getElementById('filter-vokal');
+            
+            let currentTyp = 'all';
+
+            const createTag = (typValue, label) => {
+                const btn = document.createElement('button');
+                btn.textContent = label;
+                btn.className = `typ-tag px-3 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
+                    typValue === currentTyp 
+                    ? 'bg-[#007AFF] text-white' 
+                    : 'bg-[#E5E5EA] text-[#1C1C1E] hover:bg-[#D1D1D6]'
+                }`;
+                btn.dataset.value = typValue;
+                
+                btn.addEventListener('click', () => {
+                    currentTyp = typValue;
+                    
+                    document.querySelectorAll('.typ-tag').forEach(t => {
+                        if(t.dataset.value === currentTyp) {
+                            t.classList.remove('bg-[#E5E5EA]', 'text-[#1C1C1E]', 'hover:bg-[#D1D1D6]');
+                            t.classList.add('bg-[#007AFF]', 'text-white');
+                        } else {
+                            t.classList.remove('bg-[#007AFF]', 'text-white');
+                            t.classList.add('bg-[#E5E5EA]', 'text-[#1C1C1E]', 'hover:bg-[#D1D1D6]');
+                        }
+                    });
+                    
+                    applyFilters();
+                });
+                
+                return btn;
+            };
+
+            filterTypTags.appendChild(createTag('all', 'Alle'));
+            Array.from(types).sort().forEach(t => {
+                filterTypTags.appendChild(createTag(t, t));
+            });
+
+            Array.from(vokals).sort().forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v;
+                opt.textContent = `Vokalwechsel: ${v}`;
+                filterVokal.appendChild(opt);
+            });
+
+            function applyFilters() {
+                const selectedVokal = filterVokal.value;
+
+                verbGroups.forEach(group => {
+                    const matchTyp = currentTyp === 'all' || group.typ === currentTyp;
+                    const matchVokal = selectedVokal === 'all' || group.vokal === selectedVokal;
+
+                    if (matchTyp && matchVokal) {
+                        group.firstRow.style.display = '';
+                        group.secondRow.style.display = '';
+                    } else {
+                        group.firstRow.style.display = 'none';
+                        group.secondRow.style.display = 'none';
+                    }
+                });
+            }
+
+            filterVokal.addEventListener('change', applyFilters);
+        });
+    </script>
+</body>
+</html>
