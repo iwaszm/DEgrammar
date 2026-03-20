@@ -6,17 +6,23 @@ import { praepositionen } from '../data/praepositionen.js';
 document.addEventListener('DOMContentLoaded', () => {
     
     // --- Navigation Logic ---
+    const btnHome = document.getElementById('nav-home');
     const btnVerben = document.getElementById('nav-verben');
     const btnPronomen = document.getElementById('nav-pronomen');
     const btnArtikel = document.getElementById('nav-artikel');
     const btnPraepositionen = document.getElementById('nav-praepositionen');
+    
+    const pageHome = document.getElementById('page-home');
     const pageVerben = document.getElementById('page-verben');
     const pagePronomen = document.getElementById('page-pronomen');
     const pageArtikel = document.getElementById('page-artikel');
     const pagePraepositionen = document.getElementById('page-praepositionen');
 
-    function switchPage(page) {
+    const navContainer = document.getElementById('main-nav-container');
+
+    function switchPage(pageId) {
         const pages = [
+            { id: 'home', btn: btnHome, el: pageHome },
             { id: 'verben', btn: btnVerben, el: pageVerben },
             { id: 'pronomen', btn: btnPronomen, el: pagePronomen },
             { id: 'artikel', btn: btnArtikel, el: pageArtikel },
@@ -24,29 +30,58 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         pages.forEach(p => {
-            if (p.id === page) {
+            if (p.id === pageId) {
                 p.el.classList.remove('hidden');
-                p.btn.classList.add('bg-white', 'shadow-sm', 'text-black');
-                p.btn.classList.remove('text-[#8E8E93]');
+                if (p.btn) {
+                    p.btn.classList.add('bg-white', 'shadow-sm', 'text-black');
+                    p.btn.classList.remove('text-[#8E8E93]');
+                }
             } else {
                 p.el.classList.add('hidden');
-                p.btn.classList.remove('bg-white', 'shadow-sm', 'text-black');
-                p.btn.classList.add('text-[#8E8E93]');
+                if (p.btn) {
+                    p.btn.classList.remove('bg-white', 'shadow-sm', 'text-black');
+                    p.btn.classList.add('text-[#8E8E93]');
+                }
             }
         });
+
+        // Toggle nav visibility
+        if (pageId === 'home') {
+            navContainer.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                if (pageHome.classList.contains('hidden')) return; 
+                navContainer.classList.add('hidden');
+            }, 200);
+        } else {
+            navContainer.classList.remove('hidden');
+            setTimeout(() => {
+                navContainer.classList.remove('opacity-0', 'pointer-events-none');
+            }, 10);
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    if (btnHome) btnHome.addEventListener('click', () => switchPage('home'));
     btnVerben.addEventListener('click', () => switchPage('verben'));
     btnPronomen.addEventListener('click', () => switchPage('pronomen'));
     btnArtikel.addEventListener('click', () => switchPage('artikel'));
     btnPraepositionen.addEventListener('click', () => switchPage('praepositionen'));
+
+    // Home Page Interaction
+    document.querySelectorAll('.home-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const target = e.currentTarget.dataset.target;
+            switchPage(target);
+        });
+    });
 
     // --- Verben Logic ---
     const tbodyVerben = document.querySelector('#verbs-table tbody');
     const filterTypTags = document.getElementById('filter-typ-tags');
     const filterVokal = document.getElementById('filter-vokal');
     
-    const selectedTypes = new Set(); // empty = all
+    const selectedTypes = new Set();
 
     const italicizeEnding = (word) => {
         const endings = ['test','tet','ten','te','est','et','st','t','en','e'];
@@ -189,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Präpositionen Logic ---
     const filterPrepCaseTags = document.getElementById('filter-prep-case-tags');
-    const selectedPrepCases = new Set(); // empty = all
+    const selectedPrepCases = new Set(); 
 
     const caseStyles = {
         DAT: 'bg-green-100 text-green-700',
@@ -206,12 +241,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const filtered = sorted.filter(item => {
             if (selectedPrepCases.size === 0) return true;
-            // Show item if ANY of its modes matches any selected case
             return item.modes.some(m => selectedPrepCases.has(m.case));
         });
 
         filtered.forEach(item => {
-            // Further filter the modes to show only selected cases if filters active
             const visibleModes = selectedPrepCases.size === 0 
                 ? item.modes 
                 : item.modes.filter(m => selectedPrepCases.has(m.case));
@@ -319,4 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderArtikelTable('artikel-null-table', artikelData.nullartikel);
     initPrepFilters();
     renderPraepositionenTable();
+
+    // Export for external use
+    window.switchPage = switchPage;
 });

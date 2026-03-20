@@ -1,34 +1,90 @@
-/* Apple iOS Style Typography & Utilities */
-@supports (font: -apple-system-body) and (-webkit-appearance: none) {
-    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-}
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #F2F2F7; /* iOS System Gray 6 */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-.glass-header {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
-.ios-select {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%238E8E93' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-    background-position: right 0.5rem center;
-    background-repeat: no-repeat;
-    background-size: 1.5em 1.5em;
+:root {
+    --bg-main: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-nav: #E5E5EA;
+    --bg-header: rgba(249, 249, 249, 0.95);
+    --text-main: #1C1C1E;
+    --text-muted: #8E8E93;
+    --border-gray: #F2F2F7;
+    --hover-bg: rgba(0, 0, 0, 0.02);
+    
+    /* Low Saturation Case Colors */
+    --color-dat-bg: #E8F5E9;
+    --color-dat-text: #4E7D53;
+    --color-akk-bg: #E3F2FD;
+    --color-akk-text: #4A7A96;
+    --color-gen-bg: #FFFDE7;
+    --color-gen-text: #857A42;
+    
+    /* Low Saturation Verb Types */
+    --color-stark-bg: #FEEBEE;
+    --color-stark-text: #A65D66;
+    --color-schwach-bg: #E8F5E9;
+    --color-schwach-text: #4E7D53;
+    --color-misch-bg: #FFF8E1;
+    --color-misch-text: #8D7344;
+    --color-unreg-bg: #F3E5F5;
+    --color-unreg-text: #7B5E8C;
+
+    --accent: #007AFF;
+    --accent-low: #EBF5FF;
+
+    /* Custom Home Link Colors */
+    --home-verben: #A65D66;
+    --home-pronomen: #4A7A96;
+    --home-artikel: #8E8E93;
+    --home-praepositionen: #4E7D53;
 }
 
-/* Hide scrollbar for clean iOS look */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
 }
-::-webkit-scrollbar-track {
-    background: transparent;
+
+/* iOS Card Style */
+.ios-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-gray);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
 }
-::-webkit-scrollbar-thumb {
-    background: #D1D1D6;
-    border-radius: 10px;
+
+.glass-header {
+    background-color: var(--bg-header);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-gray);
+}
+
+/* Sticky Headers for Tables */
+thead.glass-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+/* Specific Tags */
+.bg-green-100 { background-color: var(--color-dat-bg) !important; }
+.text-green-700 { color: var(--color-dat-text) !important; }
+.bg-blue-100 { background-color: var(--color-akk-bg) !important; }
+.text-blue-700 { color: var(--color-akk-text) !important; }
+.bg-yellow-100 { background-color: var(--color-gen-bg) !important; }
+.text-yellow-700 { color: var(--color-gen-text) !important; }
+
+/* Verb Types */
+.bg-red-100 { background-color: var(--color-stark-bg) !important; }
+.text-red-700 { color: var(--color-stark-text) !important; }
+.bg-amber-100 { background-color: var(--color-misch-bg) !important; }
+.text-amber-700 { color: var(--color-misch-text) !important; }
+.bg-purple-100 { background-color: var(--color-unreg-bg) !important; }
+.text-purple-700 { color: var(--color-unreg-text) !important; }
+
+.home-verben { color: var(--home-verben) !important; }
+.home-pronomen { color: var(--home-pronomen) !important; }
+.home-artikel { color: var(--home-artikel) !important; }
+.home-praepositionen { color: var(--home-praepositionen) !important; }
+
+/* iOS Select */
+.ios-select {
+    background-color: var(--bg-nav) !important;
+    color: var(--text-main) !important;
 }
