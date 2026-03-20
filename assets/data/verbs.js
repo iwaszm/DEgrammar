@@ -29,29 +29,29 @@ export const verbs = [
     {
         infinitive: "bringen",
         conjugations: ["bringe", "bringst", "bringt", "bringen", "bringt"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "i: i/a/a",
         pastInfo: "(hat gebracht)",
         pastConjugations: ["brachte", "brachtest", "brachte", "brachten", "brachtet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "denken",
         conjugations: ["denke", "denkst", "denkt", "denken", "denkt"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "e: e/a/a",
         pastInfo: "(hat gedacht)",
         pastConjugations: ["dachte", "dachtest", "dachte", "dachten", "dachtet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "dürfen",
         conjugations: ["darf", "darfst", "darf", "dürfen", "dürft"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "ü: a/u/u",
         pastInfo: "(hat gedurft)",
         pastConjugations: ["durfte", "durftest", "durfte", "durften", "durftet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "essen",
@@ -119,20 +119,20 @@ export const verbs = [
     {
         infinitive: "kennen",
         conjugations: ["kenne", "kennst", "kennt", "kennen", "kennt"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "e: e/a/a",
         pastInfo: "(hat gekannt)",
         pastConjugations: ["kannte", "kanntest", "kannte", "kannten", "kanntet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "können",
         conjugations: ["kann", "kannst", "kann", "können", "könnt"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "ö: a/o/o",
         pastInfo: "(hat gekonnt)",
         pastConjugations: ["konnte", "konntest", "konnte", "konnten", "konntet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "laden",
@@ -191,20 +191,20 @@ export const verbs = [
     {
         infinitive: "mögen",
         conjugations: ["mag", "magst", "mag", "mögen", "mögt"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "ö: a/o/o",
         pastInfo: "(hat gemocht)",
         pastConjugations: ["mochte", "mochtest", "mochte", "mochten", "mochtet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "müssen",
         conjugations: ["muss", "musst", "muss", "müssen", "müsst"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "ü: u/u/u",
         pastInfo: "(hat gemusst)",
         pastConjugations: ["musste", "musstest", "musste", "mussten", "musstet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "nehmen",
@@ -272,11 +272,11 @@ export const verbs = [
     {
         infinitive: "sollen",
         conjugations: ["soll", "sollst", "soll", "sollen", "sollt"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "o: o/o/o",
         pastInfo: "(hat gesollt)",
         pastConjugations: ["sollte", "solltest", "sollte", "sollten", "solltet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "sprechen",
@@ -317,20 +317,20 @@ export const verbs = [
     {
         infinitive: "wissen",
         conjugations: ["weiß", "weißt", "weiß", "wissen", "wisst"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "i: ei/u/u",
         pastInfo: "(hat gewusst)",
         pastConjugations: ["wusste", "wusstest", "wusste", "wussten", "wusstet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "wollen",
         conjugations: ["will", "willst", "will", "wollen", "wollt"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "o: i/o/o",
         pastInfo: "(hat gewollt)",
         pastConjugations: ["wollte", "wolltest", "wollte", "wollten", "wolltet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "ziehen",
@@ -371,11 +371,11 @@ export const verbs = [
     {
         infinitive: "brennen",
         conjugations: ["brenne", "brennst", "brennt", "brennen", "brennt"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "e: e/a/a",
         pastInfo: "(hat gebrannt)",
         pastConjugations: ["brannte", "branntest", "brannte", "brannten", "branntet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "finden",
@@ -443,11 +443,11 @@ export const verbs = [
     {
         infinitive: "rennen",
         conjugations: ["renne", "rennst", "rennt", "rennen", "rennt"],
-        type: "unregelmäßig",
-        stemVowel: "-",
+        type: "misch",
+        stemVowel: "e: e/a/a",
         pastInfo: "(ist gerannt)",
         pastConjugations: ["rannte", "ranntest", "rannte", "rannten", "ranntet"],
-        typeClass: "bg-purple-100 text-purple-700"
+        typeClass: "bg-amber-100 text-amber-700"
     },
     {
         infinitive: "schlafen",
