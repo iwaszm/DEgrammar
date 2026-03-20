@@ -1,5 +1,5 @@
 export const praepositionen = [
-  // --- WECHSELPRAEPOSITIONEN (Top 3) ---
+  // --- WECHSELPRAEPOSITIONEN ---
   {
     prep: "in",
     isWechsel: true,
@@ -7,32 +7,40 @@ export const praepositionen = [
       {
         case: "DAT",
         space: [
-          "Städte, Kontinente (in München, in Asien)",
-          "Länder mit Artikel (in der Türkei, in den USA)",
-          "Natur, Umgebung (im Wald, in den Bergen)",
-          "Geschlossene Räume, Gebäude (in der Schule, im Haus)",
-          "Straßen (in der Parkstraße)"
+          { rule: "Städte, Kontinente", ex: "Ich wohne <b>in München</b>." },
+          { rule: "Länder mit Artikel", ex: "Er lebt <b>in der Türkei</b>." },
+          { rule: "Natur, Umgebung", ex: "Wir spazieren <b>im Wald</b>." },
+          { rule: "Geschlossene Räume", ex: "Wir sitzen <b>im Kino</b>." }
         ],
         time: [
-          "Monate (im Januar)",
-          "Jahreszeiten (im Sommer)",
-          "Jahrhunderte (im 20. Jahrhundert)",
-          "Zeitraum (in der Nacht, in den Ferien)",
-          "Zukunft (in einer Woche, in 5 Minuten)"
+          { rule: "Monate, Jahreszeiten", ex: "<b>Im Sommer</b> ist es heiß." },
+          { rule: "Jahrhunderte", ex: "Das war <b>im 20. Jahrhundert</b>." },
+          { rule: "Zukunft (Zeitraum)", ex: "Ich komme <b>in einer Woche</b>." }
+        ],
+        verbFixed: [
+          "Das Flugzeug <b>kommt in Berlin an</b>."
+        ],
+        adjFixed: [
+          "Er ist <b>in der Politik erfahren</b>."
         ]
       },
       {
         case: "AKK",
         space: [
-          "Bewegung in ein Gebäude (ins Kino gehen)",
-          "Bewegung in die Natur (in den Park gehen)",
-          "Bewegung in ein Land (in die Schweiz fliegen)"
+          { rule: "Bewegung in ein Gebäude", ex: "Wir gehen <b>ins Kino</b>." },
+          { rule: "Bewegung in die Natur", ex: "Sie geht <b>in den Park</b>." },
+          { rule: "Bewegung in ein Land", ex: "Wir fliegen <b>in die Schweiz</b>." }
         ],
-        time: [] // Usually DAT for time with 'in' (future is Dat: in einer Woche)
+        time: [], 
+        verbFixed: [
+          "Sie hat <b>sich in ihn verliebt</b>.",
+          "Er <b>steigt in den Bus ein</b>."
+        ],
+        adjFixed: [
+          "Ich bin <b>in dich verliebt</b>."
+        ]
       }
-    ],
-    verbFixed: ["sich verlieben", "geraten", "einsteigen"],
-    adjFixed: ["verliebt", "erfahren"]
+    ]
   },
   {
     prep: "an",
@@ -41,29 +49,37 @@ export const praepositionen = [
       {
         case: "DAT",
         space: [
-          "Gewässer (am Meer, am Fluss)",
-          "Vertikale Flächen (an der Wand)",
-          "Grenzlinien, Rand (an der Grenze)",
-          "Bestimmte Plätze (am Bahnhof, am Flughafen)"
+          { rule: "Gewässer (Wasser)", ex: "Wir liegen <b>am Strand</b>." },
+          { rule: "Vertikale Flächen", ex: "Das Bild hängt <b>an der Wand</b>." },
+          { rule: "Plätze / Orte", ex: "Wir warten <b>am Bahnhof</b>." }
         ],
         time: [
-          "Tage (am Montag)",
-          "Tageszeiten (am Abend)",
-          "Datum (am 15. Mai)",
-          "Feiertage (an Weihnachten)"
+          { rule: "Tage, Tageszeiten", ex: "<b>Am Montag</b> habe ich frei." },
+          { rule: "Datum", ex: "<b>Am 15. Mai</b> ist mein Geburtstag." }
+        ],
+        verbFixed: [
+          "Wir <b>nehmen am Kurs teil</b>."
+        ],
+        adjFixed: [
+          "Er ist <b>an Musik interessiert</b>."
         ]
       },
       {
         case: "AKK",
         space: [
-          "Bewegung an ein Gewässer (ans Meer fahren)",
-          "Bewegung an eine Fläche (das Bild an die Wand hängen)"
+          { rule: "Bewegung an ein Gewässer", ex: "Wir fahren <b>ans Meer</b>." },
+          { rule: "Bewegung an eine Fläche", ex: "Er hängt das Bild <b>an die Wand</b>." }
         ],
-        time: []
+        time: [],
+        verbFixed: [
+          "Ich <b>denke an dich</b>.",
+          "Ich <b>erinnere mich an den Urlaub</b>."
+        ],
+        adjFixed: [
+          "Ich bin <b>an das Klima gewöhnt</b>."
+        ]
       }
-    ],
-    verbFixed: ["denken", "sich erinnern", "teilnehmen", "glauben"],
-    adjFixed: ["interessiert", "gewöhnt", "reich"]
+    ]
   },
   {
     prep: "auf",
@@ -72,45 +88,56 @@ export const praepositionen = [
       {
         case: "DAT",
         space: [
-          "Horizontale Flächen (auf dem Tisch, auf dem Boden)",
-          "Öffentliche Gebäude (auf der Post, auf der Bank)",
-          "Veranstaltungen (auf der Party, auf der Hochzeit)",
-          "Inseln (auf Sylt)"
+          { rule: "Horizontale Flächen", ex: "Das Buch liegt <b>auf dem Tisch</b>." },
+          { rule: "Öffentliche Gebäude", ex: "Ich bin <b>auf der Post</b>." }
         ],
-        time: [] // 'auf' time is rare/fixed
+        time: [],
+        verbFixed: [
+          "Die Entscheidung <b>basiert auf Fakten</b>."
+        ],
+        adjFixed: []
       },
       {
         case: "AKK",
         space: [
-          "Bewegung auf eine Fläche (auf den Berg steigen)",
-          "Bewegung auf eine Insel (auf eine Insel fahren)"
+          { rule: "Bewegung auf eine Fläche", ex: "Leg das Buch <b>auf den Tisch</b>." }
         ],
         time: [
-          "Dauer (auf eine Woche)",
-          "Zeitpunkt (auf den Abend verschieben)"
+          { rule: "Zeitdauer (Zukunft)", ex: "Er geht <b>auf eine Woche</b> weg." }
+        ],
+        verbFixed: [
+          "Wir <b>warten auf den Bus</b>.",
+          "Ich <b>freue mich auf den Urlaub</b>."
+        ],
+        adjFixed: [
+          "Sie ist <b>stolz auf ihren Sohn</b>.",
+          "Er ist <b>neidisch auf deinen Erfolg</b>."
         ]
       }
-    ],
-    verbFixed: ["warten", "sich freuen (Zukunft)", "hoffen", "achten"],
-    adjFixed: ["stolz", "neidisch", "eifersüchtig", "gespannt"]
+    ]
   },
 
-  // --- STANDARD (Top 2) ---
+  // --- STANDARD ---
   {
     prep: "mit",
     isWechsel: false,
     modes: [
       {
         case: "DAT",
-        space: [], // 'mit' rarely strictly local in basic sense
+        space: [], 
         time: [
-          "Beginn/Alter (mit 18 Jahren)",
-          "Gleichzeitigkeit (mit der Zeit)"
+          { rule: "Alter / Zeitpunkt", ex: "<b>Mit 18 Jahren</b> darf man wählen." }
+        ],
+        verbFixed: [
+          "Ich <b>spreche mit meinem Chef</b>.",
+          "Wir <b>fangen mit dem Essen an</b>."
+        ],
+        adjFixed: [
+          "Ich bin <b>mit dem Ergebnis zufrieden</b>.",
+          "Sind Sie <b>damit einverstanden</b>?"
         ]
       }
-    ],
-    verbFixed: ["sprechen", "telefonieren", "anfangen", "rechnen"],
-    adjFixed: ["zufrieden", "verwandt", "fertig", "einverstanden"]
+    ]
   },
   {
     prep: "für",
@@ -120,12 +147,17 @@ export const praepositionen = [
         case: "AKK",
         space: [],
         time: [
-          "Zeitspanne (für drei Tage)",
-          "Zukunft (für immer)"
+          { rule: "Zeitspanne", ex: "Er bleibt <b>für drei Tage</b>." }
+        ],
+        verbFixed: [
+          "Ich <b>interessiere mich für Kunst</b>.",
+          "Ich <b>danke dir für die Hilfe</b>."
+        ],
+        adjFixed: [
+          "Das ist <b>wichtig für mich</b>.",
+          "Er ist <b>für den Schaden verantwortlich</b>."
         ]
       }
-    ],
-    verbFixed: ["sich interessieren", "danken", "sich entscheiden", "sorgen"],
-    adjFixed: ["zuständig", "bekannt", "wichtig", "geeignet"]
+    ]
   }
 ];

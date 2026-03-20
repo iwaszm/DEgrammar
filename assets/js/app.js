@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // --- Präpositionen Logic (Top 5 preview) ---
+    // --- Präpositionen Logic ---
     const renderPraepositionenTable = () => {
         const tbody = document.querySelector('#praepositionen-table tbody');
         if (!tbody) return;
@@ -245,60 +245,80 @@ document.addEventListener('DOMContentLoaded', () => {
             AKK: 'bg-blue-100 text-blue-700'
         };
 
-        praepositionen.slice(0, 5).forEach(item => {
-            const tr = document.createElement('tr');
-            tr.className = 'group hover:bg-gray-50/50 transition-colors align-top';
+        praepositionen.forEach(item => {
+            const rowCount = item.modes.length;
 
-            // Helper to generate the stacked cells for Case, Space, Time
-            let caseHtml = '';
-            let spaceHtml = '';
-            let timeHtml = '';
+            item.modes.forEach((mode, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'group hover:bg-gray-50/50 transition-colors align-top border-b border-gray-100 last:border-b-0';
 
-            item.modes.forEach((mode, idx) => {
-                const isLast = idx === item.modes.length - 1;
-                const borderClass = !isLast ? 'border-b border-gray-100 pb-3 mb-3' : '';
-                
-                // Case Tag
+                // 1. Präposition (Rowspan if first)
+                if (index === 0) {
+                    const tdPrep = document.createElement('td');
+                    tdPrep.className = "px-5 py-4 font-bold text-lg text-black align-top border-r border-gray-100 bg-white group-hover:bg-gray-50/50";
+                    tdPrep.rowSpan = rowCount;
+                    tdPrep.textContent = item.prep;
+                    tr.appendChild(tdPrep);
+                }
+
+                // 2. Case Tag
+                const tdCase = document.createElement('td');
+                tdCase.className = "px-4 py-4 text-center align-top border-r border-gray-100";
                 const cls = caseTagClass[mode.case] || 'bg-gray-100 text-gray-700';
-                caseHtml += `
-                    <div class="flex justify-center ${borderClass}">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${mode.case}</span>
-                    </div>`;
+                tdCase.innerHTML = `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${mode.case}</span>`;
+                tr.appendChild(tdCase);
 
-                // Space Rules
-                spaceHtml += `<div class="${borderClass}">`;
-                if (mode.space && mode.space.length > 0) {
-                    spaceHtml += `<ul class="text-sm text-[#1C1C1E] list-disc pl-4 space-y-1">${mode.space.map(s => `<li>${s}</li>`).join('')}</ul>`;
-                } else {
-                    spaceHtml += `<span class="text-xs text-gray-300">-</span>`;
-                }
-                spaceHtml += `</div>`;
+                // Helper for Rule+Ex list
+                const renderRules = (arr) => {
+                    if (!arr || arr.length === 0) return '<span class="text-xs text-gray-300">-</span>';
+                    return `<ul class="list-disc pl-4 space-y-3">
+                        ${arr.map(r => `
+                            <li class="text-sm text-[#1C1C1E] leading-snug">
+                                ${r.rule}
+                                <div class="text-[13px] text-gray-400 italic mt-0.5 leading-snug">${r.ex}</div>
+                            </li>
+                        `).join('')}
+                    </ul>`;
+                };
 
-                // Time Rules
-                timeHtml += `<div class="${borderClass}">`;
-                if (mode.time && mode.time.length > 0) {
-                    timeHtml += `<ul class="text-sm text-[#1C1C1E] list-disc pl-4 space-y-1">${mode.time.map(t => `<li>${t}</li>`).join('')}</ul>`;
-                } else {
-                    timeHtml += `<span class="text-xs text-gray-300">-</span>`;
-                }
-                timeHtml += `</div>`;
+                // Helper for Combo list
+                const renderCombos = (arr) => {
+                    if (!arr || arr.length === 0) return '<span class="text-xs text-gray-300">-</span>';
+                    return `<ul class="list-none space-y-2">
+                        ${arr.map(c => `
+                            <li class="text-sm text-[#1C1C1E] leading-snug pl-2 border-l-2 border-gray-100">
+                                ${c}
+                            </li>
+                        `).join('')}
+                    </ul>`;
+                };
+
+                // 3. Space
+                const tdSpace = document.createElement('td');
+                tdSpace.className = "px-4 py-4 align-top border-r border-gray-100";
+                tdSpace.innerHTML = renderRules(mode.space);
+                tr.appendChild(tdSpace);
+
+                // 4. Time
+                const tdTime = document.createElement('td');
+                tdTime.className = "px-4 py-4 align-top border-r border-gray-100";
+                tdTime.innerHTML = renderRules(mode.time);
+                tr.appendChild(tdTime);
+
+                // 5. Verb Fixed
+                const tdVerb = document.createElement('td');
+                tdVerb.className = "px-4 py-4 align-top border-r border-gray-100";
+                tdVerb.innerHTML = renderCombos(mode.verbFixed);
+                tr.appendChild(tdVerb);
+
+                // 6. Adj Fixed
+                const tdAdj = document.createElement('td');
+                tdAdj.className = "px-4 py-4 align-top";
+                tdAdj.innerHTML = renderCombos(mode.adjFixed);
+                tr.appendChild(tdAdj);
+
+                tbody.appendChild(tr);
             });
-
-            // Fixed lists (shared)
-            const list = (arr) => {
-                if (!arr || arr.length === 0) return '-';
-                return `<ul class="text-sm text-[#1C1C1E] list-none space-y-1">${arr.map(e => `<li>• ${e}</li>`).join('')}</ul>`;
-            };
-
-            tr.innerHTML = `
-                <td class="px-5 py-4 font-bold text-lg text-black align-top border-r border-gray-50">${item.prep}</td>
-                <td class="px-4 py-4 align-top border-r border-gray-50 min-w-[80px]">${caseHtml}</td>
-                <td class="px-4 py-4 align-top border-r border-gray-50">${spaceHtml}</td>
-                <td class="px-4 py-4 align-top border-r border-gray-50">${timeHtml}</td>
-                <td class="px-4 py-4 align-top border-r border-gray-50">${list(item.verbFixed)}</td>
-                <td class="px-4 py-4 align-top">${list(item.adjFixed)}</td>
-            `;
-            tbody.appendChild(tr);
         });
     };
 
