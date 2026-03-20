@@ -8,32 +8,32 @@
     --border-gray: #F2F2F7;
     --hover-bg: rgba(0, 0, 0, 0.02);
     
-    /* Low Saturation Case Colors */
-    --color-dat-bg: #E8F5E9;
-    --color-dat-text: #4E7D53;
-    --color-akk-bg: #E3F2FD;
-    --color-akk-text: #4A7A96;
-    --color-gen-bg: #FFFDE7;
-    --color-gen-text: #857A42;
+    /* Meta AI Integrated Case Colors (Low Saturation) */
+    --color-dat-bg: #E0F2F1; /* Turquoise Tint */
+    --color-dat-text: #00897B;
+    --color-akk-bg: #E1F5FE; /* Blue Tint */
+    --color-akk-text: #0288D1;
+    --color-gen-bg: #F3E5F5; /* Pink Tint */
+    --color-gen-text: #8E24AA;
     
-    /* Low Saturation Verb Types */
-    --color-stark-bg: #FEEBEE;
-    --color-stark-text: #A65D66;
-    --color-schwach-bg: #E8F5E9;
-    --color-schwach-text: #4E7D53;
-    --color-misch-bg: #FFF8E1;
-    --color-misch-text: #8D7344;
-    --color-unreg-bg: #F3E5F5;
-    --color-unreg-text: #7B5E8C;
+    /* Meta AI Integrated Verb Types */
+    --color-stark-bg: #FCE4EC; /* Pink Tint */
+    --color-stark-text: #D81B60;
+    --color-schwach-bg: #E0F2F1; /* Turquoise Tint */
+    --color-schwach-text: #00897B;
+    --color-misch-bg: #E3F2FD; /* Blue Tint */
+    --color-misch-text: #1976D2;
+    --color-unreg-bg: #F3E5F5; /* Pink Tint */
+    --color-unreg-text: #8E24AA;
 
     --accent: #007AFF;
     --accent-low: #EBF5FF;
 
     /* Custom Home Link Colors */
-    --home-verben: #A65D66;
-    --home-pronomen: #4A7A96;
+    --home-verben: #F5A3E0;
+    --home-pronomen: #0DACF1;
     --home-artikel: #8E8E93;
-    --home-praepositionen: #4E7D53;
+    --home-praepositionen: #71F6D2;
 }
 
 body {
@@ -62,7 +62,7 @@ thead.glass-header {
     z-index: 20;
 }
 
-/* Specific Tags */
+/* Specific Tags using Meta Tint colors */
 .bg-green-100 { background-color: var(--color-dat-bg) !important; }
 .text-green-700 { color: var(--color-dat-text) !important; }
 .bg-blue-100 { background-color: var(--color-akk-bg) !important; }
@@ -70,7 +70,7 @@ thead.glass-header {
 .bg-yellow-100 { background-color: var(--color-gen-bg) !important; }
 .text-yellow-700 { color: var(--color-gen-text) !important; }
 
-/* Verb Types */
+/* Verb Types using Meta Tint colors */
 .bg-red-100 { background-color: var(--color-stark-bg) !important; }
 .text-red-700 { color: var(--color-stark-text) !important; }
 .bg-amber-100 { background-color: var(--color-misch-bg) !important; }

@@ -8,27 +8,203 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./assets/css/style.css">
     <style>
+        /* Home Page - Square Cutout Effect */
+        .home-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 95vh;
+            background: white;
+            padding-top: 5vh;
+        }
+
+        .meta-square-wrapper {
+            position: relative;
+            width: 720px;
+            height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+            border-radius: 44px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        /* The Gradient Background Layer */
+        .meta-gradient-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #71F6D2 0%, #0DACF1 50%, #F5A3E0 100%);
+            z-index: 1;
+            border-radius: 40px;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .meta-square-wrapper:hover .meta-gradient-bg {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        /* The "Cover" Layer with Cutout Text */
+        .cutout-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white; 
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            mix-blend-mode: screen; 
+            user-select: none;
+            border-radius: 40px;
+        }
+
+        .cutout-text {
+            color: black;
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1.1;
+            text-align: left;
+            margin: 0;
+            letter-spacing: -2px;
+            /* push headline down */
+            padding-top: 44px; 
+        }
+
+        .non-hit {
+            color: transparent;
+            pointer-events: none;
+        }
+
+        /* Invisible clickable areas mapped to text positions */
+        .home-link-area {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            padding-top: 84px; /* Offset to match visual text position */
+        }
+
+        .hit-box {
+            display: inline-block;
+            cursor: pointer;
+            position: relative;
+            color: transparent; 
+            pointer-events: auto;
+        }
+
+        /* 鼠标悬停下划线 (黑色粗透明度) */
+        .hit-box::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 0;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .hit-box:hover::after {
+            width: 100%;
+        }
+
+        /* 正方形上方出现的类型 Tab (Tooltip) */
+        .hit-box::before {
+            content: attr(data-label);
+            position: fixed;
+            top: calc(50vh - 245px); /* move tab down a bit */
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            padding: 12px 32px; /* Even larger tab */
+            background: rgba(242, 242, 247, 0.98); 
+            backdrop-filter: blur(15px);
+            color: #1C1C1E; 
+            font-size: 24px; /* Even larger font */
+            font-weight: 900;
+            border-radius: 20px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            z-index: 100;
+            border: 1px solid rgba(0,0,0,0.05);
+            letter-spacing: -0.8px;
+        }
+
+        .hit-box:hover::before {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .sub-headline {
+            position: absolute;
+            left: 40px;
+            right: 40px;
+            bottom: 24px;
+            margin-top: 0;
+            color: rgba(28, 28, 30, 0.45);
+            font-size: 16px;
+            font-weight: 600;
+            text-align: left;
+            letter-spacing: -0.2px;
+            pointer-events: none;
+        }
+
+        /* Standard page nav styles */
         .home-link {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             display: inline-block;
+            cursor: pointer;
         }
+        
         .home-link::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: -4px;
             left: 0;
             width: 0;
-            height: 2px;
-            background: currentColor;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 3px;
             transition: width 0.3s ease;
         }
+        
         .home-link:hover::after {
             width: 100%;
         }
-        .home-link:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.2);
+
+        @media (max-width: 760px) {
+            .meta-square-wrapper {
+                width: 92vw;
+                height: 56vw;
+                border-radius: 32px;
+            }
+            .cutout-text { font-size: 9vw; }
+            .home-link-area { padding: 8vw; padding-top: 14vw; }
+            .sub-headline {
+                left: 8vw;
+                right: 8vw;
+                bottom: 4vw;
+                font-size: 3.6vw;
+            }
+            .hit-box::before { top: 10vh; }
         }
     </style>
 </head>
@@ -37,7 +213,6 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         
         <!-- Navigation Bar (iOS Segmented Control) -->
-        <!-- 改动：移除 sticky/top-4，使其不再随页面滚动 -->
         <div id="main-nav-container" class="flex justify-center mb-10 transition-all duration-300 hidden opacity-0 pointer-events-none">
             <div class="bg-[#E5E5EA]/80 backdrop-blur-md p-1 rounded-lg inline-flex shadow-sm overflow-x-auto max-w-full border border-white/20">
                 <button id="nav-home" class="px-5 py-1.5 rounded-md text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black">
@@ -62,181 +237,88 @@
         <!-- ==========================================
              PAGE 0: HOME (LANDING)
         =========================================== -->
-        <div id="page-home" class="block min-h-[80vh] flex flex-col items-center justify-center text-center px-4">
-            <div class="max-w-5xl">
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-12 leading-tight">
-                    <span class="home-link cursor-pointer home-pronomen mx-2" data-target="pronomen">Ich</span> 
-                    bin 
-                    <span class="home-link cursor-pointer home-praepositionen mx-2" data-target="praepositionen">an</span> 
-                    <span class="home-link cursor-pointer home-artikel mx-2" data-target="artikel">das</span> 
-                    Klima 
-                    <span class="home-link cursor-pointer home-verben mx-2" data-target="verben">gewöhnt</span>.
-                </h1>
-                <p class="text-xl md:text-2xl text-[#8E8E93] font-medium max-w-2xl mx-auto">
-                    Ein interaktives Nachschlagewerk für die deutsche Grammatik.
-                </p>
-            </div>
-            
-            <div class="mt-16 flex flex-wrap justify-center gap-4">
-                <button onclick="switchPage('pronomen')" class="px-8 py-4 bg-black text-white rounded-2xl font-bold text-lg hover:scale-105 transition-transform shadow-lg">Jetzt starten</button>
+        <div id="page-home" class="block">
+            <div class="home-container">
+                
+                <!-- The Square Wrapper -->
+                <div class="meta-square-wrapper relative">
+                    <!-- Layer 1: The Meta Gradient -->
+                    <div class="meta-gradient-bg"></div>
+                    
+                    <!-- Layer 2: The Cutout Overlay (White with Black text) -->
+                    <div class="cutout-overlay">
+                        <p class="cutout-text">ich bin<br>an das Klima<br>gewöhnt.</p>
+                    </div>
+
+                    <!-- Layer 3: Interactive Areas -->
+                    <div class="home-link-area">
+                        <div class="text-[52px] leading-[1.1] font-black tracking-[-2px]">
+                            <div>
+                                <span class="hit-box" data-target="pronomen" data-label="Pronomen">ich</span>
+                                <span class="non-hit">bin</span>
+                            </div>
+                            <div>
+                                <span class="hit-box" data-target="praepositionen" data-label="Präpositionen">an</span>
+                                <span class="hit-box" data-target="artikel" data-label="Artikel">das</span>
+                                <span class="non-hit">Klima</span>
+                            </div>
+                            <div>
+                                <span class="hit-box" data-target="verben" data-label="Verben">gewöhnt.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="sub-headline">Ein interaktives Nachschlagewerk für die deutsche Grammatik.</p>
+
             </div>
         </div>
 
         <!-- ==========================================
-             PAGE 1: VERBEN
+             PAGES 1-4 (CONTENT) 
         =========================================== -->
         <div id="page-verben" class="hidden">
-            <div class="mb-8">
-                <h1 class="text-4xl font-extrabold tracking-tight mb-2">Verben</h1>
-                <p class="text-[#8E8E93] text-lg">Konjugation der häufigsten deutschen Verben</p>
-            </div>
-            
-            <!-- Filter Bar -->
+            <div class="mb-8"><h1 class="text-4xl font-extrabold tracking-tight mb-2">Verben</h1><p class="text-[#8E8E93] text-lg">Konjugation der häufigsten deutschen Verben</p></div>
             <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div id="filter-typ-tags" class="flex flex-wrap items-center gap-2">
-                    <span class="text-sm font-semibold text-[#8E8E93] mr-1">Typ:</span>
-                </div>
-                <div class="relative ml-auto md:ml-0">
-                    <select id="filter-vokal" class="ios-select bg-[#E5E5EA] text-[#1C1C1E] text-sm font-medium py-1.5 pl-4 pr-10 rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-[#007AFF] transition-shadow cursor-pointer">
-                        <option value="all">Stammvokal: Alle</option>
-                    </select>
-                </div>
+                <div id="filter-typ-tags" class="flex flex-wrap items-center gap-2"><span class="text-sm font-semibold text-[#8E8E93] mr-1">Typ:</span></div>
+                <div class="relative ml-auto md:ml-0"><select id="filter-vokal" class="ios-select bg-[#E5E5EA] text-[#1C1C1E] text-sm font-medium py-1.5 pl-4 pr-10 rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-[#007AFF] transition-shadow cursor-pointer"><option value="all">Stammvokal: Alle</option></select></div>
             </div>
-
-            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse" id="verbs-table">
-                        <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                            <tr>
-                                <th class="px-5 py-4 font-semibold border-b border-gray-200">Verben</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">ich</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">du</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">er/sie/es</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">wir/sie</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">ihr</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Typ</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Stammvokal</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100"><div class="overflow-x-auto"><table class="w-full text-left border-collapse" id="verbs-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200">Verben</th><th class="px-4 py-4 font-semibold border-b border-gray-200">ich</th><th class="px-4 py-4 font-semibold border-b border-gray-200">du</th><th class="px-4 py-4 font-semibold border-b border-gray-200">er/sie/es</th><th class="px-4 py-4 font-semibold border-b border-gray-200">wir/sie</th><th class="px-4 py-4 font-semibold border-b border-gray-200">ihr</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Typ</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Stammvokal</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
         </div>
         
-        <!-- ==========================================
-             PAGE 2: PRONOMEN
-        =========================================== -->
         <div id="page-pronomen" class="hidden">
-            <div class="mb-8">
-                <h1 class="text-4xl font-extrabold tracking-tight mb-2">Pronomen</h1>
-                <p class="text-[#8E8E93] text-lg">Deklination der Personal- und Reflexivpronomen</p>
-            </div>
-            
-            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 mt-6">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse" id="pronomen-table">
-                        <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                            <tr>
-                                <th class="px-5 py-4 font-semibold border-b border-gray-200">Pronomen (Nom)</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">Possessiv (Nom. m/n)</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">Dativ</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">Akkusativ</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Reflexiv (Dat / Akk)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="mb-8"><h1 class="text-4xl font-extrabold tracking-tight mb-2">Pronomen</h1><p class="text-[#8E8E93] text-lg">Deklination der Personal- und Reflexivpronomen</p></div>
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 mt-6"><div class="overflow-x-auto"><table class="w-full text-left border-collapse" id="pronomen-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200">Pronomen (Nom)</th><th class="px-4 py-4 font-semibold border-b border-gray-200">Possessiv (Nom. m/n)</th><th class="px-4 py-4 font-semibold border-b border-gray-200">Dativ</th><th class="px-4 py-4 font-semibold border-b border-gray-200">Akkusativ</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Reflexiv (Dat / Akk)</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
         </div>
 
-        <!-- ==========================================
-             PAGE 3: ARTIKEL
-        =========================================== -->
         <div id="page-artikel" class="hidden">
-            <div class="mb-8">
-                <h1 class="text-4xl font-extrabold tracking-tight mb-2">Artikel</h1>
-                <p class="text-[#8E8E93] text-lg">Deklination der bestimmten, unbestimmten und negativen Artikel</p>
-            </div>
-
+            <div class="mb-8"><h1 class="text-4xl font-extrabold tracking-tight mb-2">Artikel</h1><p class="text-[#8E8E93] text-lg">Deklination der bestimmten, unbestimmten und negativen Artikel</p></div>
             <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-6">
-                <!-- Table 1 -->
-                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col">
-                    <div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Bestimmter Artikel</h2></div>
-                    <div class="overflow-x-auto flex-1">
-                        <table class="w-full text-left border-collapse h-full" id="artikel-bestimmt-table">
-                            <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                                <tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr>
-                            </thead>
-                            <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Table 2 -->
-                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col">
-                    <div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Unbestimmter & Negativartikel</h2></div>
-                    <div class="overflow-x-auto flex-1">
-                        <table class="w-full text-left border-collapse h-full" id="artikel-unbestimmt-table">
-                            <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                                <tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr>
-                            </thead>
-                            <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Table 3 -->
-                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col xl:col-span-2">
-                    <div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Nullartikel</h2></div>
-                    <div class="overflow-x-auto flex-1">
-                        <table class="w-full text-left border-collapse h-full" id="artikel-null-table">
-                            <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                                <tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr>
-                            </thead>
-                            <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                        </table>
-                    </div>
-                </div>
+                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col"><div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Bestimmter Artikel</h2></div><div class="overflow-x-auto flex-1"><table class="w-full text-left border-collapse h-full" id="artikel-bestimmt-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
+                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col"><div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Unbestimmter & Negativartikel</h2></div><div class="overflow-x-auto flex-1"><table class="w-full text-left border-collapse h-full" id="artikel-unbestimmt-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
+                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col xl:col-span-2"><div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Nullartikel</h2></div><div class="overflow-x-auto flex-1"><table class="w-full text-left border-collapse h-full" id="artikel-null-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
             </div>
         </div>
 
-        <!-- ==========================================
-             PAGE 4: PRÄPOSITIONEN
-        =========================================== -->
         <div id="page-praepositionen" class="hidden">
-            <div class="mb-8">
-                <h1 class="text-4xl font-extrabold tracking-tight mb-2">Präpositionen</h1>
-                <p class="text-[#8E8E93] text-lg">Präpositionen mit Kasus, Bedeutung und festen Verbindungen</p>
-            </div>
-
-            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div id="filter-prep-case-tags" class="flex flex-wrap items-center gap-2">
-                    <span class="text-sm font-semibold text-[#8E8E93] mr-1">Kasus:</span>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse" id="praepositionen-table">
-                        <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                            <tr>
-                                <th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/12">Präposition</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/12">Kasus</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Raum</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Zeit</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Verben</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Adjektive</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-[15px] divide-y divide-gray-100">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="mb-8"><h1 class="text-4xl font-extrabold tracking-tight mb-2">Präpositionen</h1><p class="text-[#8E8E93] text-lg">Präpositionen mit Kasus, Bedeutung und festen Verbindungen</p></div>
+            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4"><div id="filter-prep-case-tags" class="flex flex-wrap items-center gap-2"><span class="text-sm font-semibold text-[#8E8E93] mr-1">Kasus:</span></div></div>
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100"><div class="overflow-x-auto"><table class="w-full text-left border-collapse" id="praepositionen-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/12">Präposition</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/12">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Raum</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Zeit</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Verben</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Adjektive</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
         </div>
 
     </div>
 
     <script type="module" src="./assets/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const boxes = document.querySelectorAll('.hit-box');
+            boxes.forEach(box => {
+                box.addEventListener('click', () => {
+                    const target = box.dataset.target;
+                    if (window.switchPage) window.switchPage(target);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
