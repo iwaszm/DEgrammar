@@ -3,7 +3,7 @@ export const verbs = [
         infinitive: "befehlen",
         conjugations: ["befehle", "befiehlst", "befiehlt", "befehlen", "befehlt"],
         type: "stark",
-        stemVowel: "e / i / o / a",
+        stemVowel: "e: i/o/a",
         pastInfo: "(hat befohlen)",
         pastConjugations: ["befahl", "befahlst", "befahl", "befahlen", "befahlt"],
         typeClass: "bg-red-100 text-red-700"
@@ -12,7 +12,7 @@ export const verbs = [
         infinitive: "bergen",
         conjugations: ["berge", "birgst", "birgt", "bergen", "bergt"],
         type: "stark",
-        stemVowel: "e / i / o / a",
+        stemVowel: "e: i/o/a",
         pastInfo: "(hat geborgen)",
         pastConjugations: ["barg", "bargst", "barg", "bargen", "bargt"],
         typeClass: "bg-red-100 text-red-700"
@@ -21,7 +21,7 @@ export const verbs = [
         infinitive: "brechen",
         conjugations: ["breche", "brichst", "bricht", "brechen", "brecht"],
         type: "stark",
-        stemVowel: "e / i / o / a",
+        stemVowel: "e: i/o/a",
         pastInfo: "(hat/ist gebrochen)",
         pastConjugations: ["brach", "brachst", "brach", "brachen", "bracht"],
         typeClass: "bg-red-100 text-red-700"
@@ -57,7 +57,7 @@ export const verbs = [
         infinitive: "essen",
         conjugations: ["esse", "isst", "isst", "essen", "esst"],
         type: "stark",
-        stemVowel: "e / i / e / a",
+        stemVowel: "e: i/e/a",
         pastInfo: "(hat gegessen)",
         pastConjugations: ["aß", "aßt", "aß", "aßen", "aßt"],
         typeClass: "bg-red-100 text-red-700"
@@ -66,7 +66,7 @@ export const verbs = [
         infinitive: "fallen",
         conjugations: ["falle", "fällst", "fällt", "fallen", "fallt"],
         type: "stark",
-        stemVowel: "a / ä / a / ie",
+        stemVowel: "a: ä/a/ie",
         pastInfo: "(ist gefallen)",
         pastConjugations: ["fiel", "fielst", "fiel", "fielen", "fielt"],
         typeClass: "bg-red-100 text-red-700"
@@ -75,7 +75,7 @@ export const verbs = [
         infinitive: "geben",
         conjugations: ["gebe", "gibst", "gibt", "geben", "gebt"],
         type: "stark",
-        stemVowel: "e / i / e / a",
+        stemVowel: "e: i/e/a",
         pastInfo: "(hat gegeben)",
         pastConjugations: ["gab", "gabst", "gab", "gaben", "gabt"],
         typeClass: "bg-red-100 text-red-700"
@@ -93,7 +93,7 @@ export const verbs = [
         infinitive: "gelten",
         conjugations: ["gelte", "giltst", "gilt", "gelten", "geltet"],
         type: "stark",
-        stemVowel: "e / i / o / a",
+        stemVowel: "e: i/o/a",
         pastInfo: "(hat gegolten)",
         pastConjugations: ["galt", "galtest", "galt", "galten", "galtet"],
         typeClass: "bg-red-100 text-red-700"
@@ -111,7 +111,7 @@ export const verbs = [
         infinitive: "helfen",
         conjugations: ["helfe", "hilfst", "hilft", "helfen", "helft"],
         type: "stark",
-        stemVowel: "e / i / o / a",
+        stemVowel: "e: i/o/a",
         pastInfo: "(hat geholfen)",
         pastConjugations: ["half", "halfst", "half", "halfen", "halft"],
         typeClass: "bg-red-100 text-red-700"
@@ -138,7 +138,7 @@ export const verbs = [
         infinitive: "laden",
         conjugations: ["lade", "lädst", "lädt", "laden", "ladet"],
         type: "stark",
-        stemVowel: "a / ä / a / u",
+        stemVowel: "a: ä/a/u",
         pastInfo: "(hat geladen)",
         pastConjugations: ["lud", "ludst", "lud", "luden", "ludet"],
         typeClass: "bg-red-100 text-red-700"
@@ -147,7 +147,7 @@ export const verbs = [
         infinitive: "lassen",
         conjugations: ["lasse", "lässt", "lässt", "lassen", "lasst"],
         type: "stark",
-        stemVowel: "a / ä / a / ie",
+        stemVowel: "a: ä/a/ie",
         pastInfo: "(hat gelassen)",
         pastConjugations: ["ließ", "ließest", "ließ", "ließen", "ließt"],
         typeClass: "bg-red-100 text-red-700"
@@ -156,7 +156,7 @@ export const verbs = [
         infinitive: "laufen",
         conjugations: ["laufe", "läufst", "läuft", "laufen", "lauft"],
         type: "stark",
-        stemVowel: "au / äu / au / ie",
+        stemVowel: "a: ä/a/ie",
         pastInfo: "(ist gelaufen)",
         pastConjugations: ["lief", "liefst", "lief", "liefen", "lieft"],
         typeClass: "bg-red-100 text-red-700"
@@ -165,7 +165,7 @@ export const verbs = [
         infinitive: "lesen",
         conjugations: ["lese", "liest", "liest", "lesen", "lest"],
         type: "stark",
-        stemVowel: "e / ie / e / a",
+        stemVowel: "e: ie/e/a",
         pastInfo: "(hat gelesen)",
         pastConjugations: ["las", "lasest", "las", "lasen", "last"],
         typeClass: "bg-red-100 text-red-700"
@@ -174,7 +174,7 @@ export const verbs = [
         infinitive: "liegen",
         conjugations: ["liege", "liegst", "liegt", "liegen", "liegt"],
         type: "stark",
-        stemVowel: "ie / ie / e / a",
+        stemVowel: "ie: ie/e/a",
         pastInfo: "(hat gelegen)",
         pastConjugations: ["lag", "lagst", "lag", "lagen", "lagt"],
         typeClass: "bg-red-100 text-red-700"
@@ -210,7 +210,7 @@ export const verbs = [
         infinitive: "nehmen",
         conjugations: ["nehme", "nimmst", "nimmt", "nehmen", "nehmt"],
         type: "stark",
-        stemVowel: "e / i / o / a",
+        stemVowel: "e: i/o/a",
         pastInfo: "(hat genommen)",
         pastConjugations: ["nahm", "nahmst", "nahm", "nahmen", "nahmt"],
         typeClass: "bg-red-100 text-red-700"
@@ -228,7 +228,7 @@ export const verbs = [
         infinitive: "schlagen",
         conjugations: ["schlage", "schlägst", "schlägt", "schlagen", "schlagt"],
         type: "stark",
-        stemVowel: "a / ä / a / u",
+        stemVowel: "a: ä/a/u",
         pastInfo: "(hat geschlagen)",
         pastConjugations: ["schlug", "schlugst", "schlug", "schlugen", "schlugt"],
         typeClass: "bg-red-100 text-red-700"
@@ -237,7 +237,7 @@ export const verbs = [
         infinitive: "schreiben",
         conjugations: ["schreibe", "schreibst", "schreibt", "schreiben", "schreibt"],
         type: "stark",
-        stemVowel: "ei / ei / ie / ie",
+        stemVowel: "ei: ei/ie/ie",
         pastInfo: "(hat geschrieben)",
         pastConjugations: ["schrieb", "schriebst", "schrieb", "schrieben", "schriebt"],
         typeClass: "bg-red-100 text-red-700"
@@ -246,7 +246,7 @@ export const verbs = [
         infinitive: "sehen",
         conjugations: ["sehe", "siehst", "sieht", "sehen", "seht"],
         type: "stark",
-        stemVowel: "e / ie / e / a",
+        stemVowel: "e: ie/e/a",
         pastInfo: "(hat gesehen)",
         pastConjugations: ["sah", "sahst", "sah", "sahen", "saht"],
         typeClass: "bg-red-100 text-red-700"
@@ -282,7 +282,7 @@ export const verbs = [
         infinitive: "sprechen",
         conjugations: ["spreche", "sprichst", "spricht", "sprechen", "sprecht"],
         type: "stark",
-        stemVowel: "e / i / o / a",
+        stemVowel: "e: i/o/a",
         pastInfo: "(hat gesprochen)",
         pastConjugations: ["sprach", "sprachst", "sprach", "sprachen", "spracht"],
         typeClass: "bg-red-100 text-red-700"
@@ -300,7 +300,7 @@ export const verbs = [
         infinitive: "weisen",
         conjugations: ["weise", "weist", "weist", "weisen", "weist"],
         type: "stark",
-        stemVowel: "ei / ei / ie / ie",
+        stemVowel: "ei: ei/ie/ie",
         pastInfo: "(hat gewiesen)",
         pastConjugations: ["wies", "wiest", "wies", "wiesen", "wiest"],
         typeClass: "bg-red-100 text-red-700"
@@ -309,7 +309,7 @@ export const verbs = [
         infinitive: "werden",
         conjugations: ["werde", "wirst", "wird", "werden", "werdet"],
         type: "unregelmäßig",
-        stemVowel: "e / i / o / u",
+        stemVowel: "e: i/o/u",
         pastInfo: "(ist geworden)",
         pastConjugations: ["wurde", "wurdest", "wurde", "wurden", "wurdet"],
         typeClass: "bg-purple-100 text-purple-700"
@@ -336,7 +336,7 @@ export const verbs = [
         infinitive: "ziehen",
         conjugations: ["ziehe", "ziehst", "zieht", "ziehen", "zieht"],
         type: "stark",
-        stemVowel: "ie / ie / o / o",
+        stemVowel: "ie: ie/o/o",
         pastInfo: "(hat/ist gezogen)",
         pastConjugations: ["zog", "zogst", "zog", "zogen", "zogt"],
         typeClass: "bg-red-100 text-red-700"
@@ -381,7 +381,7 @@ export const verbs = [
         infinitive: "finden",
         conjugations: ["finde", "findest", "findet", "finden", "findet"],
         type: "stark",
-        stemVowel: "i / i / u / a",
+        stemVowel: "i: i/u/a",
         pastInfo: "(hat gefunden)",
         pastConjugations: ["fand", "fandst", "fand", "fanden", "fandet"],
         typeClass: "bg-red-100 text-red-700"
@@ -390,7 +390,7 @@ export const verbs = [
         infinitive: "fahren",
         conjugations: ["fahre", "fährst", "fährt", "fahren", "fahrt"],
         type: "stark",
-        stemVowel: "a / ä / a / u",
+        stemVowel: "a: ä/a/u",
         pastInfo: "(ist gefahren)",
         pastConjugations: ["fuhr", "fuhrst", "fuhr", "fuhren", "fuhrt"],
         typeClass: "bg-red-100 text-red-700"
@@ -417,7 +417,7 @@ export const verbs = [
         infinitive: "kommen",
         conjugations: ["komme", "kommst", "kommt", "kommen", "kommt"],
         type: "stark",
-        stemVowel: "o / o / o / a",
+        stemVowel: "o: o/o/a",
         pastInfo: "(ist gekommen)",
         pastConjugations: ["kam", "kamst", "kam", "kamen", "kamt"],
         typeClass: "bg-red-100 text-red-700"
@@ -453,7 +453,7 @@ export const verbs = [
         infinitive: "schlafen",
         conjugations: ["schlafe", "schläfst", "schläft", "schlafen", "schlaft"],
         type: "stark",
-        stemVowel: "a / ä / a / ie",
+        stemVowel: "a: ä/a/ie",
         pastInfo: "(hat geschlafen)",
         pastConjugations: ["schlief", "schliefst", "schlief", "schliefen", "schlieft"],
         typeClass: "bg-red-100 text-red-700"
@@ -480,7 +480,7 @@ export const verbs = [
         infinitive: "tragen",
         conjugations: ["trage", "trägst", "trägt", "tragen", "tragt"],
         type: "stark",
-        stemVowel: "a / ä / a / u",
+        stemVowel: "a: ä/a/u",
         pastInfo: "(hat getragen)",
         pastConjugations: ["trug", "trugst", "trug", "trugen", "trugt"],
         typeClass: "bg-red-100 text-red-700"
@@ -489,7 +489,7 @@ export const verbs = [
         infinitive: "treffen",
         conjugations: ["treffe", "triffst", "trifft", "treffen", "trefft"],
         type: "stark",
-        stemVowel: "e / i / o / a",
+        stemVowel: "e: i/o/a",
         pastInfo: "(hat getroffen)",
         pastConjugations: ["traf", "trafst", "traf", "trafen", "traft"],
         typeClass: "bg-red-100 text-red-700"

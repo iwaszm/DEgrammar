@@ -43,6 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let currentTyp = 'all';
 
+    const italicizeEnding = (word) => {
+        const endings = ['test','tet','ten','te','est','et','st','t','en','e'];
+        const w = String(word);
+        for (const end of endings) {
+            if (w.length > end.length && w.endsWith(end)) {
+                return w.slice(0, -end.length) + '<i>' + end + '</i>';
+            }
+        }
+        return w;
+    };
+
     const renderVerbenTable = (data) => {
         // Sort alphabetically by infinitive
         const sortedData = [...data].sort((a, b) => a.infinitive.localeCompare(b.infinitive));
@@ -53,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tr1.className = 'verb-row-1 group hover:bg-gray-50/50 transition-colors';
             tr1.innerHTML = `
                 <td class="px-5 pt-4 pb-1 font-semibold text-black">${verb.infinitive}</td>
-                ${verb.conjugations.map(c => `<td class="px-4 pt-4 pb-1">${c}</td>`).join('')}
+                ${verb.conjugations.map(c => `<td class="px-4 pt-4 pb-1">${italicizeEnding(c)}</td>`).join('')}
                 <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
                     <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${verb.typeClass}">${verb.type}</span>
                 </td>
@@ -65,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tr2.className = 'verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors';
             tr2.innerHTML = `
                 <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">${verb.pastInfo}</td>
-                ${verb.pastConjugations.map(c => `<td class="px-4 pb-4 pt-1 text-[#8E8E93]">${c}</td>`).join('')}
+                ${verb.pastConjugations.map(c => `<td class="px-4 pb-4 pt-1 text-[#8E8E93]">${italicizeEnding(c)}</td>`).join('')}
             `;
             tbodyVerben.appendChild(tr2);
         });
