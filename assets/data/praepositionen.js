@@ -1,72 +1,131 @@
 export const praepositionen = [
+  // --- WECHSELPRAEPOSITIONEN (Top 3) ---
   {
     prep: "in",
-    cases: ["DAT", "AKK"],
-    space: {
-      rule: "DAT = location (Wo?), AKK = direction/movement (Wohin?)",
-      examples: ["Ich bin in der Stadt.", "Ich gehe in die Stadt."]
-    },
-    time: {
-      rule: "DAT for time period / within; AKK for point-in-time/duration (context-dependent)",
-      examples: ["im Sommer", "in zwei Tagen"]
-    },
-    verbFixed: ["sich befinden in + DAT", "einsteigen in + AKK"],
-    adjFixed: ["interessiert an + DAT (note: an)"]
-  },
-  {
-    prep: "auf",
-    cases: ["DAT", "AKK"],
-    space: {
-      rule: "DAT = on (static), AKK = onto (movement)",
-      examples: ["Das Buch liegt auf dem Tisch.", "Ich lege das Buch auf den Tisch."]
-    },
-    time: {
-      rule: "Used in fixed time phrases",
-      examples: ["auf einmal", "auf die Minute"]
-    },
-    verbFixed: ["warten auf + AKK", "sich verlassen auf + AKK"],
-    adjFixed: ["stolz auf + AKK", "neidisch auf + AKK"]
+    isWechsel: true,
+    modes: [
+      {
+        case: "DAT",
+        space: [
+          "Städte, Kontinente (in München, in Asien)",
+          "Länder mit Artikel (in der Türkei, in den USA)",
+          "Natur, Umgebung (im Wald, in den Bergen)",
+          "Geschlossene Räume, Gebäude (in der Schule, im Haus)",
+          "Straßen (in der Parkstraße)"
+        ],
+        time: [
+          "Monate (im Januar)",
+          "Jahreszeiten (im Sommer)",
+          "Jahrhunderte (im 20. Jahrhundert)",
+          "Zeitraum (in der Nacht, in den Ferien)",
+          "Zukunft (in einer Woche, in 5 Minuten)"
+        ]
+      },
+      {
+        case: "AKK",
+        space: [
+          "Bewegung in ein Gebäude (ins Kino gehen)",
+          "Bewegung in die Natur (in den Park gehen)",
+          "Bewegung in ein Land (in die Schweiz fliegen)"
+        ],
+        time: [] // Usually DAT for time with 'in' (future is Dat: in einer Woche)
+      }
+    ],
+    verbFixed: ["sich verlieben", "geraten", "einsteigen"],
+    adjFixed: ["verliebt", "erfahren"]
   },
   {
     prep: "an",
-    cases: ["DAT", "AKK"],
-    space: {
-      rule: "DAT = at/against (static), AKK = to/towards (movement)",
-      examples: ["Ich bin am Fenster.", "Ich gehe ans Fenster."]
-    },
-    time: {
-      rule: "DAT for days/dates",
-      examples: ["am Montag", "am 3. April"]
-    },
-    verbFixed: ["denken an + AKK", "teilnehmen an + DAT"],
-    adjFixed: ["interessiert an + DAT", "beteiligt an + DAT"]
+    isWechsel: true,
+    modes: [
+      {
+        case: "DAT",
+        space: [
+          "Gewässer (am Meer, am Fluss)",
+          "Vertikale Flächen (an der Wand)",
+          "Grenzlinien, Rand (an der Grenze)",
+          "Bestimmte Plätze (am Bahnhof, am Flughafen)"
+        ],
+        time: [
+          "Tage (am Montag)",
+          "Tageszeiten (am Abend)",
+          "Datum (am 15. Mai)",
+          "Feiertage (an Weihnachten)"
+        ]
+      },
+      {
+        case: "AKK",
+        space: [
+          "Bewegung an ein Gewässer (ans Meer fahren)",
+          "Bewegung an eine Fläche (das Bild an die Wand hängen)"
+        ],
+        time: []
+      }
+    ],
+    verbFixed: ["denken", "sich erinnern", "teilnehmen", "glauben"],
+    adjFixed: ["interessiert", "gewöhnt", "reich"]
   },
   {
+    prep: "auf",
+    isWechsel: true,
+    modes: [
+      {
+        case: "DAT",
+        space: [
+          "Horizontale Flächen (auf dem Tisch, auf dem Boden)",
+          "Öffentliche Gebäude (auf der Post, auf der Bank)",
+          "Veranstaltungen (auf der Party, auf der Hochzeit)",
+          "Inseln (auf Sylt)"
+        ],
+        time: [] // 'auf' time is rare/fixed
+      },
+      {
+        case: "AKK",
+        space: [
+          "Bewegung auf eine Fläche (auf den Berg steigen)",
+          "Bewegung auf eine Insel (auf eine Insel fahren)"
+        ],
+        time: [
+          "Dauer (auf eine Woche)",
+          "Zeitpunkt (auf den Abend verschieben)"
+        ]
+      }
+    ],
+    verbFixed: ["warten", "sich freuen (Zukunft)", "hoffen", "achten"],
+    adjFixed: ["stolz", "neidisch", "eifersüchtig", "gespannt"]
+  },
+
+  // --- STANDARD (Top 2) ---
+  {
     prep: "mit",
-    cases: ["DAT"],
-    space: {
-      rule: "With / using (instrument or accompaniment)",
-      examples: ["Ich fahre mit dem Bus.", "Ich schreibe mit einem Stift."]
-    },
-    time: {
-      rule: "Used in fixed phrases",
-      examples: ["mit der Zeit"]
-    },
-    verbFixed: ["sprechen mit + DAT", "sich treffen mit + DAT"],
-    adjFixed: ["zufrieden mit + DAT", "einverstanden mit + DAT"]
+    isWechsel: false,
+    modes: [
+      {
+        case: "DAT",
+        space: [], // 'mit' rarely strictly local in basic sense
+        time: [
+          "Beginn/Alter (mit 18 Jahren)",
+          "Gleichzeitigkeit (mit der Zeit)"
+        ]
+      }
+    ],
+    verbFixed: ["sprechen", "telefonieren", "anfangen", "rechnen"],
+    adjFixed: ["zufrieden", "verwandt", "fertig", "einverstanden"]
   },
   {
     prep: "für",
-    cases: ["AKK"],
-    space: {
-      rule: "For (purpose/benefit)",
-      examples: ["Das ist für dich."]
-    },
-    time: {
-      rule: "Duration / period",
-      examples: ["für eine Woche", "für zwei Stunden"]
-    },
-    verbFixed: ["sich interessieren für + AKK", "sich entscheiden für + AKK"],
-    adjFixed: ["bereit für + AKK", "verantwortlich für + AKK"]
+    isWechsel: false,
+    modes: [
+      {
+        case: "AKK",
+        space: [],
+        time: [
+          "Zeitspanne (für drei Tage)",
+          "Zukunft (für immer)"
+        ]
+      }
+    ],
+    verbFixed: ["sich interessieren", "danken", "sich entscheiden", "sorgen"],
+    adjFixed: ["zuständig", "bekannt", "wichtig", "geeignet"]
   }
 ];

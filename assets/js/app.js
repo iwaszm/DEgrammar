@@ -240,40 +240,62 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.innerHTML = '';
 
         const caseTagClass = {
-            GEN: 'bg-red-100 text-red-700',
+            GEN: 'bg-yellow-100 text-yellow-700',
             DAT: 'bg-green-100 text-green-700',
             AKK: 'bg-blue-100 text-blue-700'
         };
 
         praepositionen.slice(0, 5).forEach(item => {
             const tr = document.createElement('tr');
-            tr.className = 'group hover:bg-gray-50/50 transition-colors';
+            tr.className = 'group hover:bg-gray-50/50 transition-colors align-top';
 
-            const caseTags = (item.cases || []).map(c => {
-                const cls = caseTagClass[c] || 'bg-gray-100 text-gray-700';
-                return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${c}</span>`;
-            }).join(' ');
+            // Helper to generate the stacked cells for Case, Space, Time
+            let caseHtml = '';
+            let spaceHtml = '';
+            let timeHtml = '';
 
-            const block = (obj) => {
-                if (!obj) return '';
-                const rule = obj.rule ? `<div class="text-sm text-[#1C1C1E]">${obj.rule}</div>` : '';
-                const ex = (obj.examples && obj.examples.length)
-                    ? `<ul class="mt-1 text-sm text-[#8E8E93] list-disc pl-5">${obj.examples.map(e => `<li>${e}</li>`).join('')}</ul>`
-                    : '';
-                return rule + ex;
-            };
+            item.modes.forEach((mode, idx) => {
+                const isLast = idx === item.modes.length - 1;
+                const borderClass = !isLast ? 'border-b border-gray-100 pb-3 mb-3' : '';
+                
+                // Case Tag
+                const cls = caseTagClass[mode.case] || 'bg-gray-100 text-gray-700';
+                caseHtml += `
+                    <div class="flex justify-center ${borderClass}">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${mode.case}</span>
+                    </div>`;
 
+                // Space Rules
+                spaceHtml += `<div class="${borderClass}">`;
+                if (mode.space && mode.space.length > 0) {
+                    spaceHtml += `<ul class="text-sm text-[#1C1C1E] list-disc pl-4 space-y-1">${mode.space.map(s => `<li>${s}</li>`).join('')}</ul>`;
+                } else {
+                    spaceHtml += `<span class="text-xs text-gray-300">-</span>`;
+                }
+                spaceHtml += `</div>`;
+
+                // Time Rules
+                timeHtml += `<div class="${borderClass}">`;
+                if (mode.time && mode.time.length > 0) {
+                    timeHtml += `<ul class="text-sm text-[#1C1C1E] list-disc pl-4 space-y-1">${mode.time.map(t => `<li>${t}</li>`).join('')}</ul>`;
+                } else {
+                    timeHtml += `<span class="text-xs text-gray-300">-</span>`;
+                }
+                timeHtml += `</div>`;
+            });
+
+            // Fixed lists (shared)
             const list = (arr) => {
-                if (!arr || arr.length === 0) return '';
-                return `<ul class="text-sm text-[#1C1C1E] list-disc pl-5">${arr.map(e => `<li>${e}</li>`).join('')}</ul>`;
+                if (!arr || arr.length === 0) return '-';
+                return `<ul class="text-sm text-[#1C1C1E] list-none space-y-1">${arr.map(e => `<li>• ${e}</li>`).join('')}</ul>`;
             };
 
             tr.innerHTML = `
-                <td class="px-5 py-4 font-semibold text-black">${item.prep}</td>
-                <td class="px-4 py-4 text-center">${caseTags}</td>
-                <td class="px-4 py-4 align-top">${block(item.space)}</td>
-                <td class="px-4 py-4 align-top">${block(item.time)}</td>
-                <td class="px-4 py-4 align-top">${list(item.verbFixed)}</td>
+                <td class="px-5 py-4 font-bold text-lg text-black align-top border-r border-gray-50">${item.prep}</td>
+                <td class="px-4 py-4 align-top border-r border-gray-50 min-w-[80px]">${caseHtml}</td>
+                <td class="px-4 py-4 align-top border-r border-gray-50">${spaceHtml}</td>
+                <td class="px-4 py-4 align-top border-r border-gray-50">${timeHtml}</td>
+                <td class="px-4 py-4 align-top border-r border-gray-50">${list(item.verbFixed)}</td>
                 <td class="px-4 py-4 align-top">${list(item.adjFixed)}</td>
             `;
             tbody.appendChild(tr);
