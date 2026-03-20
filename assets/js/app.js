@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
                     <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${verb.typeClass}">${verb.type}</span>
                 </td>
-                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal ${verb.vowelChange !== '-' ? 'font-mono text-[#1C1C1E]' : ''}">${verb.vowelChange}</td>
+                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal ${verb.stemVowel !== '-' ? 'font-mono text-[#1C1C1E]' : ''}">${verb.stemVowel}</td>
             `;
             tbodyVerben.appendChild(tr1);
 
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const types = new Set(verbs.map(v => v.type));
-    const vokals = new Set(verbs.map(v => v.vowelChange).filter(v => v !== '-'));
+    const vokals = new Set(verbs.map(v => v.stemVowel).filter(v => v !== '-'));
 
     const createTag = (typValue, label) => {
         const btn = document.createElement('button');
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Array.from(vokals).sort().forEach(v => {
         const opt = document.createElement('option');
         opt.value = v;
-        opt.textContent = `Vokalwechsel: ${v}`;
+        opt.textContent = `Stammvokal: ${v}`;
         filterVokal.appendChild(opt);
     });
 
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedVokal = filterVokal.value;
         const filtered = verbs.filter(verb => {
             const matchTyp = currentTyp === 'all' || verb.type === currentTyp;
-            const matchVokal = selectedVokal === 'all' || verb.vowelChange === selectedVokal;
+            const matchVokal = selectedVokal === 'all' || verb.stemVowel === selectedVokal;
             return matchTyp && matchVokal;
         });
         renderVerbenTable(filtered);
