@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterTypTags = document.getElementById('filter-typ-tags');
     const filterVokal = document.getElementById('filter-vokal');
     
-    let currentTyp = 'all';
+    const selectedTypes = new Set(); // empty = all
 
     const italicizeEnding = (word) => {
         const endings = ['test','tet','ten','te','est','et','st','t','en','e'];
@@ -85,30 +85,58 @@ document.addEventListener('DOMContentLoaded', () => {
     const types = new Set(verbs.map(v => v.type));
     const vokals = new Set(verbs.map(v => v.stemVowel).filter(v => v !== '-'));
 
+    const typeStyle = {
+        stark: 'bg-red-100 text-red-700',
+        schwach: 'bg-green-100 text-green-700',
+        misch: 'bg-amber-100 text-amber-700',
+        unregelmäßig: 'bg-purple-100 text-purple-700'
+    };
+
+    const applyTypeBtnStyle = (btn) => {
+        const value = btn.dataset.value;
+        const isAll = value === 'all';
+        const active = isAll ? selectedTypes.size === 0 : selectedTypes.has(value);
+
+        // reset
+        btn.classList.remove(
+            'bg-[#E5E5EA]','text-[#1C1C1E]','hover:bg-[#D1D1D6]',
+            'bg-red-100','text-red-700',
+            'bg-green-100','text-green-700',
+            'bg-amber-100','text-amber-700',
+            'bg-purple-100','text-purple-700'
+        );
+
+        if (active) {
+            if (isAll) {
+                btn.classList.add('bg-[#007AFF]', 'text-white');
+            } else {
+                btn.classList.add(...(typeStyle[value] || 'bg-[#007AFF] text-white').split(' '));
+            }
+        } else {
+            btn.classList.add('bg-[#E5E5EA]','text-[#1C1C1E]','hover:bg-[#D1D1D6]');
+        }
+    };
+
     const createTag = (typValue, label) => {
         const btn = document.createElement('button');
         btn.textContent = label;
-        btn.className = `typ-tag px-3 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
-            typValue === currentTyp 
-            ? 'bg-[#007AFF] text-white' 
-            : 'bg-[#E5E5EA] text-[#1C1C1E] hover:bg-[#D1D1D6]'
-        }`;
+        btn.className = 'typ-tag px-3 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200';
         btn.dataset.value = typValue;
-        
+
+        applyTypeBtnStyle(btn);
+
         btn.addEventListener('click', () => {
-            currentTyp = typValue;
-            document.querySelectorAll('.typ-tag').forEach(t => {
-                if(t.dataset.value === currentTyp) {
-                    t.classList.remove('bg-[#E5E5EA]', 'text-[#1C1C1E]', 'hover:bg-[#D1D1D6]');
-                    t.classList.add('bg-[#007AFF]', 'text-white');
-                } else {
-                    t.classList.remove('bg-[#007AFF]', 'text-white');
-                    t.classList.add('bg-[#E5E5EA]', 'text-[#1C1C1E]', 'hover:bg-[#D1D1D6]');
-                }
-            });
+            if (typValue === 'all') {
+                selectedTypes.clear();
+            } else {
+                if (selectedTypes.has(typValue)) selectedTypes.delete(typValue);
+                else selectedTypes.add(typValue);
+            }
+
+            document.querySelectorAll('.typ-tag').forEach(applyTypeBtnStyle);
             applyFilters();
         });
-        
+
         return btn;
     };
 
@@ -128,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyFilters() {
         const selectedVokal = filterVokal.value;
         const filtered = verbs.filter(verb => {
-            const matchTyp = currentTyp === 'all' || verb.type === currentTyp;
+            const matchTyp = selectedTypes.size === 0 || selectedTypes.has(verb.type);
             const matchVokal = selectedVokal === 'all' || verb.stemVowel === selectedVokal;
             return matchTyp && matchVokal;
         });
