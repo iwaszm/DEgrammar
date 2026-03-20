@@ -1,6 +1,7 @@
 import { verbs } from '../data/verbs.js';
 import { pronomen } from '../data/pronomen.js';
 import { artikelData } from '../data/artikel.js';
+import { praepositionen } from '../data/praepositionen.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -8,15 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnVerben = document.getElementById('nav-verben');
     const btnPronomen = document.getElementById('nav-pronomen');
     const btnArtikel = document.getElementById('nav-artikel');
+    const btnPraepositionen = document.getElementById('nav-praepositionen');
     const pageVerben = document.getElementById('page-verben');
     const pagePronomen = document.getElementById('page-pronomen');
     const pageArtikel = document.getElementById('page-artikel');
+    const pagePraepositionen = document.getElementById('page-praepositionen');
 
     function switchPage(page) {
         const pages = [
             { id: 'verben', btn: btnVerben, el: pageVerben },
             { id: 'pronomen', btn: btnPronomen, el: pagePronomen },
-            { id: 'artikel', btn: btnArtikel, el: pageArtikel }
+            { id: 'artikel', btn: btnArtikel, el: pageArtikel },
+            { id: 'praepositionen', btn: btnPraepositionen, el: pagePraepositionen }
         ];
 
         pages.forEach(p => {
@@ -35,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnVerben.addEventListener('click', () => switchPage('verben'));
     btnPronomen.addEventListener('click', () => switchPage('pronomen'));
     btnArtikel.addEventListener('click', () => switchPage('artikel'));
+    btnPraepositionen.addEventListener('click', () => switchPage('praepositionen'));
 
     // --- Verben Logic ---
     const tbodyVerben = document.querySelector('#verbs-table tbody');
@@ -228,10 +233,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    // --- Präpositionen Logic (Top 5 preview) ---
+    const renderPraepositionenTable = () => {
+        const tbody = document.querySelector('#praepositionen-table tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        const caseTagClass = {
+            GEN: 'bg-red-100 text-red-700',
+            DAT: 'bg-green-100 text-green-700',
+            AKK: 'bg-blue-100 text-blue-700'
+        };
+
+        praepositionen.slice(0, 5).forEach(item => {
+            const tr = document.createElement('tr');
+            tr.className = 'group hover:bg-gray-50/50 transition-colors';
+
+            const caseTags = (item.cases || []).map(c => {
+                const cls = caseTagClass[c] || 'bg-gray-100 text-gray-700';
+                return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${c}</span>`;
+            }).join(' ');
+
+            const block = (obj) => {
+                if (!obj) return '';
+                const rule = obj.rule ? `<div class="text-sm text-[#1C1C1E]">${obj.rule}</div>` : '';
+                const ex = (obj.examples && obj.examples.length)
+                    ? `<ul class="mt-1 text-sm text-[#8E8E93] list-disc pl-5">${obj.examples.map(e => `<li>${e}</li>`).join('')}</ul>`
+                    : '';
+                return rule + ex;
+            };
+
+            const list = (arr) => {
+                if (!arr || arr.length === 0) return '';
+                return `<ul class="text-sm text-[#1C1C1E] list-disc pl-5">${arr.map(e => `<li>${e}</li>`).join('')}</ul>`;
+            };
+
+            tr.innerHTML = `
+                <td class="px-5 py-4 font-semibold text-black">${item.prep}</td>
+                <td class="px-4 py-4 text-center">${caseTags}</td>
+                <td class="px-4 py-4 align-top">${block(item.space)}</td>
+                <td class="px-4 py-4 align-top">${block(item.time)}</td>
+                <td class="px-4 py-4 align-top">${list(item.verbFixed)}</td>
+                <td class="px-4 py-4 align-top">${list(item.adjFixed)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    };
+
     // --- Initial Render ---
     renderVerbenTable(verbs);
     renderPronomenTable();
     renderArtikelTable('artikel-bestimmt-table', artikelData.bestimmter);
     renderArtikelTable('artikel-unbestimmt-table', artikelData.unbestimmter);
     renderArtikelTable('artikel-null-table', artikelData.nullartikel);
+    renderPraepositionenTable();
 });
