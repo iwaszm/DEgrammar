@@ -60,9 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderVerbenTable = (data) => {
-        // Sort alphabetically by infinitive
         const sortedData = [...data].sort((a, b) => a.infinitive.localeCompare(b.infinitive));
-        
         tbodyVerben.innerHTML = '';
         sortedData.forEach(verb => {
             const tr1 = document.createElement('tr');
@@ -99,24 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const applyTypeBtnStyle = (btn) => {
         const value = btn.dataset.value;
-        const isAll = value === 'all';
-        const active = isAll ? selectedTypes.size === 0 : selectedTypes.has(value);
-
-        // reset
-        btn.classList.remove(
-            'bg-[#E5E5EA]','text-[#1C1C1E]','hover:bg-[#D1D1D6]',
-            'bg-red-100','text-red-700',
-            'bg-green-100','text-green-700',
-            'bg-amber-100','text-amber-700',
-            'bg-purple-100','text-purple-700'
-        );
-
+        const active = value === 'all' ? selectedTypes.size === 0 : selectedTypes.has(value);
+        btn.classList.remove('bg-[#E5E5EA]','text-[#1C1C1E]','hover:bg-[#D1D1D6]','bg-red-100','text-red-700','bg-green-100','text-green-700','bg-amber-100','text-amber-700','bg-purple-100','text-purple-700','bg-[#007AFF]','text-white');
         if (active) {
-            if (isAll) {
-                btn.classList.add('bg-[#007AFF]', 'text-white');
-            } else {
-                btn.classList.add(...(typeStyle[value] || 'bg-[#007AFF] text-white').split(' '));
-            }
+            if (value === 'all') btn.classList.add('bg-[#007AFF]', 'text-white');
+            else btn.classList.add(...(typeStyle[value] || 'bg-[#007AFF] text-white').split(' '));
         } else {
             btn.classList.add('bg-[#E5E5EA]','text-[#1C1C1E]','hover:bg-[#D1D1D6]');
         }
@@ -127,29 +112,22 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.textContent = label;
         btn.className = 'typ-tag px-3 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200';
         btn.dataset.value = typValue;
-
         applyTypeBtnStyle(btn);
-
         btn.addEventListener('click', () => {
-            if (typValue === 'all') {
-                selectedTypes.clear();
-            } else {
+            if (typValue === 'all') selectedTypes.clear();
+            else {
                 if (selectedTypes.has(typValue)) selectedTypes.delete(typValue);
                 else selectedTypes.add(typValue);
             }
-
             document.querySelectorAll('.typ-tag').forEach(applyTypeBtnStyle);
             applyFilters();
         });
-
         return btn;
     };
 
     filterTypTags.innerHTML = '<span class="text-sm font-semibold text-[#8E8E93] mr-1">Typ:</span>';
     filterTypTags.appendChild(createTag('all', 'Alle'));
-    Array.from(types).sort().forEach(t => {
-        filterTypTags.appendChild(createTag(t, t));
-    });
+    Array.from(types).sort().forEach(t => filterTypTags.appendChild(createTag(t, t)));
 
     Array.from(vokals).sort().forEach(v => {
         const opt = document.createElement('option');
@@ -167,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         renderVerbenTable(filtered);
     }
-
     filterVokal.addEventListener('change', applyFilters);
 
     // --- Pronomen Logic ---
@@ -197,62 +174,54 @@ document.addEventListener('DOMContentLoaded', () => {
         data.forEach(row => {
             const tr = document.createElement('tr');
             tr.className = 'group hover:bg-gray-50/50 transition-colors';
-            
-            // Helper to determine text alignment and styling
-            const cellClass = (idx) => idx === 0 
-                ? "px-5 py-4 font-semibold text-[#8E8E93] align-middle" // Kasus column
-                : "px-4 py-4 text-center align-middle"; // Other columns
-
-            // For simpler tables (Bestimmter, Nullartikel), value is just a string.
-            // For complex table (Unbestimmter), value is HTML string.
-            // We can treat them uniformly if data structure aligns.
-            
-            // Check if it is simple or complex (unbestimmter has HTML in data)
+            const cellClass = (idx) => idx === 0 ? "px-5 py-4 font-semibold text-[#8E8E93] align-middle" : "px-4 py-4 text-center align-middle";
             const isComplex = tbodyId === 'artikel-unbestimmt-table';
-            
-            // Bestimmter/Nullartikel structure: { kasus, m, f, n, pl }
-            // Unbestimmter structure: { kasus, m, f, n, pl } (values are HTML)
-            
-            // We just render innerHTML for m, f, n, pl
             tr.innerHTML = `
                 <td class="${cellClass(0)}">${row.kasus}</td>
-                <td class="${cellClass(1)}">
-                    ${isComplex ? row.m : `<div class="font-medium text-black">${row.m}</div>`}
-                </td>
-                <td class="${cellClass(2)}">
-                    ${isComplex ? row.f : `<div class="font-medium text-black">${row.f}</div>`}
-                </td>
-                <td class="${cellClass(3)}">
-                    ${isComplex ? row.n : `<div class="font-medium text-black">${row.n}</div>`}
-                </td>
-                <td class="${cellClass(4)}">
-                    ${isComplex ? row.pl : `<div class="font-medium text-black">${row.pl}</div>`}
-                </td>
+                <td class="${cellClass(1)}">${isComplex ? row.m : `<div class="font-medium text-black">${row.m}</div>`}</td>
+                <td class="${cellClass(2)}">${isComplex ? row.f : `<div class="font-medium text-black">${row.f}</div>`}</td>
+                <td class="${cellClass(3)}">${isComplex ? row.n : `<div class="font-medium text-black">${row.n}</div>`}</td>
+                <td class="${cellClass(4)}">${isComplex ? row.pl : `<div class="font-medium text-black">${row.pl}</div>`}</td>
             `;
             tbody.appendChild(tr);
         });
     };
 
     // --- Präpositionen Logic ---
+    const filterPrepCaseTags = document.getElementById('filter-prep-case-tags');
+    const selectedPrepCases = new Set(); // empty = all
+
+    const caseStyles = {
+        DAT: 'bg-green-100 text-green-700',
+        AKK: 'bg-blue-100 text-blue-700',
+        GEN: 'bg-yellow-100 text-yellow-700'
+    };
+
     const renderPraepositionenTable = () => {
         const tbody = document.querySelector('#praepositionen-table tbody');
         if (!tbody) return;
         tbody.innerHTML = '';
 
-        const caseTagClass = {
-            GEN: 'bg-yellow-100 text-yellow-700',
-            DAT: 'bg-green-100 text-green-700',
-            AKK: 'bg-blue-100 text-blue-700'
-        };
+        const sorted = [...praepositionen].sort((a,b) => a.prep.localeCompare(b.prep));
 
-        praepositionen.forEach(item => {
-            const rowCount = item.modes.length;
+        const filtered = sorted.filter(item => {
+            if (selectedPrepCases.size === 0) return true;
+            // Show item if ANY of its modes matches any selected case
+            return item.modes.some(m => selectedPrepCases.has(m.case));
+        });
 
-            item.modes.forEach((mode, index) => {
+        filtered.forEach(item => {
+            // Further filter the modes to show only selected cases if filters active
+            const visibleModes = selectedPrepCases.size === 0 
+                ? item.modes 
+                : item.modes.filter(m => selectedPrepCases.has(m.case));
+
+            const rowCount = visibleModes.length;
+
+            visibleModes.forEach((mode, index) => {
                 const tr = document.createElement('tr');
                 tr.className = 'group hover:bg-gray-50/50 transition-colors align-top border-b border-gray-100 last:border-b-0';
 
-                // 1. Präposition (Rowspan if first)
                 if (index === 0) {
                     const tdPrep = document.createElement('td');
                     tdPrep.className = "px-5 py-4 font-bold text-lg text-black align-top border-r border-gray-100 bg-white group-hover:bg-gray-50/50";
@@ -261,57 +230,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     tr.appendChild(tdPrep);
                 }
 
-                // 2. Case Tag
                 const tdCase = document.createElement('td');
                 tdCase.className = "px-4 py-4 text-center align-top border-r border-gray-100";
-                const cls = caseTagClass[mode.case] || 'bg-gray-100 text-gray-700';
+                const cls = caseStyles[mode.case] || 'bg-gray-100 text-gray-700';
                 tdCase.innerHTML = `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${mode.case}</span>`;
                 tr.appendChild(tdCase);
 
-                // Helper for Rule+Ex list
                 const renderRules = (arr) => {
-                    if (!arr || arr.length === 0) return '<span class="text-xs text-gray-300">-</span>';
+                    if (!arr || arr.length === 0) return '';
                     return `<ul class="list-disc pl-4 space-y-3">
-                        ${arr.map(r => `
-                            <li class="text-sm text-[#1C1C1E] leading-snug">
-                                ${r.rule}
-                                <div class="text-[13px] text-gray-400 italic mt-0.5 leading-snug">${r.ex}</div>
-                            </li>
-                        `).join('')}
+                        ${arr.map(r => `<li class="text-sm text-[#1C1C1E] leading-snug">${r.rule}<div class="text-[13px] text-gray-400 italic mt-0.5 leading-snug">${r.ex}</div></li>`).join('')}
                     </ul>`;
                 };
 
-                // Helper for Combo list
                 const renderCombos = (arr) => {
-                    if (!arr || arr.length === 0) return '<span class="text-xs text-gray-300">-</span>';
+                    if (!arr || arr.length === 0) return '';
                     return `<ul class="list-none space-y-2">
-                        ${arr.map(c => `
-                            <li class="text-sm text-[#1C1C1E] leading-snug pl-2 border-l-2 border-gray-100">
-                                ${c}
-                            </li>
-                        `).join('')}
+                        ${arr.map(c => `<li class="text-sm text-[#1C1C1E] leading-snug pl-2 border-l-2 border-gray-100">${c}</li>`).join('')}
                     </ul>`;
                 };
 
-                // 3. Space
                 const tdSpace = document.createElement('td');
                 tdSpace.className = "px-4 py-4 align-top border-r border-gray-100";
                 tdSpace.innerHTML = renderRules(mode.space);
                 tr.appendChild(tdSpace);
 
-                // 4. Time
                 const tdTime = document.createElement('td');
                 tdTime.className = "px-4 py-4 align-top border-r border-gray-100";
                 tdTime.innerHTML = renderRules(mode.time);
                 tr.appendChild(tdTime);
 
-                // 5. Verb Fixed
                 const tdVerb = document.createElement('td');
                 tdVerb.className = "px-4 py-4 align-top border-r border-gray-100";
                 tdVerb.innerHTML = renderCombos(mode.verbFixed);
                 tr.appendChild(tdVerb);
 
-                // 6. Adj Fixed
                 const tdAdj = document.createElement('td');
                 tdAdj.className = "px-4 py-4 align-top";
                 tdAdj.innerHTML = renderCombos(mode.adjFixed);
@@ -322,11 +275,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const applyPrepTagStyle = (btn) => {
+        const val = btn.dataset.value;
+        const active = val === 'all' ? selectedPrepCases.size === 0 : selectedPrepCases.has(val);
+        btn.classList.remove('bg-[#E5E5EA]','text-[#1C1C1E]','hover:bg-[#D1D1D6]','bg-green-100','text-green-700','bg-blue-100','text-blue-700','bg-yellow-100','text-yellow-700','bg-[#007AFF]','text-white');
+        if (active) {
+            if (val === 'all') btn.classList.add('bg-[#007AFF]', 'text-white');
+            else btn.classList.add(...(caseStyles[val] || 'bg-[#007AFF] text-white').split(' '));
+        } else {
+            btn.classList.add('bg-[#E5E5EA]','text-[#1C1C1E]','hover:bg-[#D1D1D6]');
+        }
+    };
+
+    const createPrepTag = (val, label) => {
+        const btn = document.createElement('button');
+        btn.textContent = label;
+        btn.className = 'prep-tag px-3 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200';
+        btn.dataset.value = val;
+        applyPrepTagStyle(btn);
+        btn.addEventListener('click', () => {
+            if (val === 'all') selectedPrepCases.clear();
+            else {
+                if (selectedPrepCases.has(val)) selectedPrepCases.delete(val);
+                else selectedPrepCases.add(val);
+            }
+            document.querySelectorAll('.prep-tag').forEach(applyPrepTagStyle);
+            renderPraepositionenTable();
+        });
+        return btn;
+    };
+
+    const initPrepFilters = () => {
+        filterPrepCaseTags.innerHTML = '<span class="text-sm font-semibold text-[#8E8E93] mr-1">Kasus:</span>';
+        filterPrepCaseTags.appendChild(createPrepTag('all', 'Alle'));
+        ['GEN', 'DAT', 'AKK'].forEach(c => filterPrepCaseTags.appendChild(createPrepTag(c, c)));
+    };
+
     // --- Initial Render ---
     renderVerbenTable(verbs);
     renderPronomenTable();
     renderArtikelTable('artikel-bestimmt-table', artikelData.bestimmter);
     renderArtikelTable('artikel-unbestimmt-table', artikelData.unbestimmter);
     renderArtikelTable('artikel-null-table', artikelData.nullartikel);
+    initPrepFilters();
     renderPraepositionenTable();
 });
