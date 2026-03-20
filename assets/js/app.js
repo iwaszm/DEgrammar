@@ -44,8 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentTyp = 'all';
 
     const renderVerbenTable = (data) => {
+        // Sort alphabetically by infinitive
+        const sortedData = [...data].sort((a, b) => a.infinitive.localeCompare(b.infinitive));
+        
         tbodyVerben.innerHTML = '';
-        data.forEach(verb => {
+        sortedData.forEach(verb => {
             const tr1 = document.createElement('tr');
             tr1.className = 'verb-row-1 group hover:bg-gray-50/50 transition-colors';
             tr1.innerHTML = `
