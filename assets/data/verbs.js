@@ -523,7 +523,7 @@ export const verbs = [
     },
     {
         infinitive: "nennen",
-        conjugations: ["nenne", "nennst", "nennt", "nennen", "rennt"],
+        conjugations: ["nenne", "nennst", "nennt", "nennen", "kennt"],
         type: "misch",
         stemVowel: "e: e/a/a",
         pastInfo: "(hat genannt)",
@@ -799,6 +799,15 @@ export const verbs = [
         pastInfo: "(hat getrunken)",
         pastConjugations: ["trank", "trankst", "trank", "tranken", "trankt"],
         typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "tun",
+        conjugations: ["tue", "tust", "tut", "tun", "tut"],
+        type: "unregelmäßig",
+        stemVowel: "u: u/a/a",
+        pastInfo: "(hat getan)",
+        pastConjugations: ["tat", "tatest", "tat", "taten", "tatet"],
+        typeClass: "bg-purple-100 text-purple-700"
     },
     {
         infinitive: "verlieren",

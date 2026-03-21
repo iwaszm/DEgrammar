@@ -5,6 +5,18 @@ const HL_GEN = "text-yellow-700 font-bold";
 export const praepositionen = [
   // --- A ---
   {
+    prep: "ab",
+    isWechsel: false,
+    modes: [
+      {
+        case: "DAT",
+        space: [{ rule: "Startpunkt (Ort)", ex: `Wir fahren <span class="${HL_DAT}">ab dem Bahnhof</span>.` }],
+        time: [{ rule: "Startpunkt (Zeit)", ex: `<span class="${HL_DAT}">Ab nächster Woche</span> habe ich Urlaub.` }],
+        verbFixed: [], adjFixed: []
+      }
+    ]
+  },
+  {
     prep: "an",
     isWechsel: true,
     modes: [
@@ -86,6 +98,19 @@ export const praepositionen = [
           `Er ist <span class="${HL_AKK}">neidisch auf deinen Erfolg</span>.`,
           `Ich bin <span class="${HL_AKK}">gespannt auf das Ergebnis</span>.`
         ]
+      }
+    ]
+  },
+  {
+    prep: "aufgrund",
+    isWechsel: false,
+    modes: [
+      {
+        case: "GEN",
+        space: [],
+        time: [],
+        verbFixed: [`<span class="${HL_GEN}">Aufgrund des Wetters</span> bleiben wir zu Hause.`],
+        adjFixed: []
       }
     ]
   },
@@ -216,6 +241,26 @@ export const praepositionen = [
   },
 
   // --- D ---
+  {
+    prep: "dank",
+    isWechsel: false,
+    modes: [
+      {
+        case: "DAT",
+        space: [],
+        time: [],
+        verbFixed: [`<span class="${HL_DAT}">Dank deiner Hilfe</span> habe ich es geschafft.`],
+        adjFixed: []
+      },
+      {
+        case: "GEN",
+        space: [],
+        time: [],
+        verbFixed: [`<span class="${HL_GEN}">Dank seines Einsatzes</span> gewannen wir.`],
+        adjFixed: []
+      }
+    ]
+  },
   {
     prep: "durch",
     isWechsel: false,
@@ -515,6 +560,19 @@ export const praepositionen = [
 
   // --- S ---
   {
+    prep: "pro",
+    isWechsel: false,
+    modes: [
+      {
+        case: "AKK",
+        space: [],
+        time: [],
+        verbFixed: [`Das kostet 5 Euro <span class="${HL_AKK}">pro Person</span>.`],
+        adjFixed: []
+      }
+    ]
+  },
+  {
     prep: "seit",
     isWechsel: false,
     modes: [
@@ -530,7 +588,7 @@ export const praepositionen = [
     ]
   },
   {
-    prep: "statt",
+    prep: "statt / anstatt",
     isWechsel: false,
     modes: [
       {
