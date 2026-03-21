@@ -171,14 +171,36 @@ document.addEventListener('DOMContentLoaded', () => {
         filterVokal.appendChild(opt);
     });
 
-    function applyFilters() {
+    // --- Global Search Logic ---
+    const searchInput = document.getElementById('global-search');
+    let currentSearchTerm = '';
+
+    searchInput.addEventListener('input', (e) => {
+        currentSearchTerm = e.target.value.toLowerCase().trim();
+        applyAllFilters();
+    });
+
+    function applyAllFilters() {
+        // Apply search to all active views
+        renderVerbenTable(getFilteredVerbs());
+        renderPraepositionenTable();
+        // Personal and Artikel are small fixed tables, but we could filter rows if needed.
+    }
+
+    function getFilteredVerbs() {
         const selectedVokal = filterVokal.value;
-        const filtered = verbs.filter(verb => {
+        return verbs.filter(verb => {
             const matchTyp = selectedTypes.size === 0 || selectedTypes.has(verb.type);
             const matchVokal = selectedVokal === 'all' || verb.stemVowel === selectedVokal;
-            return matchTyp && matchVokal;
+            const matchSearch = !currentSearchTerm || 
+                               verb.infinitive.toLowerCase().includes(currentSearchTerm) ||
+                               verb.pastInfo.toLowerCase().includes(currentSearchTerm);
+            return matchTyp && matchVokal && matchSearch;
         });
-        renderVerbenTable(filtered);
+    }
+
+    function applyFilters() {
+        renderVerbenTable(getFilteredVerbs());
     }
     filterVokal.addEventListener('change', applyFilters);
 
@@ -240,8 +262,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const sorted = [...praepositionen].sort((a,b) => a.prep.localeCompare(b.prep));
 
         const filtered = sorted.filter(item => {
-            if (selectedPrepCases.size === 0) return true;
-            return item.modes.some(m => selectedPrepCases.has(m.case));
+            const matchesCase = selectedPrepCases.size === 0 || item.modes.some(m => selectedPrepCases.has(m.case));
+            const matchesSearch = !currentSearchTerm || 
+                                 item.prep.toLowerCase().includes(currentSearchTerm) ||
+                                 item.modes.some(m => 
+                                    m.space.some(s => s.rule.toLowerCase().includes(currentSearchTerm)) ||
+                                    m.time.some(t => t.rule.toLowerCase().includes(currentSearchTerm)) ||
+                                    m.verbFixed.some(v => v.toLowerCase().includes(currentSearchTerm)) ||
+                                    m.adjFixed.some(a => a.toLowerCase().includes(currentSearchTerm))
+                                 );
+            return matchesCase && matchesSearch;
         });
 
         filtered.forEach(item => {
