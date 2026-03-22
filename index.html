@@ -28,10 +28,13 @@
             justify-content: center;
             overflow: visible;
             border-radius: 44px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            /* Default shadow */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1; 
         }
 
-        /* The Gradient Background Layer */
+        /* The Gradient Background Layer (Bottom Layer) */
         .meta-gradient-bg {
             position: absolute;
             top: 0;
@@ -39,42 +42,53 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, #71F6D2 0%, #0DACF1 50%, #F5A3E0 100%);
-            z-index: 1;
-            border-radius: 40px;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1; 
+            border-radius: 44px;
+            /* Backlight Effect: initially hidden behind */
+            filter: blur(0px);
+            opacity: 1; /* Always visible for cutout */
+            transform: scale(1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Hover: Gradient expands and blurs to create backlight */
+        .meta-square-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
         .meta-square-wrapper:hover .meta-gradient-bg {
-            transform: scale(1.05) rotate(2deg);
+            filter: blur(30px);
+            transform: scale(1.05);
+            opacity: 0.8;
         }
 
-        /* The "Cover" Layer with Cutout Text */
+        /* The "Cover" Layer with Cutout Text (Top Layer) */
         .cutout-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: white; 
+            background: #F2F3F3; /* Light Gray Cover */
             z-index: 2;
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 40px;
-            mix-blend-mode: screen; 
+            mix-blend-mode: screen; /* Magic: Light Gray + Gradient = Cutout Effect */
             user-select: none;
-            border-radius: 40px;
+            border-radius: 44px;
         }
 
         .cutout-text {
-            color: black;
+            color: black; /* Must be black to cut through */
             font-size: 52px;
             font-weight: 900;
             line-height: 1.1;
             text-align: left;
             margin: 0;
             letter-spacing: -2px;
-            /* push headline down */
             padding-top: 44px; 
         }
 
@@ -83,7 +97,7 @@
             pointer-events: none;
         }
 
-        /* Invisible clickable areas mapped to text positions */
+        /* Invisible clickable areas */
         .home-link-area {
             position: absolute;
             top: 0;
@@ -95,7 +109,7 @@
             flex-direction: column;
             justify-content: center;
             padding: 40px;
-            padding-top: 84px; /* Offset to match visual text position */
+            padding-top: 84px; 
         }
 
         .hit-box {
@@ -106,7 +120,7 @@
             pointer-events: auto;
         }
 
-        /* 鼠标悬停下划线 (黑色粗透明度) */
+        /* Underline */
         .hit-box::after {
             content: '';
             position: absolute;
@@ -123,33 +137,36 @@
             width: 100%;
         }
 
-        /* 正方形上方出现的类型 Tab (Tooltip) */
+        /* AWS-style Arrow Link Appearance for Tab Name */
         .hit-box::before {
-            content: attr(data-label);
-            position: fixed;
-            top: calc(50vh - 245px); /* move tab down a bit */
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            padding: 12px 32px; /* Even larger tab */
-            background: rgba(242, 242, 247, 0.98); 
-            backdrop-filter: blur(15px);
-            color: #1C1C1E; 
-            font-size: 24px; /* Even larger font */
-            font-weight: 900;
-            border-radius: 20px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            z-index: 100;
-            border: 1px solid rgba(0,0,0,0.05);
-            letter-spacing: -0.8px;
+            content: attr(data-label) " ›";
+            position: absolute; /* Relative to wrapper via js or fixed calculation? */
+            /* We need it fixed relative to the card's top third */
+            /* Since .hit-box is inside .home-link-area inside wrapper, let's use fixed or absolute trick */
+            /* But request says: "在卡片上三分之一处出现" */
         }
-
-        .hit-box:hover::before {
+        
+        /* New Tab Indicator Logic */
+        .tab-indicator {
+            position: absolute;
+            top: 25%; /* 1/4 down the card */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%) translateY(-10px); /* Center align + offset for animation */
+            font-size: 24px;
+            font-weight: 700;
+            color: #1C1C1E;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tab-indicator.active {
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
+            transform: translateX(-50%) translateY(0); /* Slide down slightly into place */
         }
 
         .sub-headline {
@@ -204,7 +221,11 @@
                 bottom: 4vw;
                 font-size: 3.6vw;
             }
-            .hit-box::before { top: 10vh; }
+            .tab-indicator {
+                top: 20%;
+                left: 8vw;
+                font-size: 5vw;
+            }
         }
     </style>
 </head>
@@ -230,14 +251,14 @@
                 <button id="nav-pronomen" class="px-6 sm:px-8 py-1.5 rounded-md text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
                     Pronomen
                 </button>
+                <button id="nav-verben" class="px-6 sm:px-8 py-1.5 rounded-md text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
+                    Verben
+                </button>
                 <button id="nav-praepositionen" class="px-6 sm:px-8 py-1.5 rounded-md text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
                     Präpositionen
                 </button>
                 <button id="nav-artikel" class="px-6 sm:px-8 py-1.5 rounded-md text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
                     Artikel
-                </button>
-                <button id="nav-verben" class="px-6 sm:px-8 py-1.5 rounded-md text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
-                    Verben
                 </button>
             </div>
         </div>
@@ -250,28 +271,33 @@
                 
                 <!-- The Square Wrapper -->
                 <div class="meta-square-wrapper relative">
-                    <!-- Layer 1: The Meta Gradient -->
+                    <!-- Layer 1: The Meta Gradient (Backlight) -->
                     <div class="meta-gradient-bg"></div>
                     
-                    <!-- Layer 2: The Cutout Overlay (White with Black text) -->
+                    <!-- Layer 2: The Cutout Overlay (Gray + Cutout Text) -->
                     <div class="cutout-overlay">
-                        <p class="cutout-text">ich bin<br>an das Klima<br>gewöhnt.</p>
+                        <p class="cutout-text">Wir<br>warten auf<br>den Bus.</p>
+                    </div>
+
+                    <!-- Dynamic Tab Indicator (Top 1/3) -->
+                    <div id="tab-indicator" class="tab-indicator">
+                        <span id="tab-label">Type</span> 
+                        <svg class="w-5 h-5 text-[#8E8E93]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
                     </div>
 
                     <!-- Layer 3: Interactive Areas -->
                     <div class="home-link-area">
                         <div class="text-[52px] leading-[1.1] font-black tracking-[-2px]">
                             <div>
-                                <span class="hit-box" data-target="pronomen" data-label="Pronomen">ich</span>
-                                <span class="non-hit">bin</span>
+                                <span class="hit-box" data-target="pronomen" data-label="Pronomen">Wir</span>
                             </div>
                             <div>
-                                <span class="hit-box" data-target="praepositionen" data-label="Präpositionen">an</span>
-                                <span class="hit-box" data-target="artikel" data-label="Artikel">das</span>
-                                <span class="non-hit">Klima</span>
+                                <span class="hit-box" data-target="verben" data-label="Verben">warten</span>
+                                <span class="hit-box" data-target="praepositionen" data-label="Präpositionen">auf</span>
                             </div>
                             <div>
-                                <span class="hit-box" data-target="verben" data-label="Verben">gewöhnt.</span>
+                                <span class="hit-box" data-target="artikel" data-label="Artikel">den</span>
+                                <span class="non-hit">Bus.</span>
                             </div>
                         </div>
                     </div>
@@ -282,132 +308,30 @@
             </div>
         </div>
 
-        <!-- ==========================================
-             PAGE 1: VERBEN
-        =========================================== -->
+        <!-- Content Pages (Hidden) -->
         <div id="page-verben" class="hidden">
-            <!-- Filter Bar -->
             <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div id="filter-typ-tags" class="flex flex-wrap items-center gap-2">
-                    <span class="text-sm font-semibold text-[#8E8E93] mr-1">Typ:</span>
-                </div>
-                <div class="relative ml-auto md:ml-0">
-                    <select id="filter-vokal" class="ios-select bg-[#E5E5EA] text-[#1C1C1E] text-sm font-medium py-1.5 pl-4 pr-10 rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-[#007AFF] transition-shadow cursor-pointer">
-                        <option value="all">Stammvokal: Alle</option>
-                    </select>
-                </div>
+                <div id="filter-typ-tags" class="flex flex-wrap items-center gap-2"><span class="text-sm font-semibold text-[#8E8E93] mr-1">Typ:</span></div>
+                <div class="relative ml-auto md:ml-0"><select id="filter-vokal" class="ios-select bg-[#E5E5EA] text-[#1C1C1E] text-sm font-medium py-1.5 pl-4 pr-10 rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-[#007AFF] transition-shadow cursor-pointer"><option value="all">Stammvokal: Alle</option></select></div>
             </div>
-
-            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse" id="verbs-table">
-                        <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                            <tr>
-                                <th class="px-5 py-4 font-semibold border-b border-gray-200">Verben</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">ich</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">du</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">er/sie/es</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">wir/sie</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">ihr</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Typ</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Stammvokal</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100"><div class="overflow-x-auto"><table class="w-full text-left border-collapse" id="verbs-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200">Verben</th><th class="px-4 py-4 font-semibold border-b border-gray-200">ich</th><th class="px-4 py-4 font-semibold border-b border-gray-200">du</th><th class="px-4 py-4 font-semibold border-b border-gray-200">er/sie/es</th><th class="px-4 py-4 font-semibold border-b border-gray-200">wir/sie</th><th class="px-4 py-4 font-semibold border-b border-gray-200">ihr</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Typ</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Stammvokal</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
         </div>
         
-        <!-- ==========================================
-             PAGE 2: PRONOMEN
-        =========================================== -->
         <div id="page-pronomen" class="hidden">
-            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 mt-6">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse" id="pronomen-table">
-                        <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                            <tr>
-                                <th class="px-5 py-4 font-semibold border-b border-gray-200">Pronomen (Nom)</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">Possessiv (Nom. m/n)</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">Dativ</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200">Akkusativ</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Reflexiv (Dat / Akk)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 mt-6"><div class="overflow-x-auto"><table class="w-full text-left border-collapse" id="pronomen-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200">Pronomen (Nom)</th><th class="px-4 py-4 font-semibold border-b border-gray-200">Possessiv (Nom. m/n)</th><th class="px-4 py-4 font-semibold border-b border-gray-200">Dativ</th><th class="px-4 py-4 font-semibold border-b border-gray-200">Akkusativ</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center">Reflexiv (Dat / Akk)</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
         </div>
 
-        <!-- ==========================================
-             PAGE 3: ARTIKEL
-        =========================================== -->
         <div id="page-artikel" class="hidden">
             <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-6">
-                <!-- Table 1 -->
-                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col">
-                    <div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Bestimmter Artikel</h2></div>
-                    <div class="overflow-x-auto flex-1">
-                        <table class="w-full text-left border-collapse h-full" id="artikel-bestimmt-table">
-                            <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                                <tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr>
-                            </thead>
-                            <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Table 2 -->
-                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col">
-                    <div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Unbestimmter & Negativartikel</h2></div>
-                    <div class="overflow-x-auto flex-1">
-                        <table class="w-full text-left border-collapse h-full" id="artikel-unbestimmt-table">
-                            <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                                <tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr>
-                            </thead>
-                            <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Table 3 -->
-                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col xl:col-span-2">
-                    <div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Nullartikel</h2></div>
-                    <div class="overflow-x-auto flex-1">
-                        <table class="w-full text-left border-collapse h-full" id="artikel-null-table">
-                            <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                                <tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr>
-                            </thead>
-                            <tbody class="text-[15px] divide-y divide-gray-100"></tbody>
-                        </table>
-                    </div>
-                </div>
+                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col"><div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Bestimmter Artikel</h2></div><div class="overflow-x-auto flex-1"><table class="w-full text-left border-collapse h-full" id="artikel-bestimmt-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
+                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col"><div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Unbestimmter & Negativartikel</h2></div><div class="overflow-x-auto flex-1"><table class="w-full text-left border-collapse h-full" id="artikel-unbestimmt-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
+                <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100 flex flex-col xl:col-span-2"><div class="px-5 py-4 bg-gray-50/80 border-b border-gray-100"><h2 class="text-lg font-bold text-black">Nullartikel</h2></div><div class="overflow-x-auto flex-1"><table class="w-full text-left border-collapse h-full" id="artikel-null-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/5">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">m</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">f</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">n</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/5">pl</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
             </div>
         </div>
 
-        <!-- ==========================================
-             PAGE 4: PRÄPOSITIONEN
-        =========================================== -->
         <div id="page-praepositionen" class="hidden">
             <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4"><div id="filter-prep-case-tags" class="flex flex-wrap items-center gap-2"><span class="text-sm font-semibold text-[#8E8E93] mr-1">Kasus:</span></div></div>
-            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse" id="praepositionen-table">
-                        <thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10">
-                            <tr>
-                                <th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/12">Präposition</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/12">Kasus</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Raum</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Zeit</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Verben</th>
-                                <th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Adjektive</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-[15px] divide-y divide-gray-100">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100"><div class="overflow-x-auto"><table class="w-full text-left border-collapse" id="praepositionen-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/12">Präposition</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/12">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Raum</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Zeit</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Verben</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Adjektive</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
         </div>
 
     </div>
@@ -415,11 +339,26 @@
     <script type="module" src="./assets/js/app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const tabIndicator = document.getElementById('tab-indicator');
+            const tabLabel = document.getElementById('tab-label');
             const boxes = document.querySelectorAll('.hit-box');
+
             boxes.forEach(box => {
+                // Click
                 box.addEventListener('click', () => {
                     const target = box.dataset.target;
                     if (window.switchPage) window.switchPage(target);
+                });
+
+                // Hover In
+                box.addEventListener('mouseenter', () => {
+                    tabLabel.textContent = box.dataset.label;
+                    tabIndicator.classList.add('active');
+                });
+
+                // Hover Out
+                box.addEventListener('mouseleave', () => {
+                    tabIndicator.classList.remove('active');
                 });
             });
         });
