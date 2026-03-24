@@ -567,6 +567,15 @@ export const verbs = [
         typeClass: "bg-green-100 text-green-700"
     },
     {
+        infinitive: "schießen",
+        conjugations: ["schieße", "schießt", "schießt", "schießen", "schießt"],
+        type: "stark",
+        stemVowel: "ie: ie/o/o",
+        pastInfo: "(hat/ist geschossen)",
+        pastConjugations: ["schoss", "schossest", "schoss", "schossen", "schosst"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
         infinitive: "schlafen",
         conjugations: ["schlafe", "schläfst", "schläft", "schlafen", "schlaft"],
         type: "stark",
@@ -747,6 +756,15 @@ export const verbs = [
         typeClass: "bg-red-100 text-red-700"
     },
     {
+        infinitive: "stoßen",
+        conjugations: ["stoße", "stößt", "stößt", "stoßen", "stoßt"],
+        type: "stark",
+        stemVowel: "o: ö/ie/o",
+        pastInfo: "(hat/ist gestoßen)",
+        pastConjugations: ["stieß", "stießest", "stieß", "stießen", "stießt"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
         infinitive: "streiten",
         conjugations: ["streite", "streitest", "streitet", "streiten", "streitet"],
         type: "stark",
@@ -792,6 +810,15 @@ export const verbs = [
         typeClass: "bg-red-100 text-red-700"
     },
     {
+        infinitive: "treten",
+        conjugations: ["trete", "trittst", "tritt", "treten", "tretet"],
+        type: "stark",
+        stemVowel: "e: i/a/e",
+        pastInfo: "(hat/ist getreten)",
+        pastConjugations: ["trat", "tratest", "trat", "traten", "tratet"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
         infinitive: "trinken",
         conjugations: ["trinke", "trinkst", "trinkt", "trinken", "trinkt"],
         type: "stark",
@@ -810,12 +837,30 @@ export const verbs = [
         typeClass: "bg-purple-100 text-purple-700"
     },
     {
+        infinitive: "vergessen",
+        conjugations: ["vergesse", "gisst", "gisst", "vergessen", "vergesst"],
+        type: "stark",
+        stemVowel: "e: i/a/e",
+        pastInfo: "(hat vergessen)",
+        pastConjugations: ["vergaß", "vergaßt", "vergaß", "vergaßen", "vergaßt"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
         infinitive: "verlieren",
         conjugations: ["verliere", "verlierst", "verliert", "verlieren", "verliert"],
         type: "stark",
         stemVowel: "ie: ie/o/o",
         pastInfo: "(hat verloren)",
         pastConjugations: ["verlor", "verlorst", "verlor", "verloren", "verlort"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "wachsen",
+        conjugations: ["wachse", "wächst", "wächst", "wachsen", "wachst"],
+        type: "stark",
+        stemVowel: "a: ä/u/a",
+        pastInfo: "(ist gewachsen)",
+        pastConjugations: ["wuchs", "wuchsest", "wuchs", "wuchsen", "wuchst"],
         typeClass: "bg-red-100 text-red-700"
     },
     {
@@ -844,6 +889,15 @@ export const verbs = [
         pastInfo: "(hat gewandt/gewendet)",
         pastConjugations: ["wandte", "wandtest", "wandte", "wandten", "wandtet"],
         typeClass: "bg-amber-100 text-amber-700"
+    },
+    {
+        infinitive: "werben",
+        conjugations: ["werbe", "wirbst", "wirbt", "werben", "werbt"],
+        type: "stark",
+        stemVowel: "e: i/a/o",
+        pastInfo: "(hat geworben)",
+        pastConjugations: ["warb", "warbst", "warb", "warben", "warbt"],
+        typeClass: "bg-red-100 text-red-700"
     },
     {
         infinitive: "werden",
