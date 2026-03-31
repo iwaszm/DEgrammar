@@ -85,7 +85,7 @@ export const praepositionen = [
           { rule: "Bewegung auf eine Insel", ex: `Wir fahren <span class="${HL_AKK}">auf eine Insel</span>.` }
         ],
         time: [
-          { rule: "Zeitdauer (Zukunft)", ex: `Er geht <span class="${HL_AKK}">auf eine Woche</span> weg.` }
+          { rule: "Zeitpunkt nach Verschiebung/Festlegung", ex: `Wir verschieben das Treffen <span class="${HL_AKK}">auf den Abend</span>.` }
         ],
         verbFixed: [
           `Wir <span class="${HL_AKK}">warten auf den Bus</span>.`,
@@ -141,7 +141,7 @@ export const praepositionen = [
         space: [], 
         time: [],
         verbFixed: [
-          `Das Gerät ist <span class="${HL_DAT}">außer Betrieb</span>.`
+          `<span class="${HL_DAT}">Außer dem Lehrer</span> war niemand im Raum.`
         ],
         adjFixed: []
       }
@@ -567,7 +567,14 @@ export const praepositionen = [
         case: "AKK",
         space: [],
         time: [],
-        verbFixed: [`Das kostet 5 Euro <span class="${HL_AKK}">pro Person</span>.`],
+        verbFixed: [`Das kostet 50 Cent <span class="${HL_AKK}">pro gefahrenen Kilometer</span>.`],
+        adjFixed: []
+      },
+      {
+        case: "DAT",
+        space: [],
+        time: [],
+        verbFixed: [`Das kostet 50 Cent <span class="${HL_DAT}">pro gefahrenem Kilometer</span>.`],
         adjFixed: []
       }
     ]
