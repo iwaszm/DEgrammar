@@ -98,23 +98,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const sortedData = [...data].sort((a, b) => a.infinitive.localeCompare(b.infinitive));
         tbodyVerben.innerHTML = '';
         sortedData.forEach(verb => {
+            const typeDotClass = {
+                stark: 'bg-red-500',
+                schwach: 'bg-green-500',
+                misch: 'bg-orange-500',
+                unregelmäßig: 'bg-purple-500'
+            }[verb.type] || 'bg-[#8E8E93]';
             const tr1 = document.createElement('tr');
             tr1.className = 'verb-row-1 group hover:bg-gray-50/50 transition-colors';
             tr1.innerHTML = `
-                <td class="px-5 pt-4 pb-1 font-semibold text-black">${verb.infinitive}</td>
-                ${verb.conjugations.map(c => `<td class="px-4 pt-4 pb-1">${italicizeEnding(c)}</td>`).join('')}
-                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100">
-                    <span class="verb-typ inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${verb.typeClass}">${verb.type}</span>
+                <td class="px-4 pt-4 pb-1 font-semibold text-black min-w-[180px]">
+                    <div class="inline-flex items-center gap-2">
+                        <span>${verb.infinitive}</span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-full ${typeDotClass}" title="${verb.type}"></span>
+                    </div>
                 </td>
-                <td rowspan="2" class="px-4 py-4 align-middle text-center border-b border-gray-100 text-[#8E8E93] verb-vokal ${verb.stemVowel !== '-' ? 'font-mono text-[#1C1C1E]' : ''}">${verb.stemVowel}</td>
+                ${verb.conjugations.map(c => `<td class="px-3 pt-4 pb-1 whitespace-nowrap">${italicizeEnding(c)}</td>`).join('')}
             `;
             tbodyVerben.appendChild(tr1);
 
             const tr2 = document.createElement('tr');
             tr2.className = 'verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors';
             tr2.innerHTML = `
-                <td class="px-5 pb-4 pt-1 text-sm text-[#8E8E93]">${verb.pastInfo}</td>
-                ${verb.pastConjugations.map(c => `<td class="px-4 pb-4 pt-1 text-[#8E8E93]">${italicizeEnding(c)}</td>`).join('')}
+                <td class="px-4 pb-4 pt-1 text-sm text-[#8E8E93] whitespace-nowrap">${verb.pastInfo}</td>
+                ${verb.pastConjugations.map(c => `<td class="px-3 pb-4 pt-1 text-[#8E8E93] whitespace-nowrap">${italicizeEnding(c)}</td>`).join('')}
             `;
             tbodyVerben.appendChild(tr2);
         });
