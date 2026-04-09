@@ -333,6 +333,326 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!tbody) return;
         tbody.innerHTML = '';
 
+        const escapeHtml = (value) => String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+
+        const styleSentenceMarkup = (entry, kasus, type) => {
+            const sentence = entry.ex || '';
+            const combo = entry.combo || '';
+            const caseTextClass = kasus === 'AKK' ? 'text-blue-700' : 'text-green-700';
+            const prep = combo.trim().split(/\s+/).pop();
+            const prepVariants = {
+                an: ['an', 'am'],
+                auf: ['auf'],
+                aus: ['aus'],
+                bei: ['bei', 'beim'],
+                durch: ['durch'],
+                für: ['für'],
+                gegen: ['gegen'],
+                gegenüber: ['gegenüber'],
+                in: ['in', 'im', 'ins'],
+                mit: ['mit'],
+                nach: ['nach'],
+                über: ['über'],
+                um: ['um'],
+                unter: ['unter'],
+                von: ['von', 'vom'],
+                vor: ['vor'],
+                zu: ['zu', 'zum', 'zur']
+            };
+            const stopHeadWords = new Set(['sich', 'es', 's.']);
+            const pronounObjects = new Set([
+                'mich', 'dich', 'ihn', 'sie', 'es', 'uns', 'euch',
+                'ihnen', 'dir', 'mir', 'ihm', 'ihnen'
+            ]);
+            const determiners = new Set([
+                'der', 'des', 'dem', 'den', 'die', 'das',
+                'ein', 'eine', 'einer', 'eines', 'einem', 'einen',
+                'kein', 'keine', 'keiner', 'keines', 'keinem', 'keinen',
+                'dieser', 'dieses', 'diesem', 'diesen', 'diese',
+                'jener', 'jenes', 'jenem', 'jenen', 'jene',
+                'mein', 'meine', 'meiner', 'meinem', 'meinen',
+                'dein', 'deine', 'deiner', 'deinem', 'deinen',
+                'sein', 'seine', 'seiner', 'seinem', 'seinen',
+                'ihr', 'ihre', 'ihrer', 'ihrem', 'ihren',
+                'unser', 'unsere', 'unserer', 'unserem', 'unseren',
+                'euer', 'euere', 'eurer', 'eurem', 'euren',
+                'deren', 'dessen', 'aller', 'allen', 'alles', 'alle'
+            ]);
+            const objectConnectors = new Set(['von', 'vom', 'zu', 'zum', 'zur', 'in', 'im', 'ins', 'mit', 'ohne', 'für', 'gegen', 'unter', 'über']);
+            const clauseBreakWords = new Set([
+                'bin', 'bist', 'ist', 'sind', 'seid', 'war', 'waren', 'wurde', 'wurden',
+                'hat', 'habe', 'hast', 'haben', 'habt', 'hatte', 'hatten',
+                'wird', 'werden', 'werde', 'wirst', 'wurdet',
+                'macht', 'machte', 'machen', 'machte', 'machten',
+                'kommt', 'kam', 'kommen', 'komme', 'kommst',
+                'geht', 'ging', 'gehen', 'gehe', 'gehst',
+                'fällt', 'fallen', 'fiel', 'liegt', 'lag', 'liegen',
+                'bleibt', 'blieb', 'bleiben', 'dauert', 'dauerte',
+                'hilft', 'half', 'helfen', 'enthielt', 'enthält',
+                'muss', 'müssen', 'musste', 'kann', 'können', 'konnte',
+                'darf', 'dürfen', 'durfte', 'soll', 'sollen', 'sollte'
+            ]);
+            const auxiliaryVerbs = new Set([
+                'haben', 'habe', 'hast', 'hat', 'habt', 'hatte', 'hatten',
+                'sein', 'bin', 'bist', 'ist', 'seid', 'sind', 'war', 'waren',
+                'werden', 'werde', 'wirst', 'wird', 'werdet', 'wurden', 'wurde'
+            ]);
+            const commonAdverbs = new Set([
+                'nicht', 'jetzt', 'oft', 'noch', 'immer', 'schon', 'sehr', 'gern', 'gerne',
+                'zufällig', 'bald', 'später', 'heute', 'morgen', 'gestern', 'hier', 'dort',
+                'da', 'dann', 'nur', 'auch', 'etwa', 'lange', 'kurz', 'so', 'wie', 'mehr',
+                'weniger', 'besonders', 'seit', 'langem', 'wohl'
+            ]);
+            const separablePrefixes = [
+                'zurück', 'zusammen', 'vorbei', 'vor', 'weg', 'weiter', 'wieder', 'zu',
+                'zurecht', 'zurecht', 'teil', 'statt', 'los', 'fest', 'fern', 'ein',
+                'empor', 'entgegen', 'entlang', 'dazwischen', 'dazu', 'davon', 'darauf',
+                'daran', 'aus', 'an', 'auf', 'ab', 'bei', 'mit', 'nach'
+            ];
+
+            const normalizeLexeme = (value) => String(value)
+                .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/\p{Diacritic}/gu, '')
+                .replace(/ß/g, 'ss');
+
+            const buildStems = (value) => {
+                const normalized = normalizeLexeme(value);
+                const stems = new Set([normalized]);
+                const suffixes = ['ungen', 'ung', 'ern', 'eln', 'en', 'er', 'el', 'est', 'st', 'tet', 'ten', 'te', 't', 'e', 'n', 's'];
+                suffixes.forEach(suffix => {
+                    if (normalized.length - suffix.length >= 3 && normalized.endsWith(suffix)) {
+                        stems.add(normalized.slice(0, -suffix.length));
+                    }
+                });
+                return Array.from(stems).filter(stem => stem.length >= 3);
+            };
+
+            const buildHeadSearchTerms = (terms, currentType) => {
+                const result = [];
+                const seen = new Set();
+
+                const addTerm = (term) => {
+                    const normalized = normalizeLexeme(term);
+                    if (!normalized || seen.has(normalized)) return;
+                    seen.add(normalized);
+                    result.push(term);
+                };
+
+                terms.forEach(addTerm);
+
+                if (currentType === 'verb') {
+                    terms.forEach(term => {
+                        const normalized = normalizeLexeme(term);
+                        const prefix = separablePrefixes.find(item => normalized.startsWith(item) && normalized.length > item.length + 2);
+                        if (!prefix) return;
+                        addTerm(normalized.slice(prefix.length));
+                    });
+                }
+
+                return result;
+            };
+
+            const isHeadMatch = (tokenValue, term) => {
+                const tokenNorm = normalizeLexeme(tokenValue);
+                const termNorm = normalizeLexeme(term);
+                if (!tokenNorm || !termNorm) return false;
+                if (tokenNorm === termNorm) return true;
+
+                const tokenStems = buildStems(tokenValue);
+                const termStems = buildStems(term);
+                return termStems.some(termStem =>
+                    tokenStems.some(tokenStem =>
+                        tokenStem === termStem ||
+                        (termStem.length >= 4 && tokenStem.startsWith(termStem)) ||
+                        (tokenStem.length >= 4 && termStem.startsWith(tokenStem)) ||
+                        (termStem.length >= 3 && tokenStem.length >= 3 && termStem.slice(0, 3) === tokenStem.slice(0, 3))
+                    )
+                );
+            };
+
+            const segments = Array.from(sentence.matchAll(/(\s+|[^\s]+)/g), match => {
+                const text = match[0];
+                return {
+                    text,
+                    isSpace: /^\s+$/.test(text)
+                };
+            });
+
+            const words = segments
+                .map((segment, index) => ({
+                    ...segment,
+                    index,
+                    normalized: segment.isSpace ? '' : normalizeLexeme(segment.text),
+                    isCapitalized: !segment.isSpace && /^[A-ZÄÖÜ]/.test(segment.text.replace(/^[^\p{L}]+/u, ''))
+                }))
+                .filter(segment => !segment.isSpace && segment.normalized);
+
+            const headTerms = combo
+                .split(/\s+/)
+                .map(term => term.trim())
+                .filter(Boolean)
+                .filter(term => {
+                    const normalized = normalizeLexeme(term);
+                    return normalized && normalized !== normalizeLexeme(prep) && !stopHeadWords.has(normalized);
+                });
+            const headSearchTerms = buildHeadSearchTerms(headTerms, type);
+
+            const boldIndices = new Set();
+            headSearchTerms.forEach(term => {
+                const match = words.find(word => !boldIndices.has(word.index) && isHeadMatch(word.text, term));
+                if (match) boldIndices.add(match.index);
+            });
+
+            const prepForms = new Set((prepVariants[prep] || [prep]).map(normalizeLexeme));
+            const prepCandidates = words.filter(word => prepForms.has(word.normalized));
+            const boldWordPositions = words
+                .filter(word => boldIndices.has(word.index))
+                .map(word => word.index);
+
+            const prepWord = prepCandidates.length === 0 ? null : prepCandidates.reduce((best, candidate) => {
+                if (boldWordPositions.length === 0) return best || candidate;
+                const candidateDistance = Math.min(...boldWordPositions.map(index => Math.abs(index - candidate.index)));
+                const bestDistance = best ? Math.min(...boldWordPositions.map(index => Math.abs(index - best.index))) : Number.POSITIVE_INFINITY;
+                return candidateDistance < bestDistance ? candidate : best;
+            }, null);
+
+            if (prepWord) {
+                boldIndices.add(prepWord.index);
+            }
+
+            if (type === 'verb') {
+                const compactHeadTerms = headSearchTerms
+                    .map(normalizeLexeme)
+                    .filter(term => term.length >= 4);
+                const matchedPrefix = compactHeadTerms
+                    .map(term => separablePrefixes.find(prefix => term.startsWith(prefix) && term.length > prefix.length + 2))
+                    .find(Boolean);
+
+                const isVerbCandidate = (word) =>
+                    !auxiliaryVerbs.has(word.normalized) &&
+                    !determiners.has(word.normalized) &&
+                    !pronounObjects.has(word.normalized) &&
+                    !commonAdverbs.has(word.normalized) &&
+                    !prepForms.has(word.normalized) &&
+                    !word.isCapitalized;
+
+                if (compactHeadTerms.length > 0 && boldIndices.size <= 1) {
+                    const beforePrep = prepWord
+                        ? [...words].reverse().find(word => word.index < prepWord.index && isVerbCandidate(word))
+                        : words.find(isVerbCandidate);
+                    const afterPrepCandidates = prepWord
+                        ? words
+                            .filter(word => word.index > prepWord.index && isVerbCandidate(word))
+                            .filter(word => normalizeLexeme(word.text) !== normalizeLexeme(matchedPrefix || ''))
+                        : [];
+                    const afterPrep = prepWord && prepWord.index === words[0]?.index
+                        ? afterPrepCandidates[0]
+                        : afterPrepCandidates[afterPrepCandidates.length - 1];
+                    const lexicalVerb = beforePrep || afterPrep || words.find(isVerbCandidate);
+                    if (lexicalVerb) {
+                        boldIndices.add(lexicalVerb.index);
+                    }
+                }
+
+                compactHeadTerms.forEach(term => {
+                    const currentPrefix = separablePrefixes.find(prefix => term.startsWith(prefix) && term.length > prefix.length + 2);
+                    if (!currentPrefix) return;
+
+                    const particle = normalizeLexeme(currentPrefix);
+                    const particleWord = [...words]
+                        .filter(word => word.normalized === particle)
+                        .sort((a, b) => {
+                            const aDistance = prepWord ? Math.abs(a.index - prepWord.index) : a.index;
+                            const bDistance = prepWord ? Math.abs(b.index - prepWord.index) : b.index;
+                            return aDistance - bDistance;
+                        })[0];
+
+                    if (particleWord) {
+                        boldIndices.add(particleWord.index);
+                    }
+                });
+            }
+
+            if (type === 'adj' && headSearchTerms.length > 0 && !headSearchTerms.some(term =>
+                words.some(word => boldIndices.has(word.index) && isHeadMatch(word.text, term))
+            )) {
+                const adjectiveCandidate = prepWord
+                    ? [...words].reverse().find(word =>
+                        word.index > prepWord.index &&
+                        !determiners.has(word.normalized) &&
+                        !pronounObjects.has(word.normalized) &&
+                        !prepForms.has(word.normalized) &&
+                        !word.isCapitalized
+                    )
+                    : null;
+
+                if (adjectiveCandidate) {
+                    boldIndices.add(adjectiveCandidate.index);
+                }
+            }
+
+            const colorIndices = new Set();
+            if (prepWord) {
+                const prepIsContraction = prepWord.normalized !== normalizeLexeme(prep);
+                let startCollecting = prepIsContraction;
+                let sawNominalCore = false;
+                let collectedWords = 0;
+
+                for (const word of words) {
+                    if (word.index <= prepWord.index) continue;
+                    if (!startCollecting) {
+                        startCollecting = true;
+                    }
+
+                    if (word.text.match(/^[,;:.!?]+$/)) break;
+                    if (clauseBreakWords.has(word.normalized) && sawNominalCore) break;
+
+                    const isPronounObject = pronounObjects.has(word.normalized);
+                    const isDeterminer = determiners.has(word.normalized);
+                    const isConnector = objectConnectors.has(word.normalized);
+                    const isNumberLike = /^[0-9]/.test(word.text);
+                    const isNounLike = word.isCapitalized || isPronounObject || isNumberLike;
+                    const canContinueBeforeCore = isDeterminer || isConnector || isNounLike || word.normalized.length > 2;
+                    const canContinueAfterCore = isDeterminer || isConnector || isNounLike;
+
+                    if ((!sawNominalCore && !canContinueBeforeCore) || (sawNominalCore && !canContinueAfterCore)) {
+                        break;
+                    }
+
+                    colorIndices.add(word.index);
+                    collectedWords += 1;
+                    if (isNounLike) sawNominalCore = true;
+
+                    if (sawNominalCore && collectedWords >= 8) break;
+                }
+
+                if (prepIsContraction) {
+                    colorIndices.add(prepWord.index);
+                }
+            }
+
+            return segments.map((segment, index) => {
+                if (segment.isSpace) return escapeHtml(segment.text);
+
+                const classes = [];
+                if (boldIndices.has(index)) classes.push('font-semibold', 'text-[#1C1C1E]');
+                if (colorIndices.has(index)) classes.push('font-medium', caseTextClass);
+
+                const content = escapeHtml(segment.text);
+                if (classes.length === 0) return content;
+
+                const tag = boldIndices.has(index) ? 'strong' : 'span';
+                return `<${tag} class="${Array.from(new Set(classes)).join(' ')}">${content}</${tag}>`;
+            }).join('');
+        };
+
         const normalizeComboKey = (combo) => combo
             .toLowerCase()
             .replace(/^(sich|s\.)\s+/i, '')
@@ -370,14 +690,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchesCase && matchesPrep && matchesSearch;
         });
 
-        const renderEntries = (arr) => {
+        const renderEntries = (arr, kasus, type) => {
             const entries = sortAndDedupEntries(arr);
             if (entries.length === 0) return '<span class="text-sm text-gray-300">-</span>';
             return `<ul class="list-none space-y-3">
                 ${entries.map(entry => `
                     <li class="pl-3 border-l-2 border-gray-100">
-                        <div class="text-sm font-semibold text-[#1C1C1E]">${entry.combo}</div>
-                        <div class="text-[13px] text-gray-400 italic mt-0.5 leading-snug">${entry.ex}</div>
+                        <div class="text-[13px] text-gray-500 italic mt-0.5 leading-snug">${styleSentenceMarkup(entry, kasus, type)}</div>
                     </li>
                 `).join('')}
             </ul>`;
@@ -390,9 +709,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tr.innerHTML = `
                 <td class="px-4 py-4 align-top border-r border-gray-100"><div class="flex items-center gap-2 font-semibold text-black"><span>${item.prep} +</span><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${item.kasus}</span></div></td>
-                <td class="px-4 py-4 align-top border-r border-gray-100">${renderEntries(item.norm)}</td>
-                <td class="px-4 py-4 align-top border-r border-gray-100">${renderEntries(item.verb)}</td>
-                <td class="px-4 py-4 align-top">${renderEntries(item.adj)}</td>
+                <td class="px-4 py-4 align-top border-r border-gray-100">${renderEntries(item.norm, item.kasus, 'norm')}</td>
+                <td class="px-4 py-4 align-top border-r border-gray-100">${renderEntries(item.verb, item.kasus, 'verb')}</td>
+                <td class="px-4 py-4 align-top">${renderEntries(item.adj, item.kasus, 'adj')}</td>
             `;
 
             tbody.appendChild(tr);

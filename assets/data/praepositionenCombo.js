@@ -4,7 +4,7 @@ export const praepositionenCombo = [
     kasus: "DAT",
     norm: [
       { combo: "Angebot an", ex: "Das Angebot an Dienstleistungen hat deutlich zugenommen." },
-      { combo: "Anteil an", ex: "Der Anteil der ausländischen Gäste hat sich verdoppelt." },
+      { combo: "Anteil an", ex: "Der Anteil an ausländischen Gästen hat sich verdoppelt." },
       { combo: "Arbeit an", ex: "Die Arbeit an dem neuen Roman macht zeitweise gute Fortschritte." },
       { combo: "Bedarf an", ex: "Mit wachsendem Bewusstsein ist der Bedarf an Beratung zurückgegangen." },
       { combo: "Freude an", ex: "Ihre Freude an Museen ist offensichtlich." },
