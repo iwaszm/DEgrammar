@@ -9,11 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- Navigation Logic ---
     const btnHome = document.getElementById('nav-home');
+    const btnBasis = document.getElementById('nav-basis');
     const btnVerben = document.getElementById('nav-verben');
+    const btnVerbenPage = document.getElementById('nav-verben-page');
     const btnVerbCombo = document.getElementById('nav-verb-combo');
     const btnPronomen = document.getElementById('nav-pronomen');
     const btnArtikel = document.getElementById('nav-artikel');
     const btnPraepositionen = document.getElementById('nav-praepositionen');
+    const btnPraepositionenPage = document.getElementById('nav-praepositionen-page');
     const btnPraepositionenCombo = document.getElementById('nav-praepositionen-combo');
     
     const pageHome = document.getElementById('page-home');
@@ -25,6 +28,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const pagePraepositionenCombo = document.getElementById('page-praepositionen-combo');
 
     const navContainer = document.getElementById('main-nav-container');
+    const navBasisMenu = document.getElementById('nav-basis-menu');
+    const navVerbenMenu = document.getElementById('nav-verben-menu');
+    const navPraepositionenMenu = document.getElementById('nav-praepositionen-menu');
+
+    const closeNavMenus = () => {
+        navBasisMenu?.classList.add('hidden');
+        navVerbenMenu?.classList.add('hidden');
+        navPraepositionenMenu?.classList.add('hidden');
+    };
+
+    const toggleNavMenu = (menu) => {
+        if (!menu) return;
+        const willOpen = menu.classList.contains('hidden');
+        [navBasisMenu, navVerbenMenu, navPraepositionenMenu]
+            .filter(otherMenu => otherMenu && otherMenu !== menu)
+            .forEach(otherMenu => otherMenu.classList.add('hidden'));
+        menu.classList.toggle('hidden', !willOpen);
+    };
 
     function switchPage(pageId) {
         const pages = [
@@ -36,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'praepositionen', btn: btnPraepositionen, el: pagePraepositionen },
             { id: 'praepositionen-combo', btn: btnPraepositionenCombo, el: pagePraepositionenCombo }
         ];
+
+        closeNavMenus();
 
         pages.forEach(p => {
             if (p.id === pageId) {
@@ -52,6 +75,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
+        const activeParentMap = {
+            'pronomen': btnBasis,
+            'artikel': btnBasis,
+            'verb-combo': btnVerben,
+            'verben': btnVerben,
+            'praepositionen': btnPraepositionen,
+            'praepositionen-combo': btnPraepositionen
+        };
+        const activeParent = activeParentMap[pageId];
+        if (activeParent) {
+            activeParent.classList.add('bg-white', 'shadow-sm', 'text-black');
+            activeParent.classList.remove('text-[#8E8E93]');
+        }
 
         // Toggle nav visibility
         if (pageId === 'home') {
@@ -71,12 +108,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (btnHome) btnHome.addEventListener('click', () => switchPage('home'));
-    btnVerben.addEventListener('click', () => switchPage('verben'));
+    btnBasis?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleNavMenu(navBasisMenu);
+    });
+    btnVerben.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleNavMenu(navVerbenMenu);
+    });
+    btnVerbenPage?.addEventListener('click', () => switchPage('verben'));
     btnVerbCombo.addEventListener('click', () => switchPage('verb-combo'));
     btnPronomen.addEventListener('click', () => switchPage('pronomen'));
     btnArtikel.addEventListener('click', () => switchPage('artikel'));
-    btnPraepositionen.addEventListener('click', () => switchPage('praepositionen'));
+    btnPraepositionen.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleNavMenu(navPraepositionenMenu);
+    });
+    btnPraepositionenPage?.addEventListener('click', () => switchPage('praepositionen'));
     btnPraepositionenCombo.addEventListener('click', () => switchPage('praepositionen-combo'));
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('#main-nav-container')) {
+            closeNavMenus();
+        }
+    });
 
     // Home Page Interaction
     document.querySelectorAll('.home-link').forEach(link => {
@@ -984,6 +1038,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initPrepComboFilters();
     renderPraepositionenTable();
     renderPraepositionenComboTable();
+    switchPage('home');
 
     // Export for external use
     window.switchPage = switchPage;

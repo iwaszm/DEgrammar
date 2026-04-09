@@ -237,30 +237,51 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         
         <!-- Navigation Bar (iOS Segmented Control) -->
-        <div id="main-nav-container" class="mb-10 transition-all duration-300 hidden opacity-0 pointer-events-none">
+        <div id="main-nav-container" class="relative z-40 mb-10 transition-all duration-300 hidden opacity-0 pointer-events-none">
             <div class="mx-auto flex w-full max-w-3xl justify-center">
-                <div class="grid w-full grid-cols-2 gap-1 rounded-2xl border border-white/20 bg-[#E5E5EA]/80 p-1 shadow-sm backdrop-blur-md sm:grid-cols-7">
-                    <button id="nav-home" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black">
+                <div class="grid w-full grid-cols-2 gap-1 rounded-2xl border border-white/20 bg-[#E5E5EA]/80 p-1 shadow-sm backdrop-blur-md sm:grid-cols-4">
+                    <button id="nav-home" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black sm:row-start-1 sm:col-start-1">
                         Home
                     </button>
-                    <button id="nav-pronomen" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
-                        Pronomen
-                    </button>
-                    <button id="nav-verben" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
-                        Verben
-                    </button>
-                    <button id="nav-verb-combo" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
-                        Verb Combo
-                    </button>
-                    <button id="nav-praepositionen" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
-                        Präpositionen
-                    </button>
-                    <button id="nav-praepositionen-combo" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
-                        Präp Combo
-                    </button>
-                    <button id="nav-artikel" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
-                        Artikel
-                    </button>
+                    <div class="relative sm:row-start-1 sm:col-start-2">
+                        <button id="nav-basis" class="w-full px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
+                            Basis
+                        </button>
+                        <div id="nav-basis-menu" class="hidden absolute left-0 top-full z-50 mt-2 min-w-full rounded-2xl border border-white/20 bg-white/95 p-1 shadow-lg backdrop-blur-md">
+                            <button id="nav-pronomen" class="w-full px-3 py-2 rounded-xl text-left text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:bg-[#F2F2F7] hover:text-black whitespace-nowrap">
+                                Pronomen
+                            </button>
+                            <button id="nav-artikel" class="w-full px-3 py-2 rounded-xl text-left text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:bg-[#F2F2F7] hover:text-black whitespace-nowrap">
+                                Artikel
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative sm:row-start-1 sm:col-start-3">
+                        <button id="nav-verben" class="w-full px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
+                            Verb
+                        </button>
+                        <div id="nav-verben-menu" class="hidden absolute left-0 top-full z-50 mt-2 min-w-full rounded-2xl border border-white/20 bg-white/95 p-1 shadow-lg backdrop-blur-md">
+                            <button id="nav-verben-page" class="w-full px-3 py-2 rounded-xl text-left text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:bg-[#F2F2F7] hover:text-black whitespace-nowrap">
+                                Verben
+                            </button>
+                            <button id="nav-verb-combo" class="w-full px-3 py-2 rounded-xl text-left text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:bg-[#F2F2F7] hover:text-black whitespace-nowrap">
+                                Combo
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative sm:row-start-1 sm:col-start-4">
+                        <button id="nav-praepositionen" class="w-full px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
+                            Präp
+                        </button>
+                        <div id="nav-praepositionen-menu" class="hidden absolute left-0 top-full z-50 mt-2 min-w-full rounded-2xl border border-white/20 bg-white/95 p-1 shadow-lg backdrop-blur-md">
+                            <button id="nav-praepositionen-page" class="w-full px-3 py-2 rounded-xl text-left text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:bg-[#F2F2F7] hover:text-black whitespace-nowrap">
+                                Präp
+                            </button>
+                            <button id="nav-praepositionen-combo" class="w-full px-3 py-2 rounded-xl text-left text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:bg-[#F2F2F7] hover:text-black whitespace-nowrap">
+                                Combo
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
