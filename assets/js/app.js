@@ -2,6 +2,7 @@ import { verbs } from '../data/verbs.js';
 import { pronomen } from '../data/pronomen.js';
 import { artikelData } from '../data/artikel.js';
 import { praepositionen } from '../data/praepositionen.js';
+import { praepositionenCombo } from '../data/praepositionenCombo.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -11,12 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnPronomen = document.getElementById('nav-pronomen');
     const btnArtikel = document.getElementById('nav-artikel');
     const btnPraepositionen = document.getElementById('nav-praepositionen');
+    const btnPraepositionenCombo = document.getElementById('nav-praepositionen-combo');
     
     const pageHome = document.getElementById('page-home');
     const pageVerben = document.getElementById('page-verben');
     const pagePronomen = document.getElementById('page-pronomen');
     const pageArtikel = document.getElementById('page-artikel');
     const pagePraepositionen = document.getElementById('page-praepositionen');
+    const pagePraepositionenCombo = document.getElementById('page-praepositionen-combo');
 
     const navContainer = document.getElementById('main-nav-container');
 
@@ -26,7 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'verben', btn: btnVerben, el: pageVerben },
             { id: 'pronomen', btn: btnPronomen, el: pagePronomen },
             { id: 'artikel', btn: btnArtikel, el: pageArtikel },
-            { id: 'praepositionen', btn: btnPraepositionen, el: pagePraepositionen }
+            { id: 'praepositionen', btn: btnPraepositionen, el: pagePraepositionen },
+            { id: 'praepositionen-combo', btn: btnPraepositionenCombo, el: pagePraepositionenCombo }
         ];
 
         pages.forEach(p => {
@@ -67,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnPronomen.addEventListener('click', () => switchPage('pronomen'));
     btnArtikel.addEventListener('click', () => switchPage('artikel'));
     btnPraepositionen.addEventListener('click', () => switchPage('praepositionen'));
+    btnPraepositionenCombo.addEventListener('click', () => switchPage('praepositionen-combo'));
 
     // Home Page Interaction
     document.querySelectorAll('.home-link').forEach(link => {
@@ -191,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Apply search to all active views
         renderVerbenTable(getFilteredVerbs());
         renderPraepositionenTable();
+        renderPraepositionenComboTable();
         // Personal and Artikel are small fixed tables, but we could filter rows if needed.
     }
 
@@ -253,7 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Präpositionen Logic ---
     const filterPrepCaseTags = document.getElementById('filter-prep-case-tags');
+    const filterPrepComboCaseTags = document.getElementById('filter-prep-combo-case-tags');
+    const filterPrepComboPrep = document.getElementById('filter-prep-combo-prep');
+    const prepComboSearchInput = document.getElementById('prep-combo-search');
     const selectedPrepCases = new Set(); 
+    const selectedPrepComboCases = new Set();
+    let currentPrepComboSearchTerm = '';
 
     const caseStyles = {
         DAT: 'bg-green-100 text-green-700',
@@ -274,9 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                  item.prep.toLowerCase().includes(currentSearchTerm) ||
                                  item.modes.some(m => 
                                     m.space.some(s => s.rule.toLowerCase().includes(currentSearchTerm)) ||
-                                    m.time.some(t => t.rule.toLowerCase().includes(currentSearchTerm)) ||
-                                    m.verbFixed.some(v => v.toLowerCase().includes(currentSearchTerm)) ||
-                                    m.adjFixed.some(a => a.toLowerCase().includes(currentSearchTerm))
+                                    m.time.some(t => t.rule.toLowerCase().includes(currentSearchTerm))
                                  );
             return matchesCase && matchesSearch;
         });
@@ -291,32 +300,16 @@ document.addEventListener('DOMContentLoaded', () => {
             visibleModes.forEach((mode, index) => {
                 const tr = document.createElement('tr');
                 tr.className = 'group hover:bg-gray-50/50 transition-colors align-top border-b border-gray-100 last:border-b-0';
-
-                if (index === 0) {
-                    const tdPrep = document.createElement('td');
-                    tdPrep.className = "px-5 py-4 font-bold text-lg text-black align-top border-r border-gray-100 bg-white group-hover:bg-gray-50/50";
-                    tdPrep.rowSpan = rowCount;
-                    tdPrep.textContent = item.prep;
-                    tr.appendChild(tdPrep);
-                }
-
-                const tdCase = document.createElement('td');
-                tdCase.className = "px-4 py-4 text-center align-top border-r border-gray-100";
                 const cls = caseStyles[mode.case] || 'bg-gray-100 text-gray-700';
-                tdCase.innerHTML = `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${mode.case}</span>`;
-                tr.appendChild(tdCase);
+                const tdPrepCase = document.createElement('td');
+                tdPrepCase.className = "px-4 py-4 align-top border-r border-gray-100";
+                tdPrepCase.innerHTML = `<div class="flex items-center gap-2 font-semibold text-black"><span>${item.prep} +</span><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${mode.case}</span></div>`;
+                tr.appendChild(tdPrepCase);
 
                 const renderRules = (arr) => {
                     if (!arr || arr.length === 0) return '';
                     return `<ul class="list-disc pl-4 space-y-3">
                         ${arr.map(r => `<li class="text-sm text-[#1C1C1E] leading-snug">${r.rule}<div class="text-[13px] text-gray-400 italic mt-0.5 leading-snug">${r.ex}</div></li>`).join('')}
-                    </ul>`;
-                };
-
-                const renderCombos = (arr) => {
-                    if (!arr || arr.length === 0) return '';
-                    return `<ul class="list-none space-y-2">
-                        ${arr.map(c => `<li class="text-sm text-[#1C1C1E] leading-snug pl-2 border-l-2 border-gray-100">${c}</li>`).join('')}
                     </ul>`;
                 };
 
@@ -326,22 +319,83 @@ document.addEventListener('DOMContentLoaded', () => {
                 tr.appendChild(tdSpace);
 
                 const tdTime = document.createElement('td');
-                tdTime.className = "px-4 py-4 align-top border-r border-gray-100";
+                tdTime.className = "px-4 py-4 align-top";
                 tdTime.innerHTML = renderRules(mode.time);
                 tr.appendChild(tdTime);
 
-                const tdVerb = document.createElement('td');
-                tdVerb.className = "px-4 py-4 align-top border-r border-gray-100";
-                tdVerb.innerHTML = renderCombos(mode.verbFixed);
-                tr.appendChild(tdVerb);
-
-                const tdAdj = document.createElement('td');
-                tdAdj.className = "px-4 py-4 align-top";
-                tdAdj.innerHTML = renderCombos(mode.adjFixed);
-                tr.appendChild(tdAdj);
-
                 tbody.appendChild(tr);
             });
+        });
+    };
+
+    const renderPraepositionenComboTable = () => {
+        const tbody = document.querySelector('#praepositionen-combo-table tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        const normalizeComboKey = (combo) => combo
+            .toLowerCase()
+            .replace(/^(sich|s\.)\s+/i, '')
+            .trim();
+
+        const sortAndDedupEntries = (arr) => {
+            if (!arr || arr.length === 0) return [];
+            const seen = new Set();
+            const unique = [];
+
+            arr.forEach(entry => {
+                const key = normalizeComboKey(entry.combo);
+                if (seen.has(key)) return;
+                seen.add(key);
+                unique.push(entry);
+            });
+
+            return unique.sort((a, b) => normalizeComboKey(a.combo).localeCompare(normalizeComboKey(b.combo), 'de'));
+        };
+
+        const sorted = [...praepositionenCombo].sort((a, b) => {
+            const prepCmp = a.prep.localeCompare(b.prep);
+            return prepCmp !== 0 ? prepCmp : a.kasus.localeCompare(b.kasus);
+        });
+
+        const filtered = sorted.filter(item => {
+            const matchesCase = selectedPrepComboCases.size === 0 || selectedPrepComboCases.has(item.kasus);
+            const matchesPrep = filterPrepComboPrep.value === 'all' || item.prep === filterPrepComboPrep.value;
+            const matchesSearch = !currentPrepComboSearchTerm ||
+                item.prep.toLowerCase().includes(currentPrepComboSearchTerm) ||
+                item.kasus.toLowerCase().includes(currentPrepComboSearchTerm) ||
+                item.norm.some(n => n.combo.toLowerCase().includes(currentPrepComboSearchTerm) || n.ex.toLowerCase().includes(currentPrepComboSearchTerm)) ||
+                item.verb.some(v => v.combo.toLowerCase().includes(currentPrepComboSearchTerm) || v.ex.toLowerCase().includes(currentPrepComboSearchTerm)) ||
+                item.adj.some(a => a.combo.toLowerCase().includes(currentPrepComboSearchTerm) || a.ex.toLowerCase().includes(currentPrepComboSearchTerm));
+            return matchesCase && matchesPrep && matchesSearch;
+        });
+
+        const renderEntries = (arr) => {
+            const entries = sortAndDedupEntries(arr);
+            if (entries.length === 0) return '<span class="text-sm text-gray-300">-</span>';
+            return `<ul class="list-none space-y-3">
+                ${entries.map(entry => `
+                    <li class="pl-3 border-l-2 border-gray-100">
+                        <div class="text-sm font-semibold text-[#1C1C1E]">${entry.combo}</div>
+                        <div class="text-[13px] text-gray-400 italic mt-0.5 leading-snug">${entry.ex}</div>
+                    </li>
+                `).join('')}
+            </ul>`;
+        };
+
+        filtered.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.className = 'group hover:bg-gray-50/50 transition-colors align-top border-b border-gray-100 last:border-b-0';
+            const cls = caseStyles[item.kasus] || 'bg-gray-100 text-gray-700';
+
+            tr.innerHTML = `
+                <td class="px-4 py-4 align-top border-r border-gray-100"><div class="flex items-center gap-2 font-semibold text-black"><span>${item.prep} +</span><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${item.kasus}</span></div></td>
+                <td class="px-4 py-4 align-top border-r border-gray-100">${renderEntries(item.norm)}</td>
+                <td class="px-4 py-4 align-top border-r border-gray-100">${renderEntries(item.verb)}</td>
+                <td class="px-4 py-4 align-top">${renderEntries(item.adj)}</td>
+            `;
+
+            tbody.appendChild(tr);
         });
     };
 
@@ -381,6 +435,56 @@ document.addEventListener('DOMContentLoaded', () => {
         ['GEN', 'DAT', 'AKK'].forEach(c => filterPrepCaseTags.appendChild(createPrepTag(c, c)));
     };
 
+    const applyPrepComboTagStyle = (btn) => {
+        const val = btn.dataset.value;
+        const active = val === 'all' ? selectedPrepComboCases.size === 0 : selectedPrepComboCases.has(val);
+        btn.classList.remove('bg-[#E5E5EA]','text-[#1C1C1E]','hover:bg-[#D1D1D6]','bg-green-100','text-green-700','bg-blue-100','text-blue-700','bg-yellow-100','text-yellow-700','bg-[#007AFF]','text-white');
+        if (active) {
+            if (val === 'all') btn.classList.add('bg-[#007AFF]', 'text-white');
+            else btn.classList.add(...(caseStyles[val] || 'bg-[#007AFF] text-white').split(' '));
+        } else {
+            btn.classList.add('bg-[#E5E5EA]','text-[#1C1C1E]','hover:bg-[#D1D1D6]');
+        }
+    };
+
+    const createPrepComboTag = (val, label) => {
+        const btn = document.createElement('button');
+        btn.textContent = label;
+        btn.className = 'prep-combo-tag px-3 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200';
+        btn.dataset.value = val;
+        applyPrepComboTagStyle(btn);
+        btn.addEventListener('click', () => {
+            if (val === 'all') selectedPrepComboCases.clear();
+            else {
+                if (selectedPrepComboCases.has(val)) selectedPrepComboCases.delete(val);
+                else selectedPrepComboCases.add(val);
+            }
+            document.querySelectorAll('.prep-combo-tag').forEach(applyPrepComboTagStyle);
+            renderPraepositionenComboTable();
+        });
+        return btn;
+    };
+
+    const initPrepComboFilters = () => {
+        filterPrepComboCaseTags.innerHTML = '<span class="text-sm font-semibold text-[#8E8E93] mr-1">Kasus:</span>';
+        filterPrepComboCaseTags.appendChild(createPrepComboTag('all', 'Alle'));
+        ['DAT', 'AKK'].forEach(c => filterPrepComboCaseTags.appendChild(createPrepComboTag(c, c)));
+
+        const preps = Array.from(new Set(praepositionenCombo.map(item => item.prep))).sort((a, b) => a.localeCompare(b, 'de'));
+        preps.forEach(prep => {
+            const opt = document.createElement('option');
+            opt.value = prep;
+            opt.textContent = `Präposition: ${prep}`;
+            filterPrepComboPrep.appendChild(opt);
+        });
+    };
+
+    filterPrepComboPrep.addEventListener('change', renderPraepositionenComboTable);
+    prepComboSearchInput.addEventListener('input', (e) => {
+        currentPrepComboSearchTerm = e.target.value.toLowerCase().trim();
+        renderPraepositionenComboTable();
+    });
+
     // --- Initial Render ---
     renderVerbenTable(verbs);
     renderPronomenTable();
@@ -388,7 +492,9 @@ document.addEventListener('DOMContentLoaded', () => {
     renderArtikelTable('artikel-unbestimmt-table', artikelData.unbestimmter);
     renderArtikelTable('artikel-null-table', artikelData.nullartikel);
     initPrepFilters();
+    initPrepComboFilters();
     renderPraepositionenTable();
+    renderPraepositionenComboTable();
 
     // Export for external use
     window.switchPage = switchPage;

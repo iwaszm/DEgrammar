@@ -1,4 +1,8 @@
 export const verbs = [
+    // stemVowel encodes the main vowel-change pattern as:
+    // infinitive/present stem -> preterite -> past participle
+    // typeClass legend for the UI:
+    // green = schwach, red = stark, amber = misch, purple = unregelmäßig
     {
         infinitive: "antworten",
         conjugations: ["antworte", "antwortest", "antwortet", "antworten", "antwortet"],
@@ -63,6 +67,15 @@ export const verbs = [
         typeClass: "bg-red-100 text-red-700"
     },
     {
+        infinitive: "binden",
+        conjugations: ["binde", "bindest", "bindet", "binden", "bindet"],
+        type: "stark",
+        stemVowel: "i: i/u/a",
+        pastInfo: "(hat gebunden)",
+        pastConjugations: ["band", "bandst", "band", "banden", "bandet"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
         infinitive: "biegen",
         conjugations: ["biege", "biegst", "biegt", "biegen", "biegt"],
         type: "stark",
@@ -78,6 +91,15 @@ export const verbs = [
         stemVowel: "ie: ie/o/o",
         pastInfo: "(hat geboten)",
         pastConjugations: ["bot", "botest", "bot", "boten", "botet"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "bitten",
+        conjugations: ["bitte", "bittest", "bittet", "bitten", "bittet"],
+        type: "stark",
+        stemVowel: "i: i/e/a",
+        pastInfo: "(hat gebeten)",
+        pastConjugations: ["bat", "batest", "bat", "baten", "batet"],
         typeClass: "bg-red-100 text-red-700"
     },
     {
@@ -97,6 +119,15 @@ export const verbs = [
         pastInfo: "(hat gebraucht)",
         pastConjugations: ["brauchte", "brauchtest", "brauchte", "brauchten", "brauchtet"],
         typeClass: "bg-green-100 text-green-700"
+    },
+    {
+        infinitive: "braten",
+        conjugations: ["brate", "brätst", "brät", "braten", "bratet"],
+        type: "stark",
+        stemVowel: "a: ä/a/ie",
+        pastInfo: "(hat gebraten)",
+        pastConjugations: ["briet", "brietst", "briet", "brieten", "brietet"],
+        typeClass: "bg-red-100 text-red-700"
     },
     {
         infinitive: "brechen",
@@ -189,6 +220,15 @@ export const verbs = [
         typeClass: "bg-red-100 text-red-700"
     },
     {
+        infinitive: "frieren",
+        conjugations: ["friere", "frierst", "friert", "frieren", "friert"],
+        type: "stark",
+        stemVowel: "ie: ie/o/o",
+        pastInfo: "(hat/ist gefroren)",
+        pastConjugations: ["fror", "frorst", "fror", "froren", "frort"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
         infinitive: "fliegen",
         conjugations: ["fliege", "fliegst", "fliegt", "fliegen", "fliegt"],
         type: "stark",
@@ -276,6 +316,15 @@ export const verbs = [
         stemVowel: "ei: ei/i/i",
         pastInfo: "(hat gegriffen)",
         pastConjugations: ["griff", "griffst", "griff", "griffen", "grifft"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "graben",
+        conjugations: ["grabe", "gräbst", "gräbt", "graben", "grabt"],
+        type: "stark",
+        stemVowel: "a: ä/a/u",
+        pastInfo: "(hat gegraben)",
+        pastConjugations: ["grub", "grubst", "grub", "gruben", "grubt"],
         typeClass: "bg-red-100 text-red-700"
     },
     {
@@ -576,6 +625,33 @@ export const verbs = [
         typeClass: "bg-red-100 text-red-700"
     },
     {
+        infinitive: "raten",
+        conjugations: ["rate", "rätst", "rät", "raten", "ratet"],
+        type: "stark",
+        stemVowel: "a: ä/a/u",
+        pastInfo: "(hat geraten)",
+        pastConjugations: ["riet", "rietst", "riet", "rieten", "rietet"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "reiben",
+        conjugations: ["reibe", "reibst", "reibt", "reiben", "reibt"],
+        type: "stark",
+        stemVowel: "ei: ei/ie/ie",
+        pastInfo: "(hat gerieben)",
+        pastConjugations: ["rieb", "riebst", "rieb", "rieben", "riebt"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "reißen",
+        conjugations: ["reiße", "reißt", "reißt", "reißen", "reißt"],
+        type: "stark",
+        stemVowel: "ei: ei/i/i",
+        pastInfo: "(hat/ist gerissen)",
+        pastConjugations: ["riss", "rissest", "riss", "rissen", "risst"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
         infinitive: "rennen",
         conjugations: ["renne", "rennst", "rennt", "rennen", "rennt"],
         type: "misch",
@@ -627,6 +703,24 @@ export const verbs = [
         stemVowel: "a: ä/a/ie",
         pastInfo: "(hat geschlafen)",
         pastConjugations: ["schlief", "schliefst", "schlief", "schliefen", "schlieft"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "schneiden",
+        conjugations: ["schneide", "schneidest", "schneidet", "schneiden", "schneidet"],
+        type: "stark",
+        stemVowel: "ei: ei/ie/ie",
+        pastInfo: "(hat geschnitten)",
+        pastConjugations: ["schnitt", "schnittest", "schnitt", "schnitten", "schnittet"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "schreien",
+        conjugations: ["schreie", "schreist", "schreit", "schreien", "schreit"],
+        type: "stark",
+        stemVowel: "ei: ei/ie/ie",
+        pastInfo: "(hat geschrien)",
+        pastConjugations: ["schrie", "schriest", "schrie", "schrien", "schriet"],
         typeClass: "bg-red-100 text-red-700"
     },
     {
@@ -816,6 +910,24 @@ export const verbs = [
         stemVowel: "ei: ei/ie/ie",
         pastInfo: "(ist gestiegen)",
         pastConjugations: ["stieg", "stiegst", "stieg", "stiegen", "stiegt"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "stehlen",
+        conjugations: ["stehle", "stiehlst", "stiehlt", "stehlen", "stehlt"],
+        type: "stark",
+        stemVowel: "e: ie/o/a",
+        pastInfo: "(hat gestohlen)",
+        pastConjugations: ["stahl", "stahlst", "stahl", "stahlen", "stahlt"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
+        infinitive: "stinken",
+        conjugations: ["stinke", "stinkst", "stinkt", "stinken", "stinkt"],
+        type: "stark",
+        stemVowel: "i: i/u/a",
+        pastInfo: "(hat gestunken)",
+        pastConjugations: ["stank", "stankst", "stank", "stanken", "stankt"],
         typeClass: "bg-red-100 text-red-700"
     },
     {

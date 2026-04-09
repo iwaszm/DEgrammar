@@ -239,7 +239,7 @@
         <!-- Navigation Bar (iOS Segmented Control) -->
         <div id="main-nav-container" class="mb-10 transition-all duration-300 hidden opacity-0 pointer-events-none">
             <div class="mx-auto flex w-full max-w-3xl justify-center">
-                <div class="grid w-full grid-cols-2 gap-1 rounded-2xl border border-white/20 bg-[#E5E5EA]/80 p-1 shadow-sm backdrop-blur-md sm:grid-cols-5">
+                <div class="grid w-full grid-cols-2 gap-1 rounded-2xl border border-white/20 bg-[#E5E5EA]/80 p-1 shadow-sm backdrop-blur-md sm:grid-cols-6">
                     <button id="nav-home" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black">
                         Home
                     </button>
@@ -251,6 +251,9 @@
                     </button>
                     <button id="nav-praepositionen" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
                         Präpositionen
+                    </button>
+                    <button id="nav-praepositionen-combo" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
+                        Präp Combo
                     </button>
                     <button id="nav-artikel" class="px-3 sm:px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 text-[#8E8E93] hover:text-black whitespace-nowrap">
                         Artikel
@@ -380,7 +383,27 @@
 
         <div id="page-praepositionen" class="hidden">
             <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4"><div id="filter-prep-case-tags" class="flex flex-wrap items-center gap-2"><span class="text-sm font-semibold text-[#8E8E93] mr-1">Kasus:</span></div></div>
-            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100"><div class="overflow-x-auto"><table class="w-full text-left border-collapse" id="praepositionen-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-5 py-4 font-semibold border-b border-gray-200 w-1/12">Präposition</th><th class="px-4 py-4 font-semibold border-b border-gray-200 text-center w-1/12">Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Raum</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-3/12">Zeit</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Verben</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-2/12">Adjektive</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100"><div class="overflow-x-auto"><table class="w-full text-left border-collapse" id="praepositionen-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-4 py-4 font-semibold border-b border-gray-200 w-[16%]">Präp + Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-[48%]">Raum</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-[36%]">Zeit</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
+        </div>
+
+        <div id="page-praepositionen-combo" class="hidden">
+            <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div id="filter-prep-combo-case-tags" class="flex flex-wrap items-center gap-2"><span class="text-sm font-semibold text-[#8E8E93] mr-1">Kasus:</span></div>
+                <div class="flex flex-col sm:flex-row gap-3 md:items-center md:ml-auto">
+                    <div class="relative">
+                        <select id="filter-prep-combo-prep" class="ios-select bg-[#E5E5EA] text-[#1C1C1E] text-sm font-medium py-1.5 pl-4 pr-10 rounded-full appearance-none focus:outline-none focus:ring-2 focus:ring-[#007AFF] transition-shadow cursor-pointer">
+                            <option value="all">Präposition: Alle</option>
+                        </select>
+                    </div>
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" id="prep-combo-search" placeholder="Suchen..." class="w-full bg-[#E5E5EA]/50 backdrop-blur-md border border-white/20 rounded-full py-1.5 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#007AFF] transition-all">
+                        <div class="absolute left-3 top-1/2 -translate-y-1/2 text-[#8E8E93]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-[2rem] shadow-sm overflow-hidden border border-gray-100"><div class="overflow-x-auto"><table class="w-full text-left border-collapse" id="praepositionen-combo-table"><thead class="glass-header text-[#8E8E93] text-xs uppercase tracking-wider sticky top-0 z-10"><tr><th class="px-4 py-4 font-semibold border-b border-gray-200 w-[14%]">Präp + Kasus</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-[28%]">Norm</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-[34%]">Verb</th><th class="px-4 py-4 font-semibold border-b border-gray-200 w-[24%]">Adj.</th></tr></thead><tbody class="text-[15px] divide-y divide-gray-100"></tbody></table></div></div>
         </div>
 
     </div>
