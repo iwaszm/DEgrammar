@@ -292,6 +292,15 @@ export const verbs = [
         typeClass: "bg-red-100 text-red-700"
     },
     {
+        infinitive: "gelingen",
+        conjugations: ["gelinge", "gelingst", "gelingt", "gelingen", "gelingt"],
+        type: "stark",
+        stemVowel: "i: i/a/u",
+        pastInfo: "(ist gelungen)",
+        pastConjugations: ["gelang", "gelangst", "gelang", "gelangen", "gelangt"],
+        typeClass: "bg-red-100 text-red-700"
+    },
+    {
         infinitive: "gewinnen",
         conjugations: ["gewinne", "gewinnst", "gewinnt", "gewinnen", "gewinnt"],
         type: "stark",

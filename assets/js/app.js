@@ -47,6 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
         menu.classList.toggle('hidden', !willOpen);
     };
 
+    const parentNavButtons = [btnBasis, btnVerben, btnPraepositionen];
+    const resetNavButtonState = (button) => {
+        if (!button) return;
+        button.classList.remove('bg-white', 'shadow-sm', 'text-black');
+        button.classList.add('text-[#8E8E93]');
+    };
+
     function switchPage(pageId) {
         const pages = [
             { id: 'home', btn: btnHome, el: pageHome },
@@ -59,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         closeNavMenus();
+        parentNavButtons.forEach(resetNavButtonState);
 
         pages.forEach(p => {
             if (p.id === pageId) {
@@ -147,10 +155,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const selectedTypes = new Set();
 
-    const italicizeEnding = (word) => {
-        const endings = ['test','tet','ten','te','est','et','st','t','en','e'];
+    const italicizeEnding = (word, infinitive = '') => {
+        const stem = String(infinitive).replace(/(en|n)$/, '');
+        const stemAwareEndings = ['etest', 'etet', 'eten', 'ete', 'test', 'tet', 'ten', 'te', 'est', 'et', 'st', 't', 'en', 'e'];
+        const fallbackEndings = ['test', 'tet', 'ten', 'te', 'est', 'et', 'st', 't', 'en', 'e'];
         const w = String(word);
-        for (const end of endings) {
+
+        for (const end of stemAwareEndings) {
+            if (stem && w.length > end.length && w.endsWith(end) && w.slice(0, -end.length) === stem) {
+                return w.slice(0, -end.length) + '<i>' + end + '</i>';
+            }
+        }
+
+        for (const end of fallbackEndings) {
             if (w.length > end.length && w.endsWith(end)) {
                 return w.slice(0, -end.length) + '<i>' + end + '</i>';
             }
@@ -177,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="inline-block w-2.5 h-2.5 rounded-full ${typeDotClass}" title="${verb.type}"></span>
                     </div>
                 </td>
-                ${verb.conjugations.map(c => `<td class="px-3 pt-4 pb-1 whitespace-nowrap">${italicizeEnding(c)}</td>`).join('')}
+                ${verb.conjugations.map(c => `<td class="px-3 pt-4 pb-1 whitespace-nowrap">${italicizeEnding(c, verb.infinitive)}</td>`).join('')}
             `;
             tbodyVerben.appendChild(tr1);
 
@@ -185,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tr2.className = 'verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors';
             tr2.innerHTML = `
                 <td class="px-4 pb-4 pt-1 text-sm text-[#8E8E93] whitespace-nowrap">${verb.pastInfo}</td>
-                ${verb.pastConjugations.map(c => `<td class="px-3 pb-4 pt-1 text-[#8E8E93] whitespace-nowrap">${italicizeEnding(c)}</td>`).join('')}
+                ${verb.pastConjugations.map(c => `<td class="px-3 pb-4 pt-1 text-[#8E8E93] whitespace-nowrap">${italicizeEnding(c, verb.infinitive)}</td>`).join('')}
             `;
             tbodyVerben.appendChild(tr2);
         });
@@ -525,8 +542,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 tr.className = 'group hover:bg-gray-50/50 transition-colors align-top border-b border-gray-100 last:border-b-0';
                 const cls = caseStyles[mode.case] || 'bg-gray-100 text-gray-700';
                 const tdPrepCase = document.createElement('td');
-                tdPrepCase.className = "px-4 py-4 align-top border-r border-gray-100";
-                tdPrepCase.innerHTML = `<div class="flex items-center gap-2 font-semibold text-black"><span>${item.prep} +</span><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${mode.case}</span></div>`;
+                tdPrepCase.className = "px-3 py-4 align-top border-r border-gray-100 w-24";
+                tdPrepCase.innerHTML = `
+                    <div class="font-semibold text-black leading-tight">
+                        <div>${item.prep}</div>
+                        <div class="mt-1 text-xs ${cls} bg-transparent px-0 py-0 rounded-none">${mode.case}</div>
+                    </div>
+                `;
                 tr.appendChild(tdPrepCase);
 
                 const renderRules = (arr) => {
@@ -931,7 +953,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const cls = caseStyles[item.kasus] || 'bg-gray-100 text-gray-700';
 
             tr.innerHTML = `
-                <td class="px-4 py-4 align-top border-r border-gray-100"><div class="flex items-center gap-2 font-semibold text-black"><span>${item.prep} +</span><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}">${item.kasus}</span></div></td>
+                <td class="px-3 py-4 align-top border-r border-gray-100 w-24">
+                    <div class="font-semibold text-black leading-tight">
+                        <div>${item.prep}</div>
+                        <div class="mt-1 text-xs ${cls} bg-transparent px-0 py-0 rounded-none">${item.kasus}</div>
+                    </div>
+                </td>
                 <td class="px-4 py-4 align-top border-r border-gray-100">${renderEntries(item.norm, item.kasus, 'norm')}</td>
                 <td class="px-4 py-4 align-top border-r border-gray-100">${renderEntries(item.verb, item.kasus, 'verb')}</td>
                 <td class="px-4 py-4 align-top">${renderEntries(item.adj, item.kasus, 'adj')}</td>
