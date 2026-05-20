@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnVerbCombo = document.getElementById('nav-verb-combo');
     const btnPronomen = document.getElementById('nav-pronomen');
     const btnArtikel = document.getElementById('nav-artikel');
+    const btnV2n = document.getElementById('nav-v2n');
+    const btnA2n = document.getElementById('nav-a2n');
     const btnPraepositionen = document.getElementById('nav-praepositionen');
     const btnPraepositionenPage = document.getElementById('nav-praepositionen-page');
     const btnPraepositionenCombo = document.getElementById('nav-praepositionen-combo');
@@ -24,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageVerbCombo = document.getElementById('page-verb-combo');
     const pagePronomen = document.getElementById('page-pronomen');
     const pageArtikel = document.getElementById('page-artikel');
+    const pageV2n = document.getElementById('page-v2n');
+    const pageA2n = document.getElementById('page-a2n');
     const pagePraepositionen = document.getElementById('page-praepositionen');
     const pagePraepositionenCombo = document.getElementById('page-praepositionen-combo');
 
@@ -61,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 'verb-combo', btn: btnVerbCombo, el: pageVerbCombo },
             { id: 'pronomen', btn: btnPronomen, el: pagePronomen },
             { id: 'artikel', btn: btnArtikel, el: pageArtikel },
+            { id: 'v2n', btn: btnV2n, el: pageV2n },
+            { id: 'a2n', btn: btnA2n, el: pageA2n },
             { id: 'praepositionen', btn: btnPraepositionen, el: pagePraepositionen },
             { id: 'praepositionen-combo', btn: btnPraepositionenCombo, el: pagePraepositionenCombo }
         ];
@@ -87,6 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const activeParentMap = {
             'pronomen': btnBasis,
             'artikel': btnBasis,
+            'v2n': btnBasis,
+            'a2n': btnBasis,
             'verb-combo': btnVerben,
             'verben': btnVerben,
             'praepositionen': btnPraepositionen,
@@ -128,6 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btnVerbCombo.addEventListener('click', () => switchPage('verb-combo'));
     btnPronomen.addEventListener('click', () => switchPage('pronomen'));
     btnArtikel.addEventListener('click', () => switchPage('artikel'));
+    btnV2n?.addEventListener('click', () => switchPage('v2n'));
+    btnA2n?.addEventListener('click', () => switchPage('a2n'));
     btnPraepositionen.addEventListener('click', (e) => {
         e.stopPropagation();
         toggleNavMenu(navPraepositionenMenu);
