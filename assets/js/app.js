@@ -4,40 +4,101 @@ import { artikelData } from '../data/artikel.js';
 import { praepositionen } from '../data/praepositionen.js';
 import { praepositionenCombo } from '../data/praepositionenCombo.js';
 import { verbCombo } from '../data/verbCombo.js';
+import { substantivFamilienHeaders, substantivFamilienRows } from '../data/substantivFamilien.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const escapeHtml = (value) => String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+    const safeItalicizeEnding = (word, infinitive = '') => {
+        const stem = String(infinitive).replace(/(en|n)$/, '');
+        const stemAwareEndings = ['etest', 'etet', 'eten', 'ete', 'test', 'tet', 'ten', 'te', 'est', 'et', 'st', 't', 'en', 'e'];
+        const fallbackEndings = ['test', 'tet', 'ten', 'te', 'est', 'et', 'st', 't', 'en', 'e'];
+        const w = String(word);
+
+        for (const end of stemAwareEndings) {
+            if (stem && w.length > end.length && w.endsWith(end) && w.slice(0, -end.length) === stem) {
+                return escapeHtml(w.slice(0, -end.length)) + '<i>' + escapeHtml(end) + '</i>';
+            }
+        }
+
+        for (const end of fallbackEndings) {
+            if (w.length > end.length && w.endsWith(end)) {
+                return escapeHtml(w.slice(0, -end.length)) + '<i>' + escapeHtml(end) + '</i>';
+            }
+        }
+        return escapeHtml(w);
+    };
+
+    const renderPronounLabel = (value) => {
+        const match = String(value).match(/^([^<]+)(?:\s+<span class="text-xs text-\[#8E8E93\] font-normal">\(([^)]+)\)<\/span>)?$/);
+        if (!match) return escapeHtml(value);
+        const [, base, note] = match;
+        return escapeHtml(base.trim()) + (note
+            ? ` <span class="text-xs text-[#8E8E93] font-normal">(${escapeHtml(note)})</span>`
+            : '');
+    };
+
+    const sanitizeTrustedMarkup = (value) => {
+        const template = document.createElement('template');
+        template.innerHTML = String(value);
+        const allowedTags = new Set(['SPAN', 'DIV', 'I']);
+        const cleanNode = (node) => {
+            if (node.nodeType === Node.TEXT_NODE) return;
+            if (node.nodeType !== Node.ELEMENT_NODE || !allowedTags.has(node.tagName)) {
+                node.replaceWith(document.createTextNode(node.textContent || ''));
+                return;
+            }
+            [...node.attributes].forEach(attr => {
+                if (attr.name !== 'class') {
+                    node.removeAttribute(attr.name);
+                    return;
+                }
+                const cleanClasses = attr.value
+                    .split(/\s+/)
+                    .filter(cls => /^[A-Za-z0-9_:[\]#./%-]+$/.test(cls));
+                if (cleanClasses.length === 0) node.removeAttribute('class');
+                else node.setAttribute('class', cleanClasses.join(' '));
+            });
+            [...node.childNodes].forEach(cleanNode);
+        };
+        [...template.content.childNodes].forEach(cleanNode);
+        return template.innerHTML;
+    };
     
     // --- Navigation Logic ---
-    const btnHome = document.getElementById('nav-home');
+    const btnHome = null;
     const btnBasis = document.getElementById('nav-basis');
+    const btnNomen = document.getElementById('nav-nomen');
+    const btnNomenBildung = document.getElementById('nav-nomen-bildung');
+    const btnSubstantivFamilien = document.getElementById('nav-substantiv-familien');
     const btnVerben = document.getElementById('nav-verben');
     const btnVerbenPage = document.getElementById('nav-verben-page');
     const btnVerbCombo = document.getElementById('nav-verb-combo');
-    const btnPronomen = document.getElementById('nav-pronomen');
-    const btnArtikel = document.getElementById('nav-artikel');
-    const btnV2n = document.getElementById('nav-v2n');
-    const btnA2n = document.getElementById('nav-a2n');
     const btnPraepositionen = document.getElementById('nav-praepositionen');
     const btnPraepositionenPage = document.getElementById('nav-praepositionen-page');
     const btnPraepositionenCombo = document.getElementById('nav-praepositionen-combo');
     
-    const pageHome = document.getElementById('page-home');
+    const pageHome = null;
     const pageVerben = document.getElementById('page-verben');
     const pageVerbCombo = document.getElementById('page-verb-combo');
-    const pagePronomen = document.getElementById('page-pronomen');
-    const pageArtikel = document.getElementById('page-artikel');
-    const pageV2n = document.getElementById('page-v2n');
-    const pageA2n = document.getElementById('page-a2n');
+    const pageBasis = document.getElementById('page-basis');
+    const pageNomenBildung = document.getElementById('page-nomen-bildung');
+    const pageSubstantivFamilien = document.getElementById('page-substantiv-familien');
     const pagePraepositionen = document.getElementById('page-praepositionen');
     const pagePraepositionenCombo = document.getElementById('page-praepositionen-combo');
 
     const navContainer = document.getElementById('main-nav-container');
-    const navBasisMenu = document.getElementById('nav-basis-menu');
+    const navNomenMenu = document.getElementById('nav-nomen-menu');
     const navVerbenMenu = document.getElementById('nav-verben-menu');
     const navPraepositionenMenu = document.getElementById('nav-praepositionen-menu');
 
     const closeNavMenus = () => {
-        navBasisMenu?.classList.add('hidden');
+        navNomenMenu?.classList.add('hidden');
         navVerbenMenu?.classList.add('hidden');
         navPraepositionenMenu?.classList.add('hidden');
     };
@@ -45,13 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleNavMenu = (menu) => {
         if (!menu) return;
         const willOpen = menu.classList.contains('hidden');
-        [navBasisMenu, navVerbenMenu, navPraepositionenMenu]
+        [navNomenMenu, navVerbenMenu, navPraepositionenMenu]
             .filter(otherMenu => otherMenu && otherMenu !== menu)
             .forEach(otherMenu => otherMenu.classList.add('hidden'));
         menu.classList.toggle('hidden', !willOpen);
     };
 
-    const parentNavButtons = [btnBasis, btnVerben, btnPraepositionen];
+    const parentNavButtons = [btnBasis, btnNomen, btnVerben, btnPraepositionen];
     const resetNavButtonState = (button) => {
         if (!button) return;
         button.classList.remove('bg-white', 'shadow-sm', 'text-black');
@@ -60,13 +121,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function switchPage(pageId) {
         const pages = [
-            { id: 'home', btn: btnHome, el: pageHome },
+            { id: 'basis', btn: btnBasis, el: pageBasis },
+            { id: 'nomen-bildung', btn: btnNomenBildung, el: pageNomenBildung },
+            { id: 'substantiv-familien', btn: btnSubstantivFamilien, el: pageSubstantivFamilien },
             { id: 'verben', btn: btnVerben, el: pageVerben },
             { id: 'verb-combo', btn: btnVerbCombo, el: pageVerbCombo },
-            { id: 'pronomen', btn: btnPronomen, el: pagePronomen },
-            { id: 'artikel', btn: btnArtikel, el: pageArtikel },
-            { id: 'v2n', btn: btnV2n, el: pageV2n },
-            { id: 'a2n', btn: btnA2n, el: pageA2n },
             { id: 'praepositionen', btn: btnPraepositionen, el: pagePraepositionen },
             { id: 'praepositionen-combo', btn: btnPraepositionenCombo, el: pagePraepositionenCombo }
         ];
@@ -76,13 +135,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         pages.forEach(p => {
             if (p.id === pageId) {
-                p.el.classList.remove('hidden');
+                p.el?.classList.remove('hidden');
                 if (p.btn) {
                     p.btn.classList.add('bg-white', 'shadow-sm', 'text-black');
                     p.btn.classList.remove('text-[#8E8E93]');
                 }
             } else {
-                p.el.classList.add('hidden');
+                p.el?.classList.add('hidden');
                 if (p.btn) {
                     p.btn.classList.remove('bg-white', 'shadow-sm', 'text-black');
                     p.btn.classList.add('text-[#8E8E93]');
@@ -91,10 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const activeParentMap = {
-            'pronomen': btnBasis,
-            'artikel': btnBasis,
-            'v2n': btnBasis,
-            'a2n': btnBasis,
+            'basis': btnBasis,
+            'nomen-bildung': btnNomen,
+            'substantiv-familien': btnNomen,
             'verb-combo': btnVerben,
             'verben': btnVerben,
             'praepositionen': btnPraepositionen,
@@ -106,40 +164,33 @@ document.addEventListener('DOMContentLoaded', () => {
             activeParent.classList.remove('text-[#8E8E93]');
         }
 
-        // Toggle nav visibility
-        if (pageId === 'home') {
-            navContainer.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => {
-                if (pageHome.classList.contains('hidden')) return; 
-                navContainer.classList.add('hidden');
-            }, 200);
-        } else {
-            navContainer.classList.remove('hidden');
-            setTimeout(() => {
-                navContainer.classList.remove('opacity-0', 'pointer-events-none');
-            }, 10);
-        }
+        navContainer.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+
+        if (pageId === 'substantiv-familien') renderSubstantivFamilienTable();
+        if (pageId === 'praepositionen') renderPraepositionenTable();
+        if (pageId === 'praepositionen-combo') renderPraepositionenComboTable();
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    if (btnHome) btnHome.addEventListener('click', () => switchPage('home'));
-    btnBasis?.addEventListener('click', (e) => {
+    btnBasis?.addEventListener('click', () => switchPage('basis'));
+    btnNomen?.addEventListener('click', (e) => {
         e.stopPropagation();
-        toggleNavMenu(navBasisMenu);
+        switchPage('nomen-bildung');
+        toggleNavMenu(navNomenMenu);
     });
+    btnNomenBildung?.addEventListener('click', () => switchPage('nomen-bildung'));
+    btnSubstantivFamilien?.addEventListener('click', () => switchPage('substantiv-familien'));
     btnVerben.addEventListener('click', (e) => {
         e.stopPropagation();
+        switchPage('verben');
         toggleNavMenu(navVerbenMenu);
     });
     btnVerbenPage?.addEventListener('click', () => switchPage('verben'));
     btnVerbCombo.addEventListener('click', () => switchPage('verb-combo'));
-    btnPronomen.addEventListener('click', () => switchPage('pronomen'));
-    btnArtikel.addEventListener('click', () => switchPage('artikel'));
-    btnV2n?.addEventListener('click', () => switchPage('v2n'));
-    btnA2n?.addEventListener('click', () => switchPage('a2n'));
     btnPraepositionen.addEventListener('click', (e) => {
         e.stopPropagation();
+        switchPage('praepositionen');
         toggleNavMenu(navPraepositionenMenu);
     });
     btnPraepositionenPage?.addEventListener('click', () => switchPage('praepositionen'));
@@ -165,26 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const selectedTypes = new Set();
 
-    const italicizeEnding = (word, infinitive = '') => {
-        const stem = String(infinitive).replace(/(en|n)$/, '');
-        const stemAwareEndings = ['etest', 'etet', 'eten', 'ete', 'test', 'tet', 'ten', 'te', 'est', 'et', 'st', 't', 'en', 'e'];
-        const fallbackEndings = ['test', 'tet', 'ten', 'te', 'est', 'et', 'st', 't', 'en', 'e'];
-        const w = String(word);
-
-        for (const end of stemAwareEndings) {
-            if (stem && w.length > end.length && w.endsWith(end) && w.slice(0, -end.length) === stem) {
-                return w.slice(0, -end.length) + '<i>' + end + '</i>';
-            }
-        }
-
-        for (const end of fallbackEndings) {
-            if (w.length > end.length && w.endsWith(end)) {
-                return w.slice(0, -end.length) + '<i>' + end + '</i>';
-            }
-        }
-        return w;
-    };
-
     const renderVerbenTable = (data) => {
         const sortedData = [...data].sort((a, b) => a.infinitive.localeCompare(b.infinitive));
         tbodyVerben.innerHTML = '';
@@ -200,19 +231,19 @@ document.addEventListener('DOMContentLoaded', () => {
             tr1.innerHTML = `
                 <td class="px-4 pt-4 pb-1 font-semibold text-black min-w-[180px]">
                     <div class="inline-flex items-center gap-2">
-                        <span>${verb.infinitive}</span>
-                        <span class="inline-block w-2.5 h-2.5 rounded-full ${typeDotClass}" title="${verb.type}"></span>
+                        <span>${escapeHtml(verb.infinitive)}</span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-full ${typeDotClass}" title="${escapeHtml(verb.type)}"></span>
                     </div>
                 </td>
-                ${verb.conjugations.map(c => `<td class="px-3 pt-4 pb-1 whitespace-nowrap">${italicizeEnding(c, verb.infinitive)}</td>`).join('')}
+                ${verb.conjugations.map(c => `<td class="px-3 pt-4 pb-1 whitespace-nowrap">${safeItalicizeEnding(c, verb.infinitive)}</td>`).join('')}
             `;
             tbodyVerben.appendChild(tr1);
 
             const tr2 = document.createElement('tr');
             tr2.className = 'verb-row-2 border-b border-gray-100 group hover:bg-gray-50/50 transition-colors';
             tr2.innerHTML = `
-                <td class="px-4 pb-4 pt-1 text-sm text-[#8E8E93] whitespace-nowrap">${verb.pastInfo}</td>
-                ${verb.pastConjugations.map(c => `<td class="px-3 pb-4 pt-1 text-[#8E8E93] whitespace-nowrap">${italicizeEnding(c, verb.infinitive)}</td>`).join('')}
+                <td class="px-4 pb-4 pt-1 text-sm text-[#8E8E93] whitespace-nowrap">${escapeHtml(verb.pastInfo)}</td>
+                ${verb.pastConjugations.map(c => `<td class="px-3 pb-4 pt-1 text-[#8E8E93] whitespace-nowrap">${safeItalicizeEnding(c, verb.infinitive)}</td>`).join('')}
             `;
             tbodyVerben.appendChild(tr2);
         });
@@ -228,12 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tbodyVerbCombo.innerHTML = '';
 
         const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const escapeHtml = (value) => String(value)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
         const normalizeLexeme = (value) => String(value)
             .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')
             .toLowerCase()
@@ -351,10 +376,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const cells = [];
                 if (index === 0) {
-                    cells.push(`<td rowspan="${group.rows.length}" class="px-4 py-4 font-semibold text-black border-r border-gray-100 align-top">${group.verb}</td>`);
+                    cells.push(`<td rowspan="${group.rows.length}" class="px-4 py-4 font-semibold text-black border-r border-gray-100 align-top">${escapeHtml(group.verb)}</td>`);
                 }
 
-                cells.push(`<td class="px-4 py-4 text-[#1C1C1E] border-r border-gray-100 align-top">${row.combo}</td>`);
+                cells.push(`<td class="px-4 py-4 text-[#1C1C1E] border-r border-gray-100 align-top">${escapeHtml(row.combo)}</td>`);
                 cells.push(`<td class="px-4 py-4 text-gray-600 italic align-top">${highlightExampleCombo(row.fullCombo, row.example)}</td>`);
 
                 tr.innerHTML = cells.join('');
@@ -425,11 +450,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Global Search Logic ---
     const searchInput = document.getElementById('global-search');
-    let currentSearchTerm = '';
+    let currentVerbSearchTerm = '';
 
     searchInput.addEventListener('input', (e) => {
-        currentSearchTerm = e.target.value.toLowerCase().trim();
-        applyAllFilters();
+        currentVerbSearchTerm = e.target.value.toLowerCase().trim();
+        renderVerbenTable(getFilteredVerbs());
     });
 
     if (filterVerbComboVerb) {
@@ -442,22 +467,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function applyAllFilters() {
-        // Apply search to all active views
-        renderVerbenTable(getFilteredVerbs());
-        renderPraepositionenTable();
-        renderPraepositionenComboTable();
-        // Personal and Artikel are small fixed tables, but we could filter rows if needed.
-    }
-
     function getFilteredVerbs() {
         const selectedVokal = filterVokal.value;
         return verbs.filter(verb => {
             const matchTyp = selectedTypes.size === 0 || selectedTypes.has(verb.type);
             const matchVokal = selectedVokal === 'all' || verb.stemVowel === selectedVokal;
-            const matchSearch = !currentSearchTerm || 
-                               verb.infinitive.toLowerCase().includes(currentSearchTerm) ||
-                               verb.pastInfo.toLowerCase().includes(currentSearchTerm);
+            const matchSearch = !currentVerbSearchTerm || 
+                               verb.infinitive.toLowerCase().includes(currentVerbSearchTerm) ||
+                               verb.pastInfo.toLowerCase().includes(currentVerbSearchTerm);
             return matchTyp && matchVokal && matchSearch;
         });
     }
@@ -476,11 +493,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const tr = document.createElement('tr');
             tr.className = p.rowClass;
             tr.innerHTML = `
-                <td class="px-5 py-4 font-semibold text-black">${p.nom}</td>
-                <td class="px-4 py-4 text-gray-700">${p.possessiv}</td>
-                <td class="px-4 py-4 text-gray-700">${p.dativ}</td>
-                <td class="px-4 py-4 text-gray-700">${p.akkusativ}</td>
-                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">${p.reflexiv}</td>
+                <td class="px-5 py-4 font-semibold text-black">${renderPronounLabel(p.nom)}</td>
+                <td class="px-4 py-4 text-gray-700">${escapeHtml(p.possessiv)}</td>
+                <td class="px-4 py-4 text-gray-700">${escapeHtml(p.dativ)}</td>
+                <td class="px-4 py-4 text-gray-700">${escapeHtml(p.akkusativ)}</td>
+                <td class="px-4 py-4 text-center font-medium text-[#007AFF]">${escapeHtml(p.reflexiv)}</td>
             `;
             tbodyPronomen.appendChild(tr);
         });
@@ -496,12 +513,15 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.className = 'group hover:bg-gray-50/50 transition-colors';
             const cellClass = (idx) => idx === 0 ? "px-5 py-4 font-semibold text-[#8E8E93] align-middle" : "px-4 py-4 text-center align-middle";
             const isComplex = tbodyId === 'artikel-unbestimmt-table';
+            const articleCell = (value) => isComplex
+                ? sanitizeTrustedMarkup(value)
+                : `<div class="font-medium text-black">${sanitizeTrustedMarkup(value)}</div>`;
             tr.innerHTML = `
-                <td class="${cellClass(0)}">${row.kasus}</td>
-                <td class="${cellClass(1)}">${isComplex ? row.m : `<div class="font-medium text-black">${row.m}</div>`}</td>
-                <td class="${cellClass(2)}">${isComplex ? row.f : `<div class="font-medium text-black">${row.f}</div>`}</td>
-                <td class="${cellClass(3)}">${isComplex ? row.n : `<div class="font-medium text-black">${row.n}</div>`}</td>
-                <td class="${cellClass(4)}">${isComplex ? row.pl : `<div class="font-medium text-black">${row.pl}</div>`}</td>
+                <td class="${cellClass(0)}">${escapeHtml(row.kasus)}</td>
+                <td class="${cellClass(1)}">${articleCell(row.m)}</td>
+                <td class="${cellClass(2)}">${articleCell(row.f)}</td>
+                <td class="${cellClass(3)}">${articleCell(row.n)}</td>
+                <td class="${cellClass(4)}">${articleCell(row.pl)}</td>
             `;
             tbody.appendChild(tr);
         });
@@ -509,12 +529,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Präpositionen Logic ---
     const filterPrepCaseTags = document.getElementById('filter-prep-case-tags');
+    const filterPrepPrep = document.getElementById('filter-prep-prep');
     const filterPrepComboCaseTags = document.getElementById('filter-prep-combo-case-tags');
     const filterPrepComboPrep = document.getElementById('filter-prep-combo-prep');
     const prepComboSearchInput = document.getElementById('prep-combo-search');
+    const substantivFamilienSearchInput = document.getElementById('substantiv-familien-search');
     const selectedPrepCases = new Set(); 
     const selectedPrepComboCases = new Set();
     let currentPrepComboSearchTerm = '';
+    let currentSubstantivFamilienSearchTerm = '';
+
+    const renderLineBreaks = (value) => escapeHtml(value).replace(/\n/g, '<br>');
+    const renderSubstantivFamilienStamm = (value) => {
+        return String(value)
+            .split('\n')
+            .filter(Boolean)
+            .map((line, index) => {
+                const cleanedLine = line.replace(/^Kernverb:\s*/i, '');
+                if (index === 0) {
+                    return `<span class="substantiv-familien-stamm-verb">${escapeHtml(cleanedLine)}</span>`;
+                }
+
+                const match = cleanedLine.match(/^(\S+)\s+(.+)$/);
+                if (!match) {
+                    return `<span class="substantiv-familien-stamm-nomen"><strong>${escapeHtml(cleanedLine)}</strong></span>`;
+                }
+
+                return `<span class="substantiv-familien-stamm-nomen">${escapeHtml(match[1])} <strong>${escapeHtml(match[2])}</strong></span>`;
+            })
+            .join('');
+    };
+
+    const renderSubstantivFamilienTable = () => {
+        const thead = document.querySelector('#substantiv-familien-table thead');
+        const tbody = document.querySelector('#substantiv-familien-table tbody');
+        if (!thead || !tbody) return;
+
+        thead.innerHTML = `
+            <tr>
+                ${substantivFamilienHeaders.map((header, index) => `
+                    <th class="px-2 py-2 font-semibold border-b border-r border-gray-300 last:border-r-0 whitespace-nowrap ${index === 0 ? 'sticky left-0 z-40 bg-gray-50 min-w-[150px]' : 'min-w-[92px]'}">
+                        ${escapeHtml(header)}
+                    </th>
+                `).join('')}
+            </tr>
+        `;
+
+        const filteredRows = substantivFamilienRows.filter(row => {
+            if (!currentSubstantivFamilienSearchTerm) return true;
+            return row.join(' ').toLowerCase().includes(currentSubstantivFamilienSearchTerm);
+        });
+
+        tbody.innerHTML = filteredRows.map(row => `
+            <tr class="group hover:bg-gray-50/50 transition-colors align-top">
+                ${row.map((cell, index) => `
+                    <td class="px-2 py-1.5 border-b border-r border-gray-200 last:border-r-0 whitespace-pre-line align-top leading-tight ${index === 0 ? 'sticky left-0 z-20 bg-white group-hover:bg-gray-50 min-w-[150px]' : 'min-w-[92px] text-gray-700'}">
+                        ${cell ? (index === 0 ? renderSubstantivFamilienStamm(cell) : renderLineBreaks(cell)) : '<span class="text-gray-300">-</span>'}
+                    </td>
+                `).join('')}
+            </tr>
+        `).join('');
+    };
+
+    substantivFamilienSearchInput?.addEventListener('input', (e) => {
+        currentSubstantivFamilienSearchTerm = e.target.value.toLowerCase().trim();
+        renderSubstantivFamilienTable();
+    });
 
     const caseStyles = {
         DAT: 'bg-green-100 text-green-700',
@@ -531,13 +611,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const filtered = sorted.filter(item => {
             const matchesCase = selectedPrepCases.size === 0 || item.modes.some(m => selectedPrepCases.has(m.case));
-            const matchesSearch = !currentSearchTerm || 
-                                 item.prep.toLowerCase().includes(currentSearchTerm) ||
-                                 item.modes.some(m => 
-                                    m.space.some(s => s.rule.toLowerCase().includes(currentSearchTerm)) ||
-                                    m.time.some(t => t.rule.toLowerCase().includes(currentSearchTerm))
-                                 );
-            return matchesCase && matchesSearch;
+            const matchesPrep = !filterPrepPrep || filterPrepPrep.value === 'all' || item.prep === filterPrepPrep.value;
+            return matchesCase && matchesPrep;
         });
 
         filtered.forEach(item => {
@@ -555,8 +630,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 tdPrepCase.className = "px-3 py-4 align-top border-r border-gray-100 w-24";
                 tdPrepCase.innerHTML = `
                     <div class="font-semibold text-black leading-tight">
-                        <div>${item.prep}</div>
-                        <div class="mt-1 text-xs ${cls} bg-transparent px-0 py-0 rounded-none">${mode.case}</div>
+                        <div>${escapeHtml(item.prep)}</div>
+                        <div class="mt-1 text-xs ${cls} bg-transparent px-0 py-0 rounded-none">${escapeHtml(mode.case)}</div>
                     </div>
                 `;
                 tr.appendChild(tdPrepCase);
@@ -564,7 +639,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const renderRules = (arr) => {
                     if (!arr || arr.length === 0) return '';
                     return `<ul class="list-disc pl-4 space-y-3">
-                        ${arr.map(r => `<li class="text-sm text-[#1C1C1E] leading-snug">${r.rule}<div class="text-[13px] text-gray-400 italic mt-0.5 leading-snug">${r.ex}</div></li>`).join('')}
+                        ${arr.map(r => `<li class="text-sm text-[#1C1C1E] leading-snug">${escapeHtml(r.rule)}<div class="text-[13px] text-gray-400 italic mt-0.5 leading-snug">${sanitizeTrustedMarkup(r.ex)}</div></li>`).join('')}
                     </ul>`;
                 };
 
@@ -583,17 +658,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const compactPraepositionenHeaders = () => {
+        document.querySelectorAll('#praepositionen-table thead th:first-child, #praepositionen-combo-table thead th:first-child')
+            .forEach(firstHeader => {
+                firstHeader.textContent = 'Präp / Kasus';
+                firstHeader.classList.remove('w-24');
+                firstHeader.classList.add('w-20', 'whitespace-nowrap');
+            });
+    };
+
     const renderPraepositionenComboTable = () => {
         const tbody = document.querySelector('#praepositionen-combo-table tbody');
         if (!tbody) return;
         tbody.innerHTML = '';
-
-        const escapeHtml = (value) => String(value)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
 
         const styleSentenceMarkup = (entry, kasus, type) => {
             const sentence = entry.ex || '';
@@ -965,8 +1042,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.innerHTML = `
                 <td class="px-3 py-4 align-top border-r border-gray-100 w-24">
                     <div class="font-semibold text-black leading-tight">
-                        <div>${item.prep}</div>
-                        <div class="mt-1 text-xs ${cls} bg-transparent px-0 py-0 rounded-none">${item.kasus}</div>
+                        <div>${escapeHtml(item.prep)}</div>
+                        <div class="mt-1 text-xs ${cls} bg-transparent px-0 py-0 rounded-none">${escapeHtml(item.kasus)}</div>
                     </div>
                 </td>
                 <td class="px-4 py-4 align-top border-r border-gray-100">${renderEntries(item.norm, item.kasus, 'norm')}</td>
@@ -1012,6 +1089,16 @@ document.addEventListener('DOMContentLoaded', () => {
         filterPrepCaseTags.innerHTML = '<span class="text-sm font-semibold text-[#8E8E93] mr-1">Kasus:</span>';
         filterPrepCaseTags.appendChild(createPrepTag('all', 'Alle'));
         ['GEN', 'DAT', 'AKK'].forEach(c => filterPrepCaseTags.appendChild(createPrepTag(c, c)));
+
+        if (filterPrepPrep) {
+            const preps = Array.from(new Set(praepositionen.map(item => item.prep))).sort((a, b) => a.localeCompare(b, 'de'));
+            preps.forEach(prep => {
+                const opt = document.createElement('option');
+                opt.value = prep;
+                opt.textContent = prep;
+                filterPrepPrep.appendChild(opt);
+            });
+        }
     };
 
     const applyPrepComboTagStyle = (btn) => {
@@ -1053,13 +1140,14 @@ document.addEventListener('DOMContentLoaded', () => {
         preps.forEach(prep => {
             const opt = document.createElement('option');
             opt.value = prep;
-            opt.textContent = `Präposition: ${prep}`;
+            opt.textContent = prep;
             filterPrepComboPrep.appendChild(opt);
         });
     };
 
-    filterPrepComboPrep.addEventListener('change', renderPraepositionenComboTable);
-    prepComboSearchInput.addEventListener('input', (e) => {
+    filterPrepPrep?.addEventListener('change', renderPraepositionenTable);
+    filterPrepComboPrep?.addEventListener('change', renderPraepositionenComboTable);
+    prepComboSearchInput?.addEventListener('input', (e) => {
         currentPrepComboSearchTerm = e.target.value.toLowerCase().trim();
         renderPraepositionenComboTable();
     });
@@ -1073,9 +1161,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderArtikelTable('artikel-null-table', artikelData.nullartikel);
     initPrepFilters();
     initPrepComboFilters();
+    compactPraepositionenHeaders();
     renderPraepositionenTable();
     renderPraepositionenComboTable();
-    switchPage('home');
+    renderSubstantivFamilienTable();
+    switchPage('basis');
 
     // Export for external use
     window.switchPage = switchPage;

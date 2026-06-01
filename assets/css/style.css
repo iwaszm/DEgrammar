@@ -41,6 +41,16 @@ body {
     color: var(--text-main);
 }
 
+#main-nav-container {
+    z-index: 100;
+}
+
+#nav-nomen-menu,
+#nav-verben-menu,
+#nav-praepositionen-menu {
+    z-index: 120;
+}
+
 /* iOS Card Style */
 .ios-card {
     background-color: var(--bg-card);
@@ -60,6 +70,114 @@ thead.glass-header {
     position: sticky;
     top: 0;
     z-index: 20;
+}
+
+.substantiv-familien-panel {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 11rem);
+    min-height: 28rem;
+}
+
+.substantiv-familien-toolbar {
+    flex: 0 0 auto;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.substantiv-familien-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+.substantiv-familien-scroll table {
+    border: 1px solid #d1d5db;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: max-content;
+    min-width: 100%;
+}
+
+.substantiv-familien-scroll thead.glass-header {
+    top: 0;
+    z-index: 30;
+}
+
+.substantiv-familien-stamm-verb {
+    display: block;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.substantiv-familien-stamm-nomen {
+    display: block;
+    margin-top: 0.125rem;
+    font-weight: 400;
+    color: var(--text-main);
+}
+
+.substantiv-familien-stamm-nomen strong {
+    font-weight: 700;
+}
+
+#page-verben:not(.hidden),
+#page-verb-combo:not(.hidden),
+#page-praepositionen:not(.hidden),
+#page-praepositionen-combo:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 11rem);
+    min-height: 28rem;
+}
+
+#page-verben > .mb-6,
+#page-verb-combo > .mb-6,
+#page-praepositionen > .mb-6,
+#page-praepositionen-combo > .mb-6 {
+    flex: 0 0 auto;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border-gray);
+    border-radius: 1.25rem;
+    background: var(--bg-header);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+#page-verben > .bg-white,
+#page-verb-combo > .bg-white,
+#page-praepositionen > .bg-white,
+#page-praepositionen-combo > .bg-white {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#page-verben > .bg-white > .overflow-x-auto,
+#page-verb-combo > .bg-white > .overflow-x-auto,
+#page-praepositionen > .bg-white > .overflow-x-auto,
+#page-praepositionen-combo > .bg-white > .overflow-x-auto {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+}
+
+#page-verben thead.glass-header,
+#page-verb-combo thead.glass-header,
+#page-praepositionen thead.glass-header,
+#page-praepositionen-combo thead.glass-header {
+    top: 0;
+    z-index: 30;
 }
 
 /* Specific Tags using Meta Tint colors */
