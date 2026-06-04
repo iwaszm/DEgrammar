@@ -72,6 +72,20 @@ thead.glass-header {
     z-index: 20;
 }
 
+#pronomen-table th,
+#pronomen-table td {
+    overflow-wrap: anywhere;
+}
+
+#pronomen-table {
+    table-layout: fixed;
+}
+
+.basis-section-divider {
+    margin: 1.5rem 0;
+    border-top: 1px solid #d1d5db;
+}
+
 .substantiv-familien-panel {
     display: flex;
     flex-direction: column;
