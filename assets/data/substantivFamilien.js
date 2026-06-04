@@ -34,7 +34,7 @@ export const substantivFamilienHeaders = [
 
 export const substantivFamilienRows = [
   [
-    "Kernverb: binden\ndie -bindung\nder -bund",
+    "Kernverb: binden\ndie -bindung",
     "Abbindung",
     "Anbindung",
     "Aufbindung",
