@@ -504,6 +504,54 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Artikel Logic ---
+    const stripEuerPossessive = (html) => html
+        .replace(/\s*\/\s*euer/g, '')
+        .replace(/\s*\/\s*eur(?:<i class="italic">[^<]*<\/i>)?/g, '');
+
+    const renderArtikelCell = (value, tbodyId) => {
+        const cleanHtml = sanitizeTrustedMarkup(value);
+        const template = document.createElement('template');
+        template.innerHTML = cleanHtml;
+
+        const primary = template.content.firstElementChild?.tagName === 'DIV'
+            ? template.content.firstElementChild
+            : template.content;
+        const endingNode = Array.from(primary.querySelectorAll ? primary.querySelectorAll('span') : [])
+            .reverse()
+            .find(node => node.textContent.trim().startsWith('-'));
+
+        if (!endingNode && String(value).trim().startsWith('-')) {
+            return `<div class="font-medium text-black">${escapeHtml(value)}</div>`;
+        }
+
+        if (!endingNode) {
+            return `<div class="font-medium text-black">${cleanHtml}</div>`;
+        }
+
+        const ending = endingNode.textContent.trim();
+        endingNode.remove();
+
+        const mainHtml = (primary.innerHTML || primary.textContent || '').trim();
+        const noteNodes = [...template.content.children].slice(1);
+        const noteHtml = noteNodes
+            .map(node => {
+                node.classList.add('artikel-note');
+                return stripEuerPossessive(node.outerHTML);
+            })
+            .join('');
+        const showNote = tbodyId === 'artikel-unbestimmt-table' && noteHtml;
+
+        return `
+            <div class="artikel-cell">
+                <div class="artikel-main">
+                    <div>${mainHtml}</div>
+                    ${showNote ? noteHtml : ''}
+                </div>
+                <div class="artikel-ending">${escapeHtml(ending)}</div>
+            </div>
+        `;
+    };
+
     const renderArtikelTable = (tbodyId, data) => {
         const tbody = document.querySelector(`#${tbodyId} tbody`);
         if (!tbody) return;
@@ -512,16 +560,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const tr = document.createElement('tr');
             tr.className = 'group hover:bg-gray-50/50 transition-colors';
             const cellClass = (idx) => idx === 0 ? "px-5 py-4 font-semibold text-[#8E8E93] align-middle" : "px-4 py-4 text-center align-middle";
-            const isComplex = tbodyId === 'artikel-unbestimmt-table';
-            const articleCell = (value) => isComplex
-                ? sanitizeTrustedMarkup(value)
-                : `<div class="font-medium text-black">${sanitizeTrustedMarkup(value)}</div>`;
             tr.innerHTML = `
                 <td class="${cellClass(0)}">${escapeHtml(row.kasus)}</td>
-                <td class="${cellClass(1)}">${articleCell(row.m)}</td>
-                <td class="${cellClass(2)}">${articleCell(row.f)}</td>
-                <td class="${cellClass(3)}">${articleCell(row.n)}</td>
-                <td class="${cellClass(4)}">${articleCell(row.pl)}</td>
+                <td class="${cellClass(1)}">${renderArtikelCell(row.m, tbodyId)}</td>
+                <td class="${cellClass(2)}">${renderArtikelCell(row.f, tbodyId)}</td>
+                <td class="${cellClass(3)}">${renderArtikelCell(row.n, tbodyId)}</td>
+                <td class="${cellClass(4)}">${renderArtikelCell(row.pl, tbodyId)}</td>
             `;
             tbody.appendChild(tr);
         });
