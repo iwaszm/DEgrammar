@@ -32,7 +32,19 @@ export const substantivFamilienHeaders = [
   "wieder"
 ];
 
+const familyRow = (stem, nounsByPrefix) => substantivFamilienHeaders.map((prefix, index) =>
+  index === 0 ? stem : (nounsByPrefix[prefix] || "")
+);
+
 export const substantivFamilienRows = [
+  familyRow("Kernverb: bauen\nder -bau", {
+    ab: "Abbau",
+    an: "Anbau",
+    auf: "Aufbau",
+    aus: "Ausbau",
+    ein: "Einbau",
+    um: "Umbau"
+  }),
   [
     "Kernverb: binden\ndie -bindung\nder -bund",
     "Abbindung",
@@ -198,6 +210,16 @@ export const substantivFamilienRows = [
     "Empfindung",
     "Wiederfindung"
   ],
+  familyRow("Kernverb: führen\ndie -führung", {
+    auf: "Aufführung",
+    aus: "Ausführung",
+    durch: "Durchführung",
+    ein: "Einführung",
+    ent: "Entführung",
+    über: "Überführung",
+    unter: "Unterführung",
+    vor: "Vorführung"
+  }),
   [
     "Kernverb: geben\ndie -gabe\ndie -gebung",
     "Abgabe",
@@ -396,6 +418,14 @@ export const substantivFamilienRows = [
     "",
     ""
   ],
+  familyRow("Kernverb: laufen\nder -lauf", {
+    ab: "Ablauf",
+    an: "Anlauf",
+    aus: "Auslauf",
+    durch: "Durchlauf",
+    um: "Umlauf",
+    ver: "Verlauf"
+  }),
   [
     "Kernverb: legen\ndie -lage\ndie -legung",
     "Ablage",
@@ -462,6 +492,27 @@ export const substantivFamilienRows = [
     "",
     ""
   ],
+  familyRow("Kernverb: sagen\ndie -sage", {
+    ab: "Absage",
+    an: "Ansage",
+    aus: "Aussage",
+    durch: "Durchsage",
+    zu: "Zusage"
+  }),
+  familyRow("Kernverb: schlagen\nder -schlag\ndie -schlagung", {
+    ab: "Abschlag",
+    an: "Anschlag",
+    auf: "Aufschlag",
+    aus: "Ausschlag",
+    ein: "Einschlag",
+    nach: "Nachschlag",
+    nieder: "Niederschlag\nNiederschlagung",
+    um: "Umschlag",
+    unter: "Unterschlagung",
+    vor: "Vorschlag",
+    zu: "Zuschlag",
+    zurück: "Rückschlag"
+  }),
   [
     "Kernverb: schließen\nder -schluss",
     "Abschluss",
@@ -726,6 +777,27 @@ export const substantivFamilienRows = [
     "",
     ""
   ],
+  familyRow("Kernverb: stellen\ndie -stellung", {
+    an: "Anstellung",
+    auf: "Aufstellung",
+    aus: "Ausstellung",
+    be: "Bestellung",
+    ein: "Einstellung",
+    her: "Herstellung",
+    um: "Umstellung",
+    vor: "Vorstellung",
+    zu: "Zustellung",
+    zusammen: "Zusammenstellung"
+  }),
+  familyRow("Kernverb: teilen\ndie -teilung", {
+    ab: "Abteilung",
+    auf: "Aufteilung",
+    ein: "Einteilung",
+    mit: "Mitteilung",
+    unter: "Unterteilung",
+    ver: "Verteilung",
+    zu: "Zuteilung"
+  }),
   [
     "Kernverb: tragen\nder -trag\ndie -tragung",
     "Abtrag\nAbtragung",
@@ -858,6 +930,15 @@ export const substantivFamilienRows = [
     "",
     ""
   ],
+  familyRow("Kernverb: zahlen\ndie -zahlung", {
+    an: "Anzahlung",
+    aus: "Auszahlung",
+    be: "Bezahlung",
+    ein: "Einzahlung",
+    nach: "Nachzahlung",
+    zu: "Zuzahlung",
+    zurück: "Rückzahlung"
+  }),
   [
     "Kernverb: ziehen\nder -zug\ndie -ziehung",
     "Abzug",

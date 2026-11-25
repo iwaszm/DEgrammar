@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "build:css": "tailwindcss -i ./assets/css/tailwind.input.css -o ./assets/css/tailwind.generated.css --minify"
+    "build:css": "tailwindcss -i ./assets/css/tailwind.input.css -o ./assets/css/tailwind.generated.css --minify",
+    "test": "node --test"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.17"
