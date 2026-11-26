@@ -135,7 +135,7 @@ export const verbCombo = [
     verb: "nehmen",
     items: [
       { combo: "Abschied von jdm./etw. nehmen", ex: "Tausende Bürger kamen zur Trauerfeier, um von ihrem toten Bürgermeister Abschied zu nehmen." },
-      { combo: "Bezug auf etw. nehmen", ex: "Ich nehme Bezug auf Ihre Anfrage vom 3. Mai und teile Ihnen dazu Folgendes mit:" },
+      { combo: "Bezug auf etw. nehmen", ex: "Ich nehme Bezug auf Ihre Anfrage vom 3. Mai." },
       { combo: "Einfluss auf etw. nehmen", ex: "Große Konzerne versuchen, auf Entscheidungen der Regierung Einfluss zu nehmen." },
       { combo: "Kenntnis von etw. nehmen", ex: "Ich bestätige hiermit, dass ich von der Kündigung Kenntnis genommen habe." },
       { combo: "Notiz von etw. nehmen", ex: "Der Angeklagte nahm keine Notiz von der Zeugin, sondern schaute gelangweilt aus dem Fenster." },
@@ -177,7 +177,11 @@ export const verbCombo = [
     verb: "stehen",
     items: [
       { combo: "zur Debatte stehen", ex: "Eine Gehaltserhöhung steht in diesem Jahr nicht zur Debatte." },
-      { combo: "zur Wahl stehen", ex: "Für das Amt der Vorsitzenden stehen drei Kandidatinnen zur Wahl." }
+      { combo: "zur Verfügung stehen", ex: "Für das Projekt stehen ausreichende finanzielle Mittel zur Verfügung." },
+      { combo: "zur Wahl stehen", ex: "Für das Amt der Vorsitzenden stehen drei Kandidatinnen zur Wahl." },
+      { combo: "unter Druck stehen", ex: "Der Minister steht wegen des Skandals unter erheblichem Druck." },
+      { combo: "im Widerspruch stehen zu", ex: "Seine Aussagen stehen im Widerspruch zu den bekannten Tatsachen." },
+      { combo: "unter Strafe stehen", ex: "Der Diebstahl von vertraulichen Firmendaten steht unter Strafe." }
     ]
   },
   {
@@ -212,7 +216,9 @@ export const verbCombo = [
   {
     verb: "üben",
     items: [
-      { combo: "Kritik an jdm./etw. üben", ex: "Am Regierungsstil des Kanzlers wurde von vielen Seiten Kritik geübt." }
+      { combo: "Kritik an jdm./etw. üben", ex: "Am Regierungsstil des Kanzlers wurde von vielen Seiten Kritik geübt." },
+      { combo: "Nachsicht üben", ex: "Die Prüfer übten Nachsicht mit den nervösen Kandidaten." },
+      { combo: "Verzicht auf etw. üben", ex: "In wirtschaftlichen Krisenzeiten müssen alle Bürger Verzicht üben." }
     ]
   },
   {
@@ -232,6 +238,44 @@ export const verbCombo = [
       { combo: "sich eine Infektion zuziehen", ex: "Lass dich impfen, damit du dir im Winter keine Grippe zuziehst!" },
       { combo: "sich eine Verletzung zuziehen", ex: "Beim Skilaufen kann man sich leicht schwere Verletzungen zuziehen." },
       { combo: "sich den Zorn jds. zuziehen", ex: "Durch seine heimliche Heirat hat Mehmet sich den Zorn seines Vaters zugezogen." }
+    ]
+  },
+  {
+    verb: "geraten",
+    items: [
+      { combo: "in Gefahr geraten", ex: "Durch das plötzliche Unwetter gerieten die Bergsteiger in höchste Gefahr." },
+      { combo: "in Panik geraten", ex: "Als der Alarm ertönte, gerieten die Passagiere in Panik." },
+      { combo: "in Schwierigkeiten geraten", ex: "Das Unternehmen geriet durch die Stornierung der Großaufträge in finanzielle Schwierigkeiten." },
+      { combo: "in Vergessenheit geraten", ex: "Viele alte Traditionen sind im Laufe der Jahrhunderte in Vergessenheit geraten." },
+      { combo: "in Wut geraten", ex: "Er geriet über die unverschämte Bemerkung völlig in Wut." }
+    ]
+  },
+  {
+    verb: "haben",
+    items: [
+      { combo: "Ahnung von etw. haben", ex: "Er hat keine Ahnung von moderner Kunst." },
+      { combo: "Angst vor jdm./etw. haben", ex: "Viele Kinder haben Angst vor der Dunkelheit." },
+      { combo: "Einfluss auf etw. haben", ex: "Die sozialen Medien haben großen Einfluss auf die Jugend." },
+      { combo: "Hoffnung auf etw. haben", ex: "Wir haben immer noch Hoffnung auf eine friedliche Einigung." },
+      { combo: "das Recht auf etw. haben", ex: "Jedes Kind hat das Recht auf freie Bildung." },
+      { combo: "zur Folge haben", ex: "Die Kürzung der Fördermittel hatte die Entlassung vieler Mitarbeiter zur Folge." }
+    ]
+  },
+  {
+    verb: "legen",
+    items: [
+      { combo: "Wert auf etw. legen", ex: "Unsere Schule legt großen Wert auf ein respektvolles Miteinander." },
+      { combo: "Beschwerde gegen etw. einlegen", ex: "Der Anwalt hat fristgerecht Beschwerde gegen das Urteil eingelegt." },
+      { combo: "Protest gegen etw. einlegen", ex: "Die Opposition legte formell Protest gegen den Beschluss ein." }
+    ]
+  },
+  {
+    verb: "sein",
+    items: [
+      { combo: "der Ansicht / Meinung sein", ex: "Ich bin der Ansicht, dass wir den Plan noch einmal überarbeiten sollten." },
+      { combo: "in Gefahr sein", ex: "Das bedrohte Naturreservat ist durch den Bergbau in großer Gefahr." },
+      { combo: "in Kraft sein", ex: "Das neue Verkehrsgesetz ist seit Beginn des Monats in Kraft." },
+      { combo: "in der Lage sein (zu + Inf.)", ex: "Aufgrund seiner Verletzung war der Sportler nicht in der Lage anzutreten." }
     ]
   }
 ];

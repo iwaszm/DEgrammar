@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "scripts": {
     "build:css": "tailwindcss -i ./assets/css/tailwind.input.css -o ./assets/css/tailwind.generated.css --minify",
     "test": "node --test"

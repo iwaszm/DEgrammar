@@ -535,7 +535,7 @@ export const praepositionen = [
   },
   {
     prep: "(ohne Präp.)",
-    isWechsel: true,
+    isWechsel: false,
     modes: [
       {
         case: "AKK",

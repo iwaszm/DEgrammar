@@ -66,7 +66,14 @@ export function initNounFamilies() {
 
         const filteredRows = substantivFamilienRows.filter(row => {
             if (!currentSubstantivFamilienSearchTerm) return true;
-            return row.join(' ').toLowerCase().includes(currentSubstantivFamilienSearchTerm);
+            const haystack = row.map((cell, index) => {
+                if (!cell) return '';
+                if (index === 0) return cell;
+                const words = cell.split('\n').filter(Boolean);
+                const glosses = words.map(w => getSubstantivFamilienGloss(w));
+                return cell + ' ' + glosses.join(' ');
+            }).join(' ').toLowerCase();
+            return haystack.includes(currentSubstantivFamilienSearchTerm);
         });
 
         tbody.innerHTML = filteredRows.map(row => {

@@ -8,7 +8,7 @@ export const praepositionenCombo = [
       { combo: "Arbeit an", ex: "Die Arbeit an dem neuen Roman macht zeitweise gute Fortschritte." },
       { combo: "Bedarf an", ex: "Mit wachsendem Bewusstsein ist der Bedarf an Beratung zurückgegangen." },
       { combo: "Freude an", ex: "Ihre Freude an Museen ist offensichtlich." },
-      { combo: "Interesse an", ex: "Das Interesse an religiösen Fragen in Europa zurück." },
+      { combo: "Interesse an", ex: "Das Interesse an religiösen Fragen in Europa geht zurück." },
       { combo: "Kritik an", ex: "Die Kritik an meinem Ausdruck im Russischunterricht ist verständlich." },
       { combo: "Mangel an", ex: "Der Mangel an Wasser macht das Leben in der Wüste schwierig." },
       { combo: "Teilnahme an", ex: "Die Teilnahme an der Veranstaltung war leider sehr begrenzt." },
@@ -26,9 +26,9 @@ export const praepositionenCombo = [
     adj: [
       { combo: "interessiert an", ex: "Er ist an Musik interessiert." },
       { combo: "arm an", ex: "Weißbrot ist arm an Ballaststoffen." },
-      { combo: "interessiert an", ex: "Wir sind an einer Reise nach Spanien interessiert." },
+      { combo: "beteiligt an", ex: "Er war an dem Projekt maßgeblich beteiligt." },
       { combo: "reich an", ex: "Die Stadt ist reich an Kultur." },
-      { combo: "reich an", ex: "Alaska ist reich an Bodenschätzen." },
+      { combo: "erkrankt an", ex: "Er ist an einer schweren Grippe erkrankt." },
       { combo: "schuld an", ex: "Er ist schuld an dem Verkehrsunfall." }
     ]
   },
@@ -48,23 +48,29 @@ export const praepositionenCombo = [
       { combo: "sich erinnern an", ex: "Ich erinnere mich an den Urlaub." },
       { combo: "glauben an", ex: "Ich glaube an dich." },
       { combo: "erkennen an", ex: "Ich habe Sie an der Stimme erkannt." },
-      { combo: "denken an", ex: "Denkst du oft an deine Heimat?" },
-      { combo: "glauben an", ex: "Glaubst du noch immer an den Fortschritt?" }
+      { combo: "schreiben an", ex: "Ich schreibe einen Brief an meine Eltern." },
+      { combo: "sich wenden an", ex: "Bei Fragen wenden Sie sich bitte an die Information." }
     ],
     adj: [
       { combo: "gewöhnt an", ex: "Ich bin an das Klima gewöhnt." },
-      { combo: "gewöhnt an", ex: "Wir sind an ein Leben in der Großstadt gewöhnt." }
+      { combo: "gebunden an", ex: "Der Minister ist an die Verfassung gebunden." }
     ]
   },
   {
     prep: "auf",
     kasus: "DAT",
-    norm: [],
+    norm: [
+      { combo: "Beharren auf", ex: "Sein Beharren auf seinem Standpunkt blockierte den Kompromiss." }
+    ],
     verb: [
       { combo: "basieren auf", ex: "Die Entscheidung basiert auf Fakten." },
-      { combo: "beruhen auf", ex: "Seine Entscheidung beruht auf einem Irrtum." }
+      { combo: "beruhen auf", ex: "Seine Entscheidung beruht auf einem Irrtum." },
+      { combo: "bestehen auf", ex: "Der Vermieter besteht auf der pünktlichen Zahlung der Miete." }
     ],
-    adj: []
+    adj: [
+      { combo: "basierend auf", ex: "Der Film ist basierend auf einer wahren Begebenheit." },
+      { combo: "fußend auf", ex: "Die Theorie ist fußend auf neuen empirischen Daten." }
+    ]
   },
   {
     prep: "auf",
@@ -88,8 +94,8 @@ export const praepositionenCombo = [
       { combo: "warten auf", ex: "Wir warten auf den Bus." },
       { combo: "sich freuen auf", ex: "Ich freue mich auf den Urlaub." },
       { combo: "hoffen auf", ex: "Wir hoffen auf besseres Wetter." },
-      { combo: "achten auf", ex: "Der Busfahrer hatte nicht auf den Gegenverkehr geachtet." },
-      { combo: "achten auf", ex: "Bitte achten Sie auf die Stufe." },
+      { combo: "achten auf", ex: "Bitte achten Sie auf den Gegenverkehr." },
+      { combo: "hinweisen auf", ex: "Das Schild weist auf eine gefährliche Kurve hin." },
       { combo: "ankommen auf", ex: "Es kommt jetzt auf schnelle Hilfe an." },
       { combo: "stoßen auf", ex: "In der Bibliothek stieß sie zufällig auf ein Buch über ihr Examensthema." },
       { combo: "zurückführen auf", ex: "Der Arzt führt den plötzlichen Tod des Mannes auf einen Herzinfarkt zurück." },
@@ -106,13 +112,17 @@ export const praepositionenCombo = [
       { combo: "neidisch auf", ex: "Er ist neidisch auf deinen Erfolg." },
       { combo: "gespannt auf", ex: "Ich bin gespannt auf das Ergebnis." },
       { combo: "angewiesen auf", ex: "Wir sind auf Ihre Hilfe angewiesen." },
-      { combo: "gespannt auf", ex: "Ich bin gespannt auf das Ende des Romans." }
+      { combo: "eifersüchtig auf", ex: "Er ist eifersüchtig auf den neuen Kollegen." }
     ]
   },
   {
     prep: "aus",
     kasus: "DAT",
-    norm: [],
+    norm: [
+      { combo: "Flucht aus", ex: "Ihre Flucht aus der Gefahrenzone gelang in letzter Minute." },
+      { combo: "Konsequenz aus", ex: "Die Konsequenz aus dem Fehler war ein erheblicher Verlust." },
+      { combo: "Auszug aus", ex: "Der Auszug aus dem Elternhaus markiert einen neuen Lebensabschnitt." }
+    ],
     verb: [
       { combo: "bestehen aus", ex: "Der Tisch besteht aus Holz." },
       { combo: "ableiten aus", ex: "Man kann das Wort \"Fenster\" aus dem Lateinischen ableiten." },
@@ -121,7 +131,10 @@ export const praepositionenCombo = [
       { combo: "folgen aus", ex: "Aus dem Gesagten folgt, daß dieser Plan unrealistisch ist." },
       { combo: "werden aus", ex: "Aus Raupen werden später Schmetterlinge." }
     ],
-    adj: []
+    adj: [
+      { combo: "bestehend aus", ex: "Das Team ist bestehend aus fünf erfahrenen Ingenieuren." },
+      { combo: "zusammengesetzt aus", ex: "Der Ausschuss ist zusammengesetzt aus Experten beider Fachbereiche." }
+    ]
   },
   {
     prep: "bei",
@@ -143,11 +156,19 @@ export const praepositionenCombo = [
   {
     prep: "durch",
     kasus: "AKK",
-    norm: [],
-    verb: [
-      { combo: "ersetzen durch", ex: "Man kann Zucker durch Süßstoffe ersetzen." }
+    norm: [
+      { combo: "Teilung durch", ex: "Eine Teilung durch null ist in der Mathematik nicht definiert." },
+      { combo: "Ersatz durch", ex: "Der Ersatz durch neue Maschinen spart viel Arbeitszeit." }
     ],
-    adj: []
+    verb: [
+      { combo: "ersetzen durch", ex: "Man kann Zucker durch Süßstoffe ersetzen." },
+      { combo: "teilen durch", ex: "Man kann zehn ohne Rest durch zwei teilen." },
+      { combo: "gewinnen durch", ex: "Die Stadt gewinnt durch den Neubau deutlich an Attraktivität." }
+    ],
+    adj: [
+      { combo: "bedingt durch", ex: "Die Verspätung war bedingt durch eine technische Störung." },
+      { combo: "gekennzeichnet durch", ex: "Die Epoche war gekennzeichnet durch tiefgreifende Reformen." }
+    ]
   },
   {
     prep: "für",
@@ -183,7 +204,7 @@ export const praepositionenCombo = [
       { combo: "interessant für", ex: "Der Vortrag erwies sich als interessant für uns." },
       { combo: "nützlich für", ex: "Fremdsprachenkenntnisse sind für alle nützlich." },
       { combo: "schädlich für", ex: "Rauchen ist schädlich für die Gesundheit." },
-      { combo: "typisch für", ex: "Lichtempfindlichkeit ist typisch für Migräne." }
+      { combo: "zuständig für", ex: "Frau Müller ist für die Personalabteilung zuständig." }
     ]
   },
   {
@@ -217,15 +238,23 @@ export const praepositionenCombo = [
       { combo: "Misstrauen gegenüber", ex: "Mein Misstrauen gegenüber dem Autohändler war begründet." },
       { combo: "Verhalten gegenüber", ex: "Ihr Verhalten mir gegenüber ist unverschämt!" }
     ],
-    verb: [],
+    verb: [
+      { combo: "sich verhalten gegenüber", ex: "Wie sollte man sich gegenüber Vorgesetzten verhalten?" },
+      { combo: "sich äußern gegenüber", ex: "Der Minister wollte sich gegenüber Reportern nicht äußern." }
+    ],
     adj: [
-      { combo: "offen gegenüber", ex: "Er ist gegenüber Fremden offen." }
+      { combo: "offen gegenüber", ex: "Er ist gegenüber Fremden offen." },
+      { combo: "aufgeschlossen gegenüber", ex: "Sie ist neuen Ideen gegenüber sehr aufgeschlossen." }
     ]
   },
   {
     prep: "in",
     kasus: "DAT",
-    norm: [],
+    norm: [
+      { combo: "Erfahrung in", ex: "Sie verfügt über langjährige Erfahrung in der Softwareentwicklung." },
+      { combo: "Unterricht in", ex: "Der Unterricht in deutscher Sprache findet dienstags statt." },
+      { combo: "Erfolg in", ex: "Sein Erfolg in der Wirtschaft sprach für sich." }
+    ],
     verb: [
       { combo: "ankommen in", ex: "Das Flugzeug kommt in Berlin an." },
       { combo: "bestehen in", ex: "Die Aufgabe des Rechnungshofes besteht in der Kontrolle der Staatsausgaben." },
@@ -233,13 +262,18 @@ export const praepositionenCombo = [
       { combo: "sich unterscheiden in", ex: "Die beiden Medikamente sind gleich; sie unterscheiden sich nur im Preis." }
     ],
     adj: [
-      { combo: "erfahren in", ex: "Er ist in der Politik erfahren." }
+      { combo: "erfahren in", ex: "Er ist in der Politik erfahren." },
+      { combo: "geübt in", ex: "Er ist sehr geübt im Umgang mit schwierigen Kunden." }
     ]
   },
   {
     prep: "in",
     kasus: "AKK",
-    norm: [],
+    norm: [
+      { combo: "Einsicht in", ex: "Wir fordern die vollständige Einsicht in die Akten." },
+      { combo: "Vertrauen in", ex: "Das Vertrauen in die Wirtschaftspolitik ist spürbar gewachsen." },
+      { combo: "Einmischung in", ex: "Wir protestieren gegen die Einmischung in innere Angelegenheiten." }
+    ],
     verb: [
       { combo: "sich verlieben in", ex: "Sie hat sich in ihn verliebt." },
       { combo: "einsteigen in", ex: "Er steigt in den Bus ein." },
@@ -248,7 +282,8 @@ export const praepositionenCombo = [
       { combo: "münden in", ex: "Der Fluss mündet ins Meer." }
     ],
     adj: [
-      { combo: "verliebt in", ex: "Ich bin in dich verliebt." }
+      { combo: "verliebt in", ex: "Ich bin in dich verliebt." },
+      { combo: "vernarrt in", ex: "Sie ist total vernarrt in ihren kleinen Hund." }
     ]
   },
   {
@@ -284,10 +319,10 @@ export const praepositionenCombo = [
       { combo: "verwandt mit", ex: "Er ist mit ihr verwandt." },
       { combo: "fertig mit", ex: "Ich bin mit der Arbeit fertig." },
       { combo: "bekannt mit", ex: "Ich bin mit ihr seit langem bekannt." },
-      { combo: "einverstanden mit", ex: "Bist du mit diesem Vorschlag einverstanden?" },
+      { combo: "beschäftigt mit", ex: "Sie ist mit der Vorbereitung der Konferenz beschäftigt." },
       { combo: "vergleichbar mit", ex: "Deine Arbeit ist mit seiner nicht vergleichbar." },
-      { combo: "verwandt mit", ex: "Er soll mit dem Präsidenten verwandt sein." },
-      { combo: "zufrieden mit", ex: "Seid ihr mit dem Untersuchungsergebnis zufrieden?" }
+      { combo: "befreundet mit", ex: "Er ist schon seit der Schulzeit mit ihr befreundet." },
+      { combo: "nachsichtig mit", ex: "Die Lehrerin war sehr nachsichtig mit dem Schüler." }
     ]
   },
   {
@@ -332,10 +367,10 @@ export const praepositionenCombo = [
       { combo: "entscheiden über", ex: "Eine Kommission entschied über die Anträge der Studenten." },
       { combo: "sich freuen über", ex: "Ich habe mich über seinen Anruf gefreut." },
       { combo: "informieren über", ex: "Die Botschaften informieren ausländische Bewerber über die Studienbedingungen." },
-      { combo: "sich informieren über", ex: "Über Zug- und Flugverbindungen nach Bern kannst du dich im Internet informieren." },
+      { combo: "verhandeln über", ex: "Die Delegationen verhandeln über einen Waffenstillstand." },
       { combo: "klagen über", ex: "Die Bauern klagten über den viel zu nassen Sommer." },
       { combo: "nachdenken über", ex: "Ich muss über deinen Vorschlag nachdenken." },
-      { combo: "sprechen über", ex: "Wir haben mit ihm über seine Studienpläne gesprochen." },
+      { combo: "staunen über", ex: "Alle staunten über seine herausragenden Leistungen." },
       { combo: "sich unterhalten über", ex: "Wir haben uns mit unseren Freunden über unsere Ferienpläne unterhalten." },
       { combo: "sich wundern über", ex: "Ausländer wundern sich oft über die vielen Verkehrsschilder in Deutschland." }
     ],
@@ -345,9 +380,9 @@ export const praepositionenCombo = [
       { combo: "entsetzt über", ex: "Ich bin über seine rassistischen Ansichten entsetzt." },
       { combo: "erfreut über", ex: "Sie ist über das schöne Geschenk erfreut." },
       { combo: "erstaunt über", ex: "Der Student zeigte sich über das gute Prüfungsergebnis erstaunt." },
-      { combo: "froh über", ex: "Wir sind froh über deinen Erfolg." },
+      { combo: "empört über", ex: "Die Bürger waren empört über den Skandal." },
       { combo: "glücklich über", ex: "Er ist glücklich über das Ende des Bürgerkriegs." },
-      { combo: "traurig über", ex: "Wir sind traurig über die schlechte Nachricht." }
+      { combo: "verärgert über", ex: "Sie war sehr verärgert über die Verspätung." }
     ]
   },
   {
@@ -367,21 +402,28 @@ export const praepositionenCombo = [
       { combo: "sich bewerben um", ex: "Er bewirbt sich um den Job." },
       { combo: "sich bemühen um", ex: "Ich bemühe mich seit langem um ein größeres Zimmer." },
       { combo: "trauern um", ex: "Wir trauern um einen toten Freund." },
-      { combo: "es geht um", ex: "In diesem Text geht es um die Arbeitslosigkeit." },
+      { combo: "sich sorgen um", ex: "Die Mutter sorgt sich um die Gesundheit ihres Sohnes." },
       { combo: "es handelt sich um", ex: "Bei dem Verletzten handelt es sich um einen Zuschauer." }
     ],
-    adj: []
+    adj: [
+      { combo: "besorgt um", ex: "Die Eltern sind sehr besorgt um die Zukunft ihres Kindes." },
+      { combo: "bemüht um", ex: "Die Verwaltung ist stets bemüht um eine rasche Bearbeitung." }
+    ]
   },
   {
     prep: "unter",
     kasus: "DAT",
-    norm: [],
+    norm: [
+      { combo: "Einfluss unter", ex: "Die Region stand lange unter dem Einfluss benachbarter Mächte." },
+      { combo: "Schutz unter", ex: "Das historische Gebäude steht heute unter dem Schutz des Gesetzes." }
+    ],
     verb: [
       { combo: "leiden unter", ex: "Er leidet unter Stress." },
-      { combo: "leiden unter", ex: "Rosita leidet sehr unter ihrer Schwiegermutter." },
-      { combo: "sich verstehen unter", ex: "Unter Glück versteht jeder etwas anderes." }
+      { combo: "verstehen unter", ex: "Unter Glück versteht jeder etwas anderes." }
     ],
-    adj: []
+    adj: [
+      { combo: "bekannt unter", ex: "Der Künstler ist unter dem Pseudonym Novalis bekannt." }
+    ]
   },
   {
     prep: "von",
@@ -397,8 +439,8 @@ export const praepositionenCombo = [
       { combo: "ausgehen von", ex: "Bei seiner Planung geht der Minister von einer niedrigeren Inflation aus." },
       { combo: "profitieren von", ex: "Vom Krieg profitierten vor allem die Waffenhändler." },
       { combo: "sich trennen von", ex: "Estrella hat sich von ihrem Mann getrennt." },
-      { combo: "unterscheiden von", ex: "Können Sie einen Panther von einem Jaguar unterscheiden?" },
       { combo: "sich unterscheiden von", ex: "Das neue Modell unterscheidet sich nur wenig von dem alten." },
+      { combo: "erwarten von", ex: "Was erwarten Sie von dieser neuen Methode?" },
       { combo: "sich verabschieden von", ex: "Er verabschiedete sich am Flughafen von seiner Freundin." }
     ],
     adj: [
@@ -406,7 +448,7 @@ export const praepositionenCombo = [
       { combo: "frei von", ex: "Hoffentlich bleibt der Kranke frei von Schmerzen." },
       { combo: "müde von", ex: "Ich bin müde von der langen Reise." },
       { combo: "überzeugt von", ex: "Ich bin davon überzeugt." },
-      { combo: "überzeugt von", ex: "Nicht jeder ist von der Qualität des Produktes überzeugt." },
+      { combo: "begeistert von", ex: "Das Publikum war begeistert von der Aufführung." },
       { combo: "voll von", ex: "Der Tisch ist voll von Büchern." }
     ]
   },
@@ -422,10 +464,14 @@ export const praepositionenCombo = [
       { combo: "schützen vor", ex: "Er schützt mich vor der Gefahr." },
       { combo: "fliehen vor", ex: "Die Bevölkerung floh vor den Soldaten in die Berge." },
       { combo: "sich fürchten vor", ex: "Die Kinder fürchten sich vor dem Gewitter." },
-      { combo: "schützen vor", ex: "Eine gute Sonnenbrille schützt die Augen vor UV-Strahlung." },
-      { combo: "warnen vor", ex: "Wir hatten dich vor diesem bissigen Hund gewarnt!" }
+      { combo: "warnen vor", ex: "Wir hatten dich vor diesem bissigen Hund gewarnt!" },
+      { combo: "erschrecken vor", ex: "Er erschrak vor dem lauten Geräusch." }
     ],
-    adj: []
+    adj: [
+      { combo: "sicher vor", ex: "In dieser Festung war man sicher vor jedem Angriff." },
+      { combo: "blass vor", ex: "Er wurde vor Schreck ganz blass im Gesicht." },
+      { combo: "starr vor", ex: "Die Wanderer waren vor Kälte fast starr." }
+    ]
   },
   {
     prep: "zu",
